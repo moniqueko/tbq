@@ -23,7 +23,7 @@ public interface MemberService {
 
     void delMember(Member member);
 
-    int idCheck(String memberId);
+    Integer idCheck(String memberId);
 
     int emailCheck(Member member);
 

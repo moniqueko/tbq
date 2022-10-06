@@ -38,24 +38,30 @@ public class MemberRestController {
                     member.getMemberEmail() == null || member.getMemberEmail().equals("")) { // 받아온값이 null - 아이디, 패스워드 따로하면 유추가능하니까 안됨.
 
                 return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
-//
-//            } else if (member.getMemberGrant() != 0 && member.getMemberGrant() != 1) { //&& 주의할것, 0도 아니고 1도 아닐때
-//
-//                return responseService.getFailResult(ErrorCode.TYPE_NOT_SELECTED);
-//
-//            } else if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
-//
-//                return responseService.getFailResult(ErrorCode.PW_NOT_FOLLOW_REGEX);
-//
-//            } else if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
-//
-//                return responseService.getFailResult(ErrorCode.EMAIL_NOT_FOLLOW_REGEX);
-//
-//            } else if (!Pattern.matches(regex, member.getMemberId())) {//아이디가 정규식에 부합하는지
-//
-//                return responseService.getFailResult(ErrorCode.ID_NOT_FOLLOW_REGEX);
+            }
 
-            } else {
+             if (member.getMemberGrant() != 0 && member.getMemberGrant() != 1) { //&& 주의할것, 0도 아니고 1도 아닐때
+
+                 return responseService.getFailResult(ErrorCode.TYPE_NOT_SELECTED);
+             }
+
+           if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
+
+                return responseService.getFailResult(ErrorCode.PW_NOT_FOLLOW_REGEX);
+
+            }
+
+           if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
+
+               return responseService.getFailResult(ErrorCode.EMAIL_NOT_FOLLOW_REGEX);
+
+           }
+
+           if (!Pattern.matches(regex, member.getMemberId())) {//아이디가 정규식에 부합하는지
+
+                return responseService.getFailResult(ErrorCode.ID_NOT_FOLLOW_REGEX);
+
+            }
 
                 Member mem = memberService.selectById(member.getMemberId()); //멤버 존재여부 Member mem = null;
                 //Member memByEmail = memberService.selectByEmail(member.getMemberEmail());
@@ -76,7 +82,6 @@ public class MemberRestController {
                     return responseService.getFailResult(ErrorCode.EMAIL_DUPLICATION);
                 }
 
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,7 +182,9 @@ public class MemberRestController {
         if (memberId == null) { //받은값 null
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
-        int check = memberService.idCheck(memberId);    //갯수 카운트
+        Integer check = memberService.idCheck(memberId);    //갯수 카운트
+
+        System.out.println("check print<<<<<<<<<<<<<<<<<<<<<<"+check);
 
         if (check > 1) {
             return responseService.getFailResult(ErrorCode.ID_DUPLICATION);
@@ -188,10 +195,15 @@ public class MemberRestController {
     @PostMapping("/emailDupl") // 중복 이메일 체크
     public SingleResult<?> emailDuplication(@RequestBody String memberEmail) throws IOException {
 
+        int check = 1;
+
         if (memberEmail == null) { //받은값 null
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
-        int check = memberService.emailDuplication(memberEmail);
+
+        check = memberService.emailDuplication(memberEmail);
+
+        System.out.println("check print<<<<<<<<<<<<<<<<<<<<<<"+check);
 
         if (check > 1) {
             return responseService.getFailResult(ErrorCode.EMAIL_DUPLICATION);

@@ -13,15 +13,17 @@ import com.thebookquotes.TBQ.mapper.MemberMapper;
 import com.thebookquotes.TBQ.service.GeneratePw;
 import com.thebookquotes.TBQ.service.member.MemberService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("MemberService")
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     @Resource
     MemberMapper mapper;
     GeneratePw generatePw;
-    final String memberUuid = "M" + UUID.randomUUID().toString().replace("-", "").substring(20);
+    String memberUuid = "M" + UUID.randomUUID().toString().replace("-", "").substring(20);
 
     @Override
     public void insertMember(Member member) {
@@ -75,9 +77,8 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public int idCheck(String memberId) {
-        int cnt = mapper.idCheck(memberId);
-        return cnt;
+    public Integer idCheck(String memberId) {
+        return mapper.idCheck(memberId);
     }
 
     @Override
@@ -94,8 +95,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int emailDuplication(String memberEmail) {
-        int cnt = mapper.emailDuplication(memberEmail);
-        return cnt;
+        return mapper.emailDuplication(memberEmail);
     }
 
     @Override

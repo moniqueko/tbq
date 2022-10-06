@@ -10,10 +10,10 @@
         VALUES(#{memberUuid},#{memberId},#{memberPw},#{memberGrant},NOW(),#{memberInuse},NOW(),NOW(),#{memberEmail})
     </insert>
 
-    <select id="idCheck" resultType="int">
+    <select id="idCheck" resultType="Integer" parameterType="com.thebookquotes.TBQ.dto.Member">
         SELECT  count(member_id)
         FROM 	member
-        WHERE	member_id=#{memberId}
+        WHERE	member_id=#{memberId} and member_inuse=1
     </select>
 
     <select id="selectById" resultType="com.thebookquotes.TBQ.dto.Member">
@@ -70,7 +70,8 @@
         WHERE member_id=#{memberId}
     </update>
 
-    <select id="emailDuplication" resultType="int"><!-- 이메일 중복 체크 -->
+    <select id="emailDuplication" resultType="int" parameterType="com.thebookquotes.TBQ.dto.Member"><!-- 이메일 중복 체크 -->
+        /*emailDuplication*/
         SELECT  count(member_email)
         FROM 	member
         WHERE	member_email=#{memberEmail} and member_inuse=1
