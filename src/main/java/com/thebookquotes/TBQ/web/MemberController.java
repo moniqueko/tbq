@@ -27,15 +27,14 @@ public class MemberController {
         return "member/findPw";
     }
 
-    @GetMapping("/signin") //회원가입 페이지 이동
+    @GetMapping("/join") //회원가입 페이지 이동
     public String signin(Model model, Member member) {
 
-        return "member/signin";
+        return "member/join";
     }
 
     @GetMapping("/login") //회원가입 페이지 이동
     public String login(Model model, Member member) {
-
         return "member/login";
     }
 

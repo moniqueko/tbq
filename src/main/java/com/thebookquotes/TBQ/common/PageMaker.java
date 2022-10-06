@@ -7,9 +7,12 @@ public class PageMaker {
     private boolean prev;
     private boolean next;
     private String keyword;
+    private int displayPageNum = 5;
     private Criteria cri;
-    private int displayPageNum = 10;
+    private int totalPage;
 
+
+    public PageMaker() {}
 
     public String getKeyword() {
         return keyword;
@@ -18,9 +21,8 @@ public class PageMaker {
         this.keyword = keyword;
     }
 
-    public PageMaker() {}
     public PageMaker(int totalCount, int startPage, int endPage, boolean prev, boolean next, Criteria cri,
-                     int displayPageNum) {
+                     int displayPageNum, int totalPage) {
         super();
         this.totalCount = totalCount;
         this.startPage = startPage;
@@ -28,6 +30,7 @@ public class PageMaker {
         this.prev = prev;
         this.next = next;
         this.cri = cri;
+        this.totalPage = totalPage;
         this.displayPageNum = displayPageNum;
     }
 
@@ -60,7 +63,7 @@ public class PageMaker {
         if(endPage > tempEndPage) endPage = tempEndPage;
         prev = (startPage == 1? false:true);
         next = (endPage * cri.getPageSize() >= totalCount? false:true);
-        System.out.println("페이징처리정보 계산");
+
     }
 
     public int getStartPage() {
@@ -99,7 +102,7 @@ public class PageMaker {
         return cri;
     }
 
-    public void setCri(Criteria cri) {
+    public void setCri(Criteria cri) { //변경
         this.cri = cri;
     }
 
@@ -111,9 +114,16 @@ public class PageMaker {
         this.displayPageNum = displayPageNum;
     }
 
+    public void setTotalPage(int totalCount){
+        this.totalPage = this.totalCount / 10;
+    }
+    public int getTotalPage() {
+        return totalPage;
+    }
+
     @Override
     public String toString() {
-        return "PageMaker [totalCount=" + totalCount + ", startPage=" + startPage + ", endPage=" + endPage + ", prev="
+        return "PageMaker [totalCount=" + totalCount + ", startPage=" + startPage + ", endPage=" + endPage + ", totalPage=" + totalPage + ", prev="
                 + prev + ", next=" + next + ", cri=" + cri + ", displayPageNum=" + displayPageNum + "]";
     }
 }

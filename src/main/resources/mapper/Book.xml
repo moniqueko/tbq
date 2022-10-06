@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thebookquotes.TBQ.mapper.BookMapper">
+
+    <insert id="insertBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.insertBook */
+        INSERT INTO bookquotes
+        SET
+        <trim prefixOverrides = ",">
+            <if test="bookUuid                 != null">, book_uuid     =   #{bookUuid}         </if>
+            <if test="title                != null">, title         =       #{title}             </if>
+            <if test="writer                != null">, writer         =     #{writer}            </if>
+            <if test="contents             != null">, contents     =       #{contents}           </if>
+            <if test="memberUuid         != null">, member_uuid=       #{memberUuid}            </if>
+            <if test="inuse          != null">, inuse          =          #{inuse}               </if>
+            <if test="readNum              != null">, read_num      =       #{readNum}          </if>
+            <if test="img             != null">, img     =                 #{img}                </if>
+            , REGI_DATE           = NOW()               /* 등록일 */
+            , EDIT_DATE           = NOW()               /* 수정일 */
+        </trim>
+    </insert>
+
+    <select id="bookList" resultType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.bookList */
+        SELECT *
+        FROM bookquotes
+        WHERE INUSE=1
+        ORDER BY REGI_DATE desc
+        limit #{pageStart},#{pageSize}
+    </select>
+
+    <select id="selectBookByUid" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="String">
+        /* BookQuotes.selectBookByUid */
+        SELECT *
+        FROM bookquotes
+        WHERE BOOK_UUID=#{bookUuid}
+        AND INUSE = 1
+    </select>
+
+    <select id="selectCount" resultType="int">
+        /* BookQuotes.selectCount */
+        SELECT count(*)
+        FROM bookquotes
+        WHERE INUSE = 1
+    </select>
+
+    <update id="updateBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.updateBook */
+        UPDATE bookquotes
+        SET
+        <trim prefixOverrides = ",">
+            <if test="bookUuid                 != null">, book_uuid     =   #{bookUuid}         </if>
+            <if test="title                != null">, title         =       #{title}             </if>
+            <if test="writer                != null">, writer         =     #{writer}            </if>
+            <if test="contents             != null">, contents     =       #{contents}           </if>
+            <if test="memberUuid         != null">, member_uuid=       #{memberUuid}            </if>
+            <if test="inuse          != null">, inuse          =          #{inuse}               </if>
+            <if test="readNum              != null">, read_num      =       #{readNum}          </if>
+            <if test="img             != null">, img     =                 #{img}                </if>
+            , EDIT_DATE           = NOW()               /* 수정일 */
+        </trim>
+        WHERE BOOK_UUID=#{bookUuid}
+    </update>
+
+    <update id="deleteBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
+        UPDATE bookquotes
+        SET REGI_DATE=NOW(),  inuse=#{inuse}
+        WHERE BOOK_UUID=#{bookUuid}
+    </update>
+</mapper>

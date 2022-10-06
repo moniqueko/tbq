@@ -1,23 +1,17 @@
 package com.thebookquotes.TBQ.common;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
-
-    ID_DUPLICATION(400, "400", "Duplicated Id"),
-    EMAIL_DUPLICATION(401, "401", "Duplicated Email"),
+    //TODO: COMMON
+    PARAMETER_IS_EMPTY(400, "400", "Parameter is empty"),
+    NO_MATCHING_DATA(401, "401", "There is no matching data"),
     NULL_EXCEPTION(402, "402", "NULL input"),
-    TYPE_NOT_SELECTED(403, "403", "Member type not selected"),
-    ID_NOT_FOLLOW_REGEX(404, "404", "Id not following RegExp"),
-    PW_NOT_FOLLOW_REGEX(405, "405", "Pw not following RegExp"),
-    EMAIL_NOT_FOLLOW_REGEX(406, "406", "Email not following RegExp"),
-    EMAIL_CURRENTLY_USED(407, "407", "This e-mail is currently used"),
-    ID_PW_NOT_MATCHING(408, "408", "Id and Password not matching"),
-    MEMBER_NOT_FOUND(409, "409", "Member not found"),
+    LANGUAGE_NOT_SELECTED(403, "403", "Language not selected"),
+    NO_PARAMETERS(404, "404", "No parameters"),
     NO_INPUT_DATA(410, "410", "There is no input data"),
-    ID_EMAIL_NOT_MATCHING(411, "411", "Id and Email not matching"),
-
+    NO_FILE(412, "412", "There is no uploaded file"),
+    DELETION_FAILED(414, "414", "File deletion failed"),
+    NOT_FOLLOW_REGEX(404, "405", "Parameter is following RegExp"),
+    DUPLICATION_ERROR(406, "406", "Duplication Error"),
     ;
 
     private final String code;
@@ -41,5 +35,4 @@ public enum ErrorCode {
     public int getStatus() {
         return status;
     }
-
 }

@@ -1,71 +1,78 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
-
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/jsp/component/head.jsp" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-<title>로그인</title>
-
-<style>
-	body{font-family: 'Noto Sans KR', sans-serif;}
-	h2{text-align: left;}
-
-	a:link {color: black;}
-    a:visited {color: black;}
-    a:hover {color: black; text-decoration: none;}
-    a:active {color: black;}
-    
-</style>
+	<title>Login</title>
 </head>
 
 <body>
-<br><br>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-        
-        <div class="justify-content-center" style="text-align: center">
-           <h2>로그인</h2><br>
-            <div class="container-sm">  
-		 
-				<form:form name="memberForm" id="memberForm">
-					<table class="table table-bordered">
-						<tr><td>아이디</td><td><input type="text"  style="width:200px;" id="memberId"  name="memberId" /></td></tr>
-						<tr><td>비밀번호</td><td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterkey()"/></td></tr>
-						<tr><td colspan="2">
-						<input type="button" value="로그인"  onclick="login()">
-						<input type="button" value="비밀번호 찾기"  onclick="location.href='../findPw'">
-						<input type="button" value="회원가입" onclick="location.href='../signin'"></td></tr>
-					</table>
-				</form:form>
+<%@ include file="/WEB-INF/jsp/component/header.jsp" %>
+<main id="main">
+	<div class="site-section pb-0 site-portfolio">
+		<div class="container">
+			<div class="row mb-5 align-items-end">
+				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
+					<h2>Are you a bookaholic?</h2>
+					<p class="mb-0">Share your quotes from your favorite books! Upload images of quotes, that is all!</p>
+				</div>
+				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
+					<div id="menus" class="menus">
+						<a href="/" >Home</a>
+						<a href="#" >Book List</a>
+						<a href="#" >My book</a>
+						<a href="#" >My Info</a>
+						<a href="/login" class="active">Login</a>
+						<a href="/join" >Join</a>
+					</div>
+				</div>
 			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<div class="justify-content-center" style="text-align: center">
+
+					   <h2>Login</h2><br>
+						<div class="container-sm">
+							<form:form name="memberForm" id="memberForm">
+								<table class="table table-bordered">
+									<tr>
+										<td>ID</td>
+										<td><input type="text"  style="width:200px;" id="memberId"  name="memberId" /></td>
+									</tr>
+									<tr>
+										<td>Password</td>
+										<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();"/></td>
+									</tr>
+									<tr style="text-align: center">
+										<td colspan="2">
+											<input type="button" value="Login"  onclick="login();">
+											<input type="button" value="Find PW"  onclick="location.href='/findPw'">
+										</td>
+									</tr>
+								</table>
+							</form:form>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
+
 	</div>
-   </div>
-</div>
 
+	<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
 
+</main>
 
+<%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
-	function enterkey() {
+	function enterKey() {
 		if (window.event.keyCode == 13) {
 			login();
 		}
 	}
-
 
 	function login(){
 		
@@ -93,12 +100,12 @@
  
 	            	 if(result.code==200){
 	            		 if(result.data == '1'){
-	            			 alert('일반회원 로그인 성공');
-			            	 location.href="../loginOk";
+	            			 alert('Login Success');
+			            	 location.href="/";
 			            	 
 	            		 }else if(result.data=='2'){
 		            		 console.log("관리자 로그인");
-		            		 location.href="../adminOk";
+		            		 location.href="/adminOk";
 		            	 }	            		 
 	            	 }else if(result.code==408){
 	            		 console.log(result.message);
@@ -119,8 +126,4 @@
 			
 	}
 
-
 </script>
-
-</body>
-</html>

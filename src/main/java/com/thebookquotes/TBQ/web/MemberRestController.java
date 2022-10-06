@@ -42,24 +42,24 @@ public class MemberRestController {
 
              if (member.getMemberGrant() != 0 && member.getMemberGrant() != 1) { //&& 주의할것, 0도 아니고 1도 아닐때
 
-                 return responseService.getFailResult(ErrorCode.TYPE_NOT_SELECTED);
+                 return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
              }
 
            if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
 
-                return responseService.getFailResult(ErrorCode.PW_NOT_FOLLOW_REGEX);
+                return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
             }
 
            if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
 
-               return responseService.getFailResult(ErrorCode.EMAIL_NOT_FOLLOW_REGEX);
+               return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
            }
 
            if (!Pattern.matches(regex, member.getMemberId())) {//아이디가 정규식에 부합하는지
 
-                return responseService.getFailResult(ErrorCode.ID_NOT_FOLLOW_REGEX);
+                return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
             }
 
@@ -75,11 +75,11 @@ public class MemberRestController {
 
                 } else if (mem.getMemberId().equals(member.getMemberId()) && mem.getMemberInuse() == 1) { //아이디 이미 존재 & 사용하는중이면
 
-                    return responseService.getFailResult(ErrorCode.ID_DUPLICATION);
+                    return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
 
                 } else if (mem.getMemberEmail().equals(member.getMemberEmail()) && mem.getMemberInuse() == 1) { //이메일 이미 존재 & 사용하는중이면
 
-                    return responseService.getFailResult(ErrorCode.EMAIL_DUPLICATION);
+                    return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
                 }
 
 
@@ -120,10 +120,6 @@ public class MemberRestController {
                     if (memberId.equals("admin")) {
                         memberType = 2;
                         System.out.print("#############관리자 로그인");
-
-                        //로그인 성공시 마지막 로그인 날짜 수정
-                        memberService.lastLoginUpdate(check.getMemberUuid());
-
                     }
 
                     //로그인 성공시 마지막 로그인 날짜 수정
@@ -139,13 +135,13 @@ public class MemberRestController {
                     System.out.print("아이디와 패스워드가 일치하지 않습니다.");
                     //memberType=3;
 
-                    return responseService.getFailResult(ErrorCode.ID_PW_NOT_MATCHING);
+                    return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
                 }
 
             } else if (check == null) {
                 System.out.print("회원정보 존재하지않음");
                 //memberType=0;
-                return responseService.getFailResult(ErrorCode.MEMBER_NOT_FOUND);
+                return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
             }
 
         } catch (NullPointerException e) {
@@ -168,7 +164,7 @@ public class MemberRestController {
         Member mem = memberService.selectByUuid(uuid);
 
         if (mem == null) { //조회한값 null
-            return responseService.getFailResult(ErrorCode.MEMBER_NOT_FOUND);
+            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
         memberService.delMember(mem); //inuse 번호만 바꿈.
 
@@ -187,7 +183,7 @@ public class MemberRestController {
         System.out.println("check print<<<<<<<<<<<<<<<<<<<<<<"+check);
 
         if (check > 1) {
-            return responseService.getFailResult(ErrorCode.ID_DUPLICATION);
+            return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
         }
         return responseService.getSingleResult(check);
     }
@@ -206,7 +202,7 @@ public class MemberRestController {
         System.out.println("check print<<<<<<<<<<<<<<<<<<<<<<"+check);
 
         if (check > 1) {
-            return responseService.getFailResult(ErrorCode.EMAIL_DUPLICATION);
+            return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
 
         } else if (check == 1) {
             return responseService.getSingleResult(check); //200과 함께 데이터 보냄
@@ -228,7 +224,7 @@ public class MemberRestController {
         int check = memberService.emailCheck(member);
 
         if (check == 0) {//아이디 이메일 불일치
-            return responseService.getFailResult(ErrorCode.ID_EMAIL_NOT_MATCHING); //411
+            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA); //411
         }
         return responseService.getSingleResult(check);
     }
@@ -249,11 +245,11 @@ public class MemberRestController {
 
             } else if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
 
-                return responseService.getFailResult(ErrorCode.PW_NOT_FOLLOW_REGEX);
+                return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
             } else if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
 
-                return responseService.getFailResult(ErrorCode.EMAIL_NOT_FOLLOW_REGEX);
+                return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
             } else {
 
@@ -270,11 +266,11 @@ public class MemberRestController {
 
                     if (checkDupl > 1) {
                         System.out.println("이미 db에 두개 있는경우");
-                        return responseService.getFailResult(ErrorCode.EMAIL_DUPLICATION);
+                        return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
 
                     } else if (checkDupl == 1) {
                         System.out.println("다른 아이디 + 중복이메일 db에 1개 있는 경우");
-                        return responseService.getFailResult(ErrorCode.EMAIL_CURRENTLY_USED);
+                        return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
 
                     } else if (checkDupl == 0) {
                         System.out.println("사용가능한 이메일");
