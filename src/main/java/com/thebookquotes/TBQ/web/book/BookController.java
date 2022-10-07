@@ -3,8 +3,10 @@ package com.thebookquotes.TBQ.web.book;
 import com.thebookquotes.TBQ.common.Criteria;
 import com.thebookquotes.TBQ.common.PageMaker;
 import com.thebookquotes.TBQ.dto.BookQuotes;
+import com.thebookquotes.TBQ.dto.Maxim;
 import com.thebookquotes.TBQ.dto.Member;
 import com.thebookquotes.TBQ.service.book.BookQuoteService;
+import com.thebookquotes.TBQ.service.maxim.MaximService;
 import com.thebookquotes.TBQ.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -29,6 +31,7 @@ public class BookController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookQuoteService bookQuoteService;
     private final MemberService memberService;
+    private final MaximService maximService;
 
     @GetMapping("/")
     public String index(HttpSession session, Model model, Criteria cri) {
@@ -42,6 +45,9 @@ public class BookController {
         pageMaker.setTotalPage(bookQuoteService.selectCount());
 
         model.addAttribute("pageMaker", pageMaker);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
 
         return "/index";
     }

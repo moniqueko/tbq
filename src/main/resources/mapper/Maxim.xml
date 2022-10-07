@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thebookquotes.TBQ.mapper.MaximMapper">
+
+    <insert id="insertMaxim" parameterType="com.thebookquotes.TBQ.dto.Maxim">
+        INSERT INTO maxim
+        VALUES(#{num}, #{name},#{contents})
+    </insert>
+
+    <select id="maximList" resultType="com.thebookquotes.TBQ.dto.Maxim">
+        SELECT *
+        FROM maxim
+    </select>
+
+</mapper>
