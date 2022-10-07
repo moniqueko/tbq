@@ -11,4 +11,6 @@ public interface BookQuoteService {
     BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     BookQuotes selectBookByUuid(String bookUuid);
+
+    void insertCmt(BookQuotes.Comment cmt);
 }

@@ -56,8 +56,6 @@ public class BookController {
     public String addBook(HttpSession session, Model model) {
         Member member = (Member) session.getAttribute("memberInfo");
 
-        System.out.println(member);
-
         if(member==null){
             return "/member/login";
         }
@@ -65,11 +63,11 @@ public class BookController {
         Member info = memberService.selectByUuid(member.getMemberUuid());
         model.addAttribute("memberInfo", info);
 
-        return "/book/addBook";
+        return "/book/addBook2";
     }
 
 
-    @GetMapping("/view/{bookUuid}")
+    @GetMapping("/view/{bookUuid}") //상세보기
     public String viewBook(@PathVariable("bookUuid") String bookUuid, Model model, Criteria cri) {
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         model.addAttribute("book", bookQuotes);
@@ -90,23 +88,12 @@ public class BookController {
         return "/book/viewBook";
     }
 
-    @GetMapping("/bookList")
-    public String bookList(Criteria cri, Model model, HttpServletRequest request){
-        System.out.println(cri +"cri <<<<<<<<<<<<<<<<<<<<<<");
-        List<BookQuotes> board = bookQuoteService.bookList(cri);
-        model.addAttribute("board", board);
+    @GetMapping("/editBook/{bookUuid}") //수정폼연결
+    public String editBook(@PathVariable("bookUuid") String bookUuid,Model model, HttpServletRequest request) {
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
+        model.addAttribute("book", bookQuotes);
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCount());
-        pageMaker.setTotalPage(bookQuoteService.selectCount());
-
-        model.addAttribute("pageMaker", pageMaker);
-
-        List<Maxim> maxim = maximService.maximList();
-        model.addAttribute("maxim", maxim);
-
-        return "viewBook";
+        return "/book/editBook";
     }
 
     @GetMapping(value="/bookImg/{bookUuid}")
@@ -117,4 +104,5 @@ public class BookController {
         InputStream in = new FileInputStream(url);
         return IOUtils.toByteArray(in);
     }
+
 }

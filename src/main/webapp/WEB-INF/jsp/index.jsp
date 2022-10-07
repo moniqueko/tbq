@@ -20,17 +20,25 @@
                 </div>
                 <div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
                     <div id="menus" class="menus">
-                        <a href="/" class="active">Home</a>
-                        <a href="/bookList" >Book List</a>
-                        <a href="#" >My book</a>
-                        <a href="#" >My Info</a>
-                        <a href="/login">Login</a>
-                        <a href="/join" >Join</a>
+                        <a href="/" id="home" class="active">Home</a>
+                        <a href="/bookList" id="bookList">Book List</a>
+                        <a href="#" id="myBook">My book</a>
+                        <c:choose>
+                            <c:when test="${memberInfo!=null}">
+                                <a href="#" id="myInfo">My Info</a>
+                                <a href="/logout">Logout</a>
+                            </c:when>
+                            <c:when test="${memberInfo==null}">
+                                <a href="/login" id="login">Login</a>
+                                <a href="/join" id="join">Join</a>
+                            </c:when>
+                        </c:choose>
                     </div>
                 </div>
             </div>
+
             <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
-                <c:forEach var="book" items="${board}" varStatus="status" end="9">
+                <c:forEach var="book" items="${board}" varStatus="status" end="8">
                     <div class="item web col-sm-6 col-md-4 col-lg-4 mb-4">
                         <a href="/view/${book.bookUuid}" class="item-wrap fancybox">
                             <div class="work-info" data-uuid="${book.bookUuid}">
@@ -54,6 +62,7 @@
 </main>
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
+
 </body>
 
 </html>

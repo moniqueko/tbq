@@ -19,12 +19,19 @@
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
-						<a href="/" >Home</a>
-						<a href="#" >Book List</a>
-						<a href="#" >My book</a>
-						<a href="#" >My Info</a>
-						<a href="/login" >Login</a>
-						<a href="/join" class="active">Join</a>
+						<a href="/" id="home">Home</a>
+						<a href="/bookList" id="bookList">Book List</a>
+						<a href="#" id="myBook">My book</a>
+						<c:choose>
+							<c:when test="${memberInfo!=null}">
+								<a href="#" id="myInfo">My Info</a>
+								<a href="/logout">Logout</a>
+							</c:when>
+							<c:when test="${memberInfo==null}">
+								<a href="/login" id="login">Login</a>
+								<a href="/join" id="join" class="active">Join</a>
+							</c:when>
+						</c:choose>
 					</div>
 				</div>
 			</div>

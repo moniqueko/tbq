@@ -21,6 +21,7 @@ public class BookQuotes {
     private Date sysRegDt;
     private Date sysUdtDt;
     private int inuse;
+    private String lang;
 
     @Data
     public static class BookQuotesWrite {
@@ -33,7 +34,25 @@ public class BookQuotes {
         private String img;
         private MultipartFile bookImg;
         private int inuse;
+        private String lang;
 
+    }
+    @Data
+    public static class Comment {
+        private int cmtNum;
+        private String bookUuid;
+        private String memberUuid;
+        private String contents;
+        private Date sysRegDt;
+        private int inuse;
+
+        public Comment(String bookUuid, String memberUuid, String contents, int inuse, Date sysRegDt) {
+            this.bookUuid = bookUuid;
+            this.memberUuid = memberUuid;
+            this.contents = contents;
+            this.inuse = inuse;
+            this.sysRegDt = sysRegDt;
+        }
     }
 
 }

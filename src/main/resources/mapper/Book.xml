@@ -16,6 +16,7 @@
             <if test="inuse          != null">, inuse          =          #{inuse}               </if>
             <if test="readNum              != null">, read_num      =       #{readNum}          </if>
             <if test="img             != null">, img     =                 #{img}                </if>
+            <if test="lang             != null">, lang     =                 #{lang}                </if>
             , REGI_DATE           = NOW()               /* 등록일 */
             , EDIT_DATE           = NOW()               /* 수정일 */
         </trim>
@@ -68,4 +69,17 @@
         SET REGI_DATE=NOW(),  inuse=#{inuse}
         WHERE BOOK_UUID=#{bookUuid}
     </update>
+
+    <insert id="insertCmt" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Comment">
+        /* BookQuotes.insertCmt */
+        INSERT INTO cmt
+        SET
+        <trim prefixOverrides = ",">
+            <if test="bookUuid                 != null">, book_uuid     =   #{bookUuid}         </if>
+            <if test="memberUuid                 != null">, member_uuid     =   #{memberUuid}         </if>
+            <if test="contents             != null">, contents     =       #{contents}           </if>
+            <if test="inuse          != null">, cmt_inuse          =          #{inuse}               </if>
+            , CMT_REGI_DATE           = NOW()               /* 등록일 */
+        </trim>
+    </insert>
 </mapper>

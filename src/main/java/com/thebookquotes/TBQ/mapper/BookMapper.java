@@ -15,4 +15,6 @@ public interface BookMapper {
     void deleteBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     BookQuotes selectBookByUuid(String bookUuid);
 
+    void insertCmt(BookQuotes.Comment cmt);
+
 }

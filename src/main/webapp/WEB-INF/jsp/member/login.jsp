@@ -9,6 +9,7 @@
 
 <body>
 <%@ include file="/WEB-INF/jsp/component/header.jsp" %>
+
 <main id="main">
 	<div class="site-section pb-0 site-portfolio">
 		<div class="container">
@@ -19,44 +20,67 @@
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
-						<a href="/" >Home</a>
-						<a href="/bookList" >Book List</a>
-						<a href="#" >My book</a>
-						<a href="#" >My Info</a>
-						<a href="/login" class="active">Login</a>
-						<a href="/join" >Join</a>
+						<a href="/" id="home">Home</a>
+						<a href="/bookList" id="bookList">Book List</a>
+						<a href="#" id="myBook">My book</a>
+						<c:choose>
+							<c:when test="${memberInfo!=null}">
+								<a href="#" id="myInfo">My Info</a>
+								<a href="/logout">Logout</a>
+							</c:when>
+							<c:when test="${memberInfo==null}">
+								<a href="/login" id="login" class="active">Login</a>
+								<a href="/join" id="join">Join</a>
+							</c:when>
+						</c:choose>
 					</div>
 				</div>
 			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-md-4">
-					<div class="justify-content-center" style="text-align: center">
+			<c:if test="${memberInfo!=null}">
+				<div class="row justify-content-center">
+					<div class="col-md-4">
+						<div class="justify-content-center" style="text-align: center">
 
-					   <h2>Login</h2><br>
-						<div class="container-sm">
-							<form:form name="memberForm" id="memberForm">
-								<table class="table table-bordered">
-									<tr>
-										<td>ID</td>
-										<td><input type="text"  style="width:200px;" id="memberId"  name="memberId" /></td>
-									</tr>
-									<tr>
-										<td>Password</td>
-										<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();"/></td>
-									</tr>
-									<tr style="text-align: center">
-										<td colspan="2">
-											<input type="button" value="Login"  onclick="login();">
-											<input type="button" value="Find PW"  onclick="location.href='/findPw'">
-										</td>
-									</tr>
-								</table>
-							</form:form>
+						   <h2>Hello, ${memberInfo.memberId}</h2><br>
+							<div class="container-sm">
+								<p><a href="/logout" class="readmore">Logout</a></p>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</c:if>
+
+			<c:if test="${memberInfo==null}">
+				<div class="row justify-content-center">
+					<div class="col-md-4">
+						<div class="justify-content-center" style="text-align: center">
+
+							<h2>Login</h2><br>
+							<div class="container-sm">
+								<form:form name="memberForm" id="memberForm">
+									<table class="table table-bordered">
+										<tr>
+											<td>ID</td>
+											<td><input type="text"  style="width:200px;" id="memberId"  name="memberId" /></td>
+										</tr>
+										<tr>
+											<td>Password</td>
+											<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();"/></td>
+										</tr>
+										<tr style="text-align: center">
+											<td colspan="2">
+												<input type="button" value="Login"  onclick="login();">
+												<input type="button" value="Find PW"  onclick="location.href='/findPw'">
+											</td>
+										</tr>
+									</table>
+								</form:form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:if>
 
 		</div>
 

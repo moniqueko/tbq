@@ -14,6 +14,13 @@
             </colgroup>
             <tbody>
                 <tr>
+                    <td>Language</td>
+                    <td>
+                        <input type="radio" name="lang" value="0"/>Korean
+                        <input type="radio" name="lang" value="1"/>English
+                    </td>
+                </tr>
+                <tr>
                     <th class="table-light align-middle">책 제목</th>
                     <td>
                         <input type="text" class="form-control" id="title"
@@ -75,6 +82,7 @@
             const img = document.getElementById("bookImg");
             const contents = document.getElementById("contents");
             const writer = document.getElementById("writer");
+            const lang = document.forms["bookWriteForm"]["lang"].value;
 
             if (!title.value) {
                 alert('제목을 입력해주세요');
@@ -97,6 +105,11 @@
                 alert('작가를 입력해주세요');
                 return false;
             }
+
+            if (!lang.value) {
+                alert('언어를 선택해주세요');
+                return false;
+            }
              submit();
 
         }
@@ -105,6 +118,10 @@
             const memberUuid = '${memberInfo.memberId}';
             const form = $('#bookWriteForm')[0];
             const data = new FormData(form);
+
+            // const checked = document.getElementsByName('lang');
+            // const radioCheck = Array.from(checked).find(radio => radio.checked);
+            // const lang = radioCheck.value;
 
             data.append("memberUuid", memberUuid);
 

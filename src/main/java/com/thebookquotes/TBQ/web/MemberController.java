@@ -47,8 +47,8 @@ public class MemberController {
     }
 
 
-    @GetMapping("/logout") //로그아웃
-    public String logout(Model model, Member member, HttpSession session) {
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
         session.invalidate();
 
         return "member/login";
@@ -57,7 +57,7 @@ public class MemberController {
     @GetMapping("/adminOk") //관리자 로그인 성공 페이지
     public String admin(Model model, Member member) {
 
-        return "member/adminOk";
+        return "member/admin";
     }
 
     @GetMapping("/accessFail") //접근제한 페이지

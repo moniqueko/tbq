@@ -24,7 +24,7 @@ public class BookRestController {
     private final ResponseService responseService;
 
     private final BookQuoteService bookQuoteService;
-    private static final String path = System.getProperty("user.home") + "Downloads/bookImg";
+    private static final String path = System.getProperty("user.home") + "/Downloads/bookImg";
 
     @PostMapping("/addBook")
     public SingleResult<?> post(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("memberUuid") String memberUuid, @RequestParam("bookImg") MultipartFile multipartFile,
@@ -82,7 +82,7 @@ public class BookRestController {
     @PostMapping("/book/delete")
     public SingleResult<?> delete(@RequestBody String uuid, BookQuotes.BookQuotesWrite bookQuotesWrite) throws Exception {
         if (uuid == null) {
-            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
+            return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
         }
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(uuid);
 
