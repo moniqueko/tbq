@@ -2,7 +2,6 @@ package com.thebookquotes.TBQ.service.book;
 
 import com.thebookquotes.TBQ.common.Criteria;
 import com.thebookquotes.TBQ.dto.BookQuotes;
-
 import java.util.List;
 
 public interface BookQuoteService {
@@ -11,5 +10,5 @@ public interface BookQuoteService {
     void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
-    BookQuotes selectBookByUid(String bookUuid);
+    BookQuotes selectBookByUuid(String bookUuid);
 }

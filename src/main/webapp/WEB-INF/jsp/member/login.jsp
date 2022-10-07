@@ -20,7 +20,7 @@
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
 						<a href="/" >Home</a>
-						<a href="#" >Book List</a>
+						<a href="/bookList" >Book List</a>
 						<a href="#" >My book</a>
 						<a href="#" >My Info</a>
 						<a href="/login" class="active">Login</a>
@@ -62,8 +62,9 @@
 
 	</div>
 
+	<div class="site-section">
 	<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
-
+	</div>
 </main>
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>

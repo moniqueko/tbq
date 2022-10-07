@@ -21,7 +21,7 @@
                 <div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
                     <div id="menus" class="menus">
                         <a href="/" class="active">Home</a>
-                        <a href="#" >Book List</a>
+                        <a href="/bookList" >Book List</a>
                         <a href="#" >My book</a>
                         <a href="#" >My Info</a>
                         <a href="/login">Login</a>
@@ -32,7 +32,7 @@
             <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
                 <c:forEach var="book" items="${board}" varStatus="status" end="9">
                     <div class="item web col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="/book/${book.bookUuid}" class="item-wrap fancybox">
+                        <a href="/view/${book.bookUuid}" class="item-wrap fancybox">
                             <div class="work-info" data-uuid="${book.bookUuid}">
                                 <h3>${book.title}</h3>
                                 <span>${book.writer}</span>
@@ -47,7 +47,9 @@
 
     </div>
 
-    <%@ include file="/WEB-INF/jsp/component/section.jsp" %>
+    <div class="site-section">
+        <%@ include file="/WEB-INF/jsp/component/section.jsp" %>
+    </div>
 
 </main>
 

@@ -1,6 +1,5 @@
 package com.thebookquotes.TBQ.web.maxim;
 
-
 import com.thebookquotes.TBQ.common.SingleResult;
 import com.thebookquotes.TBQ.dto.Maxim;
 import com.thebookquotes.TBQ.service.ResponseService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class MaximRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MaximRestController.class);
-
     private final MaximService maximService;
     private final ResponseService responseService;
 

@@ -69,12 +69,25 @@ public class BookController {
     }
 
 
-    @GetMapping("/book/{bookUuid}")
-    public String modify(@PathVariable("bookUuid") String bookUuid, Model model, HttpServletRequest request) {
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUid(bookUuid);
-        model.addAttribute("board", bookQuotes);
+    @GetMapping("/view/{bookUuid}")
+    public String viewBook(@PathVariable("bookUuid") String bookUuid, Model model, Criteria cri) {
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
+        model.addAttribute("book", bookQuotes);
 
-        return "/book/addBook";
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        List<BookQuotes> board = bookQuoteService.bookList(cri);
+        model.addAttribute("board", board);
+
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(bookQuoteService.selectCount());
+        pageMaker.setTotalPage(bookQuoteService.selectCount());
+
+        model.addAttribute("pageMaker", pageMaker);
+
+        return "/book/viewBook";
     }
 
     @GetMapping("/bookList")
@@ -90,12 +103,15 @@ public class BookController {
 
         model.addAttribute("pageMaker", pageMaker);
 
-        return "book/bookList";
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        return "viewBook";
     }
 
     @GetMapping(value="/bookImg/{bookUuid}")
     public @ResponseBody byte[] getBookImg(HttpServletRequest request, @PathVariable("bookUuid") String bookUuid) throws IOException {
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUid(bookUuid);
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         String url = bookQuotes.getImg();
 
         InputStream in = new FileInputStream(url);

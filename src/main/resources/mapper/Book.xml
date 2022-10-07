@@ -30,8 +30,8 @@
         limit #{pageStart},#{pageSize}
     </select>
 
-    <select id="selectBookByUid" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="String">
-        /* BookQuotes.selectBookByUid */
+    <select id="selectBookByUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="String">
+        /* BookQuotes.selectBookByUuid */
         SELECT *
         FROM bookquotes
         WHERE BOOK_UUID=#{bookUuid}

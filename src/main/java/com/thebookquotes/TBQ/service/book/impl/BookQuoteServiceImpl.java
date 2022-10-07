@@ -43,7 +43,7 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     public BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
         mapper.updateBook(bookQuotesWrite);
 
-        return selectBookByUid(bookQuotesWrite.getBookUuid());
+        return selectBookByUuid(bookQuotesWrite.getBookUuid());
     }
 
     @Override
@@ -52,8 +52,8 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public BookQuotes selectBookByUid(String bookUuid) {
-        return mapper.selectBookByUid(bookUuid);
+    public BookQuotes selectBookByUuid(String bookUuid) {
+        return mapper.selectBookByUuid(bookUuid);
     }
 
 }

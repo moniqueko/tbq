@@ -2,7 +2,9 @@ package com.thebookquotes.TBQ.web;
 
 import com.thebookquotes.TBQ.common.Criteria;
 import com.thebookquotes.TBQ.common.PageMaker;
+import com.thebookquotes.TBQ.dto.Maxim;
 import com.thebookquotes.TBQ.dto.Member;
+import com.thebookquotes.TBQ.service.maxim.MaximService;
 import com.thebookquotes.TBQ.service.member.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,7 @@ public class MemberController {
 
 
     private final MemberService memberService;
-
+    private final MaximService maximService;
 
     @GetMapping("/findPw") //비밀번호 찾기
     public String findPw(Model model, Member member) {
@@ -27,22 +29,23 @@ public class MemberController {
         return "member/findPw";
     }
 
-    @GetMapping("/join") //회원가입 페이지 이동
-    public String signin(Model model, Member member) {
+    @GetMapping("/join")
+    public String signin(Model model) {
 
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
         return "member/join";
     }
 
-    @GetMapping("/login") //회원가입 페이지 이동
-    public String login(Model model, Member member) {
+    @GetMapping("/login")
+    public String login(Model model) {
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
         return "member/login";
     }
 
-    @GetMapping("/loginOk") //일반회원 로그인 성공 페이지
-    public String loginOk(Model model, Member member) {
-
-        return "member/loginOk";
-    }
 
     @GetMapping("/logout") //로그아웃
     public String logout(Model model, Member member, HttpSession session) {

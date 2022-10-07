@@ -13,6 +13,6 @@ public interface BookMapper {
     void insertBook(BookQuotes bookQuotes);
     BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
-    BookQuotes selectBookByUid(String bookUuid);
+    BookQuotes selectBookByUuid(String bookUuid);
 
 }

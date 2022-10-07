@@ -37,7 +37,9 @@
 
 	</div>
 
+	<div class="site-section">
 	<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
+	</div>
 </main>
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>

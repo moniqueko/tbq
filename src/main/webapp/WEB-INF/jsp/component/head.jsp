@@ -12,17 +12,17 @@
       rel="stylesheet">
 
 <!-- Bootstrap CSS File -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<c:url value='../vendor/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet">
 <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
 
 <!-- Vendor CSS Files -->
-<link href="vendor/icofont/icofont.min.css" rel="stylesheet">
-<link href="vendor/line-awesome/css/line-awesome.min.css" rel="stylesheet">
-<link href="vendor/aos/aos.css" rel="stylesheet">
-<link href="vendor/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link href="<c:url value='../vendor/icofont/icofont.min.css'/>" rel="stylesheet">
+<link href="<c:url value='../vendor/line-awesome/css/line-awesome.min.css'/>" rel="stylesheet">
+<link href="<c:url value='../vendor/aos/aos.css'/>" rel="stylesheet">
+<link href="<c:url value='../vendor/owlcarousel/assets/owl.carousel.min.css'/>" rel="stylesheet">
 
 <!-- Template Main CSS File -->
-<link href="css/style.css" rel="stylesheet">
+<link href="<c:url value='../css/style.css'/>" rel="stylesheet">
 <!-- =======================================================
 Template Name: MyPortfolio
 Template URL: https://bootstrapmade.com/myportfolio-bootstrap-portfolio-website-template/

@@ -61,7 +61,7 @@ public class BookRestController {
         List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents());
         if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
 
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUid(memberUuid);
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(memberUuid);
 
         if (bookQuotes == null) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
@@ -84,7 +84,7 @@ public class BookRestController {
         if (uuid == null) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUid(uuid);
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(uuid);
 
         if (bookQuotes == null) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
