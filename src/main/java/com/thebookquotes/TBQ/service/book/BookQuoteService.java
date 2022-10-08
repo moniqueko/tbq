@@ -12,5 +12,7 @@ public interface BookQuoteService {
     void deleteBook(String bookUuid);
     BookQuotes selectBookByUuid(String bookUuid);
 
-    void insertCmt(BookQuotes.Comment cmt);
+    int insertCmt(BookQuotes.Comment cmt);
+    List<BookQuotes.Comment> cmtList(String bookUuid);
+    BookQuotes.Comment selectByCmt(int cmtNum);
 }

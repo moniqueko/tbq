@@ -45,13 +45,14 @@ public class BookQuotes {
         private String contents;
         private Date sysRegDt;
         private int inuse;
+        private String memberId;
 
-        public Comment(String bookUuid, String memberUuid, String contents, int inuse, Date sysRegDt) {
+        public Comment(String bookUuid, String memberUuid, String contents, Date sysRegDt, int inuse) {
             this.bookUuid = bookUuid;
             this.memberUuid = memberUuid;
             this.contents = contents;
-            this.inuse = inuse;
             this.sysRegDt = sysRegDt;
+            this.inuse = inuse;
         }
     }
 

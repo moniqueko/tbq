@@ -56,10 +56,20 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public void insertCmt(BookQuotes.Comment cmt) {
-        BookQuotes.Comment insert = new BookQuotes.Comment(cmt.getBookUuid(),cmt.getMemberUuid(),cmt.getContents(),1, null);
+    public int insertCmt(BookQuotes.Comment cmt) {
+        BookQuotes.Comment insert = new BookQuotes.Comment(cmt.getBookUuid(),cmt.getMemberUuid(),cmt.getContents(), null, 1);
+        int cmtNum = mapper.insertCmt(insert);
+        return cmtNum;
+    }
 
-        mapper.insertCmt(insert);
+    @Override
+    public List<BookQuotes.Comment> cmtList(String bookUuid) {
+        return mapper.cmtList(bookUuid);
+    }
+
+    @Override
+    public BookQuotes.Comment selectByCmt(int cmtNum) {
+        return mapper.selectByCmt(cmtNum);
     }
 
 }

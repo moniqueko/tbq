@@ -33,6 +33,7 @@ public class BookController {
     private final MemberService memberService;
     private final MaximService maximService;
 
+
     @GetMapping("/")
     public String index(HttpSession session, Model model, Criteria cri) {
 
@@ -69,13 +70,13 @@ public class BookController {
 
     @GetMapping("/view/{bookUuid}") //상세보기
     public String viewBook(@PathVariable("bookUuid") String bookUuid, Model model, Criteria cri) {
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid); //view
         model.addAttribute("book", bookQuotes);
 
-        List<Maxim> maxim = maximService.maximList();
+        List<Maxim> maxim = maximService.maximList(); //maxim
         model.addAttribute("maxim", maxim);
 
-        List<BookQuotes> board = bookQuoteService.bookList(cri);
+        List<BookQuotes> board = bookQuoteService.bookList(cri); //for more
         model.addAttribute("board", board);
 
         PageMaker pageMaker = new PageMaker();
@@ -84,6 +85,10 @@ public class BookController {
         pageMaker.setTotalPage(bookQuoteService.selectCount());
 
         model.addAttribute("pageMaker", pageMaker);
+
+        List<BookQuotes.Comment> comment = bookQuoteService.cmtList(bookUuid);
+        model.addAttribute("cmt", comment);
+
 
         return "/book/viewBook";
     }
@@ -97,7 +102,7 @@ public class BookController {
     }
 
     @GetMapping(value="/bookImg/{bookUuid}")
-    public @ResponseBody byte[] getBookImg(HttpServletRequest request, @PathVariable("bookUuid") String bookUuid) throws IOException {
+    public @ResponseBody byte[] getBookImg(@PathVariable("bookUuid") String bookUuid) throws IOException {
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         String url = bookQuotes.getImg();
 

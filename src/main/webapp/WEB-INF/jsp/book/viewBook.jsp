@@ -67,15 +67,41 @@
 				</div>
 			</div>
 
-			<div class="site-section pb-0">
-				<div class="container">
-					<div class="row justify-content-center text-center mb-4">
-						<div class="col-5">
-							${memberInfo.memberUuid}
+			<c:if test="${memberInfo!=null}">
+				<div class="site-section pb-0">
+					<div class="container">
+						<div class="row justify-content-center text-left mb-4">
+							<div class="col-md-12 form-group">
+								<label for="contents">
+									<h3 class="h3">Comment</h3><br>
+									<h3 class="h3">-</h3>
+								</label><br>
+
+								<!--Comment section-->
+								<c:if test="${cmt!=null}">
+									<c:forEach var="cmt" items="${cmt}" varStatus="status">
+										<div class="col-md-12 form-group">
+											<div class="col-md-10 form-group">${cmt.memberId} | <fmt:formatDate value="${cmt.sysRegDt}" pattern="yyyy-MM-dd"/></div>
+											<div class="col-md-10 form-group">${cmt.contents}</div>
+										</div>
+									</c:forEach>
+								</c:if>
+
+								<div class="col-md-12 form-group" id="cmtSection">
+									<div class="col-md-4 form-group" id="idSection"></div>
+									<div class="col-md-8 form-group" id="contentSection"></div>
+								</div>
+
+								<textarea class="form-control" name="contents" id="contents" cols="1" rows="1"></textarea>
+								<div class="validate"></div>
+								<br>
+								<a href="#" class="readmore" onclick="cmtWrite();">Write</a>
+							</div>
+
 						</div>
 					</div>
 				</div>
-			</div>
+			</c:if>
 
 			<div class="site-section pb-0">
 				<div class="container">
@@ -126,13 +152,49 @@
 			type: "POST",
 			url: "/book/delete",
 			data: bookUuid,
-			dataType: "JSON",
+			dataType: "text",
 			contentType : "application/json",
 			processData : false,
 			success: function(result) {
 				alert("Deletion success");
 
 				location.href="/bookList";
+			},
+			error: function(request, status, error) {
+				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
+
+				alert("Error occurred");
+			}
+		});
+
+	}
+
+	function cmtWrite(){
+		const contents = document.getElementById("contents").value;
+		const bookUuid = '${book.bookUuid}';
+		let cmtSection = document.getElementById("cmtSection");
+
+		const data = {
+			"bookUuid" : bookUuid,
+			"contents" : contents
+		};
+
+		$.ajax({
+			type: "POST",
+			url: "/cmtWrite",
+			data: JSON.stringify(data),
+			dataType: "JSON",
+			contentType : "application/json",
+			processData : false,
+			success: function(result) { //저장하고 반환된 결과
+				console.log(result);
+
+				//let id = result.
+						// let sysDate =
+						// let cmt =
+
+						cmtSection.innerHTML="<div class='col-md-4 form-group'> id | sysDate</div>";
+
 			},
 			error: function(request, status, error) {
 				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);

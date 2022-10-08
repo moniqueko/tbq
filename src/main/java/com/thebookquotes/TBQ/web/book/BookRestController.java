@@ -4,11 +4,13 @@ import com.thebookquotes.TBQ.common.ErrorCode;
 import com.thebookquotes.TBQ.common.FileHandler;
 import com.thebookquotes.TBQ.common.SingleResult;
 import com.thebookquotes.TBQ.dto.BookQuotes;
+import com.thebookquotes.TBQ.dto.Member;
 import com.thebookquotes.TBQ.service.ResponseService;
 import com.thebookquotes.TBQ.service.book.BookQuoteService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -94,5 +96,29 @@ public class BookRestController {
         FileHandler.folderDelete(path + "/" + bookQuotes.getImg());
 
         return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/cmtWrite")
+    public SingleResult<?> cmtWrite(@RequestBody BookQuotes.Comment cmt, HttpSession session) throws Exception {
+//        Member member = (Member) session.getAttribute("memberInfo");
+//        if(member==null){
+//            return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
+//        }
+//
+//        if (!StringUtils.hasText(cmt.getBookUuid()) || !StringUtils.hasText(cmt.getContents())) {
+//            return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+//        }
+//
+//        String uuid = member.getMemberUuid();
+//        cmt.setMemberUuid(uuid);
+
+
+        int cmtNum = bookQuoteService.insertCmt(cmt);
+
+        BookQuotes.Comment comment = bookQuoteService.selectByCmt(cmtNum);
+
+        System.out.println(comment+"결과값 <<<<<<<<<<<<<<<<<<<<");
+
+        return responseService.getSingleResult(comment);
     }
 }
