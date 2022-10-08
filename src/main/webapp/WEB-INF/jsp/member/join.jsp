@@ -41,34 +41,38 @@
 					<div class="justify-content-center" style="text-align: center">
 						<h2>Join Us?</h2><br>
 						<div class="container-sm" id="tb">
+							<div class="col-md-12 form-group">
 
 							<form:form name="memberForm" id="memberForm">
-								<table class="table table-bordered">
+								<table>
 									<tr>
 										<td>ID</td>
 										<td>
-											<input type="text" style="width:200px;" id="memberId"  name="memberId" oninput="idCheck();"/>
-											<div id="idcheck"></div>
+											<input type="text" style="width:200px;" id="memberId"  name="memberId" oninput="idCheck();" class="form-control"/>
+											<div id="idCheckDiv"></div>
 										</td>
 									</tr>
 									<tr>
 										<td>E-mail</td>
 										<td>
-											<input type="text" style="width:200px;" id="memberEmail"  name="memberEmail" oninput="emailCheck();"/>
-											<div id="msg"></div>
+											<input type="text" style="width:200px;" id="memberEmail"  name="memberEmail" oninput="emailCheck();" class="form-control"/>
+											<div id="emailCheckDiv"></div>
 										</td>
 									</tr>
 									<tr>
 										<td>Password</td>
-										<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();"/></td>
+										<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();" class="form-control"/></td>
 									</tr>
 									<tr>
-										<td colspan="2" style="text-align: center">
-										<input type="button" value="Submit"  onclick="validation();"></td>
+										<td colspan="2" style="text-align: center"  id="msg"><br>
+											<p><a href="#" class="readmore" onclick="validation();">Submit</a></p>
+										</td>
 									</tr>
 								</table>
 
 							</form:form>
+							</div>
+
 						</div>
 					</div>
 
@@ -86,66 +90,50 @@
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
+		function validation() { //이메일 정규식 추가
+		let memberId = document.getElementById("memberId");
+		let memberPw = document.getElementById("memberPw");
+		let memberEmail = document.getElementById("memberEmail");
 
-	function validation() { //이메일 정규식 추가
+		const regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/; //아이디 정규식
+		const pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
+		const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
 
-		var idcheck = document.forms["memberForm"]["memberId"].value;
-		var pwcheck = document.forms["memberForm"]["memberPw"].value;
-		var emailcheck = document.forms["memberForm"]["memberEmail"].value;
-		var memberGrant = document.forms["memberForm"]["memberGrant"].value;
+		const tb = document.getElementById('tb');
+		const msg = document.getElementById('msg');
 
-
-		var regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/; //아이디 정규식
-		var pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
-		var emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
-
-
-		var tb = document.getElementById('tb');
-		var msg = document.getElementById('msg');
-
-
-		if (idcheck == null || idcheck == "") {
-
-			msg.innerHTML = "아이디가 입력되지 않았습니다.";
+		if (!memberId) {
+			msg.innerHTML = "Id is empty";
 			tb.append(msg);
-
 			return false;
-
-		} else if (pwcheck == null || pwcheck == "") {
-
-			msg.innerHTML = "비밀번호가 입력되지 않았습니다";
+		}
+		if (!memberPw) {
+			msg.innerHTML = "Password is empty";
 			tb.append(msg);
-
 			return false;
-
-		} else if (memberGrant == null || memberGrant == "") {
-
-			msg.innerHTML = "회원타입을 선택해 주세요";
+		}
+		if (!memberEmail) {
+			msg.innerHTML = "Email is empty";
 			tb.append(msg);
-
 			return false;
-
-		} else if(!regExp.test(idcheck)) {
-
-			alert('아이디 첫글자는 영문이어야하며 4~12자의 영문 대소문자와 숫자,하이픈,언더바 사용가능')
+		}
+		if(!regExp.test(memberId)) {
+			alert('Id must start with alphabet and should be 4~12 length.');
 			return false;
-
-		} else if(!pwExp.test(pwcheck)) {
-
-			alert('비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.')
+		}
+		if(!pwExp.test(memberPw)) {
+			alert('PW must be mixed with English/Number/!@#$%^&* and 8~16 length.');
 			return false;
-
-		} else if(!emailregExp.test(emailcheck)) {
-
-			alert('이메일 형식이 맞지 않습니다.')
+		}
+		if(!emailRegExp.test(memberEmail)) {
+			alert('Wrong email form');
 			return false;
-
-		} else{
+		}
 
 			$.ajax({
 				url: "/emailDupl",
 				type: "POST",
-				data: JSON.stringify(emailcheck),
+				data: JSON.stringify(memberEmail),
 				dataType: "JSON",
 				contentType: "application/json",
 				accept: "application/json",
@@ -159,7 +147,7 @@
 						$.ajax({
 							url: "/idCheck",
 							type: "POST",
-							data: JSON.stringify(idcheck),
+							data: JSON.stringify(memberId),
 							dataType: "JSON",
 							contentType: "application/json",
 							accept: "application/json",
@@ -175,8 +163,7 @@
 
 							},
 							error: function(result) {
-
-								console.log(result.responseText); //responseText의 에러메세지 확인
+								console.log(result.responseText);
 							}
 						});
 
@@ -185,25 +172,20 @@
 
 				},
 				error: function(result) {
-
-					console.log(result.responseText); //responseText의 에러메세지 확인
+					console.log(result.responseText);
 				}
 			});
 
-
-
-		}
 	}
 
-	function enterkey() {
-		if (window.event.keyCode == 13) {
+	function enterKey() {
+		if (window.keyCode === 13) {
 			validation();
 		}
 	}
 
 	function idCheck(){ //아이디 입력시
-
-		var memberId = document.forms["memberForm"]["memberId"].value;
+		let memberId = document.getElementById("memberId").value;
 
 		$.ajax({
 			url: "/idCheck",
@@ -217,24 +199,22 @@
 				console.log(result);
 
 				if(result.data ==1){// 아이디 중복
-					document.getElementById("idcheck").innerHTML = "<span style='color: red;'>아이디 중복</span>";
+					document.getElementById("idCheckDiv").innerHTML = "<span style='color: red;'>아이디 중복</span>";
 
 
 				}else if(result.data ==0){
-					document.getElementById("idcheck").innerHTML = "<span style='color: green;'>사용가능한 아이디</span>";
+					document.getElementById("idCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 아이디</span>";
 				}
-
 
 			},
 			error: function(result) {
-
-				console.log(result.responseText); //responseText의 에러메세지 확인
+				console.log(result.responseText);
 			}
 		});
 	}
 
 	function emailCheck(){
-		var memberEmail = document.forms["memberForm"]["memberEmail"].value;
+		let memberEmail = document.getElementById("memberEmail").value;
 
 		$.ajax({
 			url: "/emailDupl",
@@ -246,46 +226,35 @@
 			success: function(result) {
 
 				if(result.data ==1){
-					document.getElementById("msg").innerHTML = "<span style='color: red;'>이메일 중복</span>";
+					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: red;'>이메일 중복</span>";
 
 				}else if(result.data ==0){
-					document.getElementById("msg").innerHTML = "<span style='color: green;'>사용가능한 이메일</span>";
+					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 이메일</span>";
 
 				}else if(memberId==null|| memberId==''){
-					document.getElementById("msg").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
+					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
 				}
 
 			},
 			error: function(result) {
-
 				console.log(result.responseText); //responseText의 에러메세지 확인
 			}
 		});
 	}
 
-
-
 	function signIn(){
-
-		let memberId = document.forms["memberForm"]["memberId"].value;
-		let memberPw = document.forms["memberForm"]["memberPw"].value;
-		let memberEmail = document.forms["memberForm"]["memberEmail"].value;
-
-		//라디오 버튼 값 가져오기
-		let checked = document.getElementsByName('memberGrant');
-		let radiocheck = Array.from(checked).find(radio => radio.checked);
-		let memberGrant = radiocheck.value;
-
+		let memberId = document.getElementById("memberId").value;
+		let memberPw = document.getElementById("memberPw").value;
+		let memberEmail = document.getElementById("memberEmail").value;
 
 		var data = {
 			'memberId' : memberId,
 			'memberPw' : memberPw,
-			'memberEmail' : memberEmail,
-			'memberGrant' : memberGrant
+			'memberEmail' : memberEmail
 		};
 
 		$.ajax({
-			url: "/signin",  //회원가입완료
+			url: "/join",  //회원가입완료
 			type: "POST",
 			data: JSON.stringify(data),
 			dataType: "JSON",
@@ -294,10 +263,9 @@
 			success: function(result) {
 				console.log(result.data);
 				console.log("전송/저장 성공");
-
 				alert('회원가입이 완료되었습니다. 다시 로그인해 주세요');
 
-				location.href="/login";
+				//location.href="/login";
 
 			},
 			error: function(result) {

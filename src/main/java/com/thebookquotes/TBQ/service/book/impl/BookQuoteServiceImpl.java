@@ -46,8 +46,8 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public void deleteBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
-        mapper.deleteBook(bookQuotesWrite);
+    public void deleteBook(String bookUuid) {
+        mapper.deleteBook(bookUuid);
     }
 
     @Override

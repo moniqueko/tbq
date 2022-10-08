@@ -80,21 +80,18 @@ public class BookRestController {
     }
 
     @PostMapping("/book/delete")
-    public SingleResult<?> delete(@RequestBody String uuid, BookQuotes.BookQuotesWrite bookQuotesWrite) throws Exception {
-        if (uuid == null) {
+    public SingleResult<?> delete(@RequestBody String bookUuid) throws Exception {
+        if (bookUuid == null) {
             return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
         }
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(uuid);
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
 
         if (bookQuotes == null) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
 
+        bookQuoteService.deleteBook(bookUuid);
         FileHandler.folderDelete(path + "/" + bookQuotes.getImg());
-
-        bookQuotesWrite.setInuse(0);
-        bookQuotesWrite.setBookUuid(uuid);
-        bookQuoteService.deleteBook(bookQuotesWrite);
 
         return responseService.getSuccessResult();
     }

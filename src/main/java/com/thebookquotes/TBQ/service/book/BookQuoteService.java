@@ -9,7 +9,7 @@ public interface BookQuoteService {
     int selectCount();
     void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
-    void deleteBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
+    void deleteBook(String bookUuid);
     BookQuotes selectBookByUuid(String bookUuid);
 
     void insertCmt(BookQuotes.Comment cmt);

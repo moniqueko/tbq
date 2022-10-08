@@ -64,9 +64,10 @@
         WHERE BOOK_UUID=#{bookUuid}
     </update>
 
-    <update id="deleteBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
+    <update id="deleteBook" parameterType="String">
+        /* BookQuotes.deleteBook */
         UPDATE bookquotes
-        SET REGI_DATE=NOW(),  inuse=#{inuse}
+        SET EDIT_DATE=NOW(), inuse=0
         WHERE BOOK_UUID=#{bookUuid}
     </update>
 

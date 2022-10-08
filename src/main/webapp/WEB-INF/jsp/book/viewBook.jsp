@@ -57,7 +57,7 @@
 		<%--								<li></li>--%>
 		<%--								<li></li>--%>
 		<%--							</ul>--%>
-								<c:if test="${book.memberUuid eq memberInfo.memberUuid}">
+								<c:if test="${book.memberUuid==memberInfo.memberUuid}">
 									<p><a href="/editBook/${book.bookUuid}" class="readmore">Edit</a></p>
 									<p><a href="#" class="readmore" onclick="del();">Delete</a></p>
 								</c:if>
@@ -71,7 +71,7 @@
 				<div class="container">
 					<div class="row justify-content-center text-center mb-4">
 						<div class="col-5">
-							comments here
+							${memberInfo.memberUuid}
 						</div>
 					</div>
 				</div>
@@ -90,7 +90,7 @@
 						<c:forEach var="board" items="${board}" varStatus="status" end="5">
 							<div class="item web col-sm-6 col-md-4 col-lg-4 mb-4">
 								<a href="/view/${board.bookUuid}" class="item-wrap fancybox">
-									<div class="work-info" data-uuid="${board.bookUuid}">
+									<div class="work-info">
 										<h3>${board.title}</h3>
 										<span>${board.writer}</span>
 									</div>
@@ -114,10 +114,9 @@
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 
 <script>
-	function del(obj){
-
-		var uuid = obj.parentElement.parentElement.dataset.uuid;
-		var check = confirm("Delete?");
+	function del(){
+		const bookUuid = '${book.bookUuid}';
+		let check = confirm("Delete?");
 
 		if(check==false){
 			history.back();
@@ -126,7 +125,7 @@
 		$.ajax({
 			type: "POST",
 			url: "/book/delete",
-			data: JSON.stringify(uuid),
+			data: bookUuid,
 			dataType: "JSON",
 			contentType : "application/json",
 			processData : false,

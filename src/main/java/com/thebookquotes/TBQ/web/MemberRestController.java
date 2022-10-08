@@ -9,6 +9,7 @@ import com.thebookquotes.TBQ.service.ResponseService;
 import com.thebookquotes.TBQ.service.member.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,65 +27,45 @@ public class MemberRestController {
     private final MailService mailService;
 
 
-    @PostMapping("/signin")
-    public SingleResult<?> signin(@RequestBody Member member) throws IOException {
+    @PostMapping("/join")
+    public SingleResult<?> join(@RequestBody Member member) throws IOException {
 
         String regex = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$"; //아이디 정규식
         String pw_regex = "^.*(?=^.{8,16}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$"; //패스워드 정규식 8~16자 이내
         String email_regex = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 형식
 
-        try {
-            if (member.getMemberId() == null || member.getMemberId().equals("") || member.getMemberPw() == null || member.getMemberPw().equals("") ||
-                    member.getMemberEmail() == null || member.getMemberEmail().equals("")) { // 받아온값이 null - 아이디, 패스워드 따로하면 유추가능하니까 안됨.
+        if (!StringUtils.hasText(member.getMemberId()) || !StringUtils.hasText(member.getMemberPw()) ||
+                !StringUtils.hasText(member.getMemberEmail())) {
+            return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
+        }
 
-                return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
-            }
+       if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
+            return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
+        }
 
-             if (member.getMemberGrant() != 0 && member.getMemberGrant() != 1) { //&& 주의할것, 0도 아니고 1도 아닐때
+       if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
+           return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
+       }
 
-                 return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
-             }
+       if (!Pattern.matches(regex, member.getMemberId())) {//아이디가 정규식에 부합하는지
+            return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
+        }
 
-           if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
+        Member mem = memberService.selectById(member.getMemberId());
+        Member memByEmail = memberService.selectByEmail(member.getMemberEmail());
 
-                return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
+        if (mem == null && memByEmail == null) {//새로 회원가입
 
-            }
+            memberService.insertMember(member); //회원가입진행
+            mailService.sendNotiMail("[안내] 회원가입을 축하합니다!", member.getMemberEmail(), "오늘부터 당신은 OOO의 회원입니다. 많은 이용 바랍니다.");
 
-           if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
+            return responseService.getSingleResult(member);
 
-               return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
+        } else if (mem.getMemberId().equals(member.getMemberId()) && mem.getMemberInuse() == 1) { //아이디 이미 존재 & 사용하는중이면
+            return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
 
-           }
-
-           if (!Pattern.matches(regex, member.getMemberId())) {//아이디가 정규식에 부합하는지
-
-                return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
-
-            }
-
-                Member mem = memberService.selectById(member.getMemberId()); //멤버 존재여부 Member mem = null;
-                //Member memByEmail = memberService.selectByEmail(member.getMemberEmail());
-
-                if (mem == null) {//새로 회원가입
-
-                    memberService.insertMember(member); //회원가입진행
-                    mailService.sendNotiMail("[안내] 회원가입을 축하합니다!", member.getMemberEmail(), "오늘부터 당신은 OOO의 회원입니다. 많은 이용 바랍니다.");
-
-                    return responseService.getSingleResult(member);
-
-                } else if (mem.getMemberId().equals(member.getMemberId()) && mem.getMemberInuse() == 1) { //아이디 이미 존재 & 사용하는중이면
-
-                    return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
-
-                } else if (mem.getMemberEmail().equals(member.getMemberEmail()) && mem.getMemberInuse() == 1) { //이메일 이미 존재 & 사용하는중이면
-
-                    return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
-                }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else if (mem.getMemberEmail().equals(member.getMemberEmail()) && mem.getMemberInuse() == 1) { //이메일 이미 존재 & 사용하는중이면
+            return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
         }
 
         return responseService.getSingleResult(member);
@@ -126,7 +107,7 @@ public class MemberRestController {
                     memberService.lastLoginUpdate(check.getMemberUuid());
 
                     //세션에 저장
-                    session.setAttribute("memberInfo", member);
+                    session.setAttribute("memberInfo", check);
 
                     return responseService.getSingleResult(memberType);
 
