@@ -23,12 +23,11 @@ public class MemberServiceImpl implements MemberService {
     @Resource
     MemberMapper mapper;
     GeneratePw generatePw;
-    String memberUuid = "M" + UUID.randomUUID().toString().replace("-", "").substring(20);
 
     @Override
     public void insertMember(Member member) {
 
-        Member newMember = new Member(memberUuid, member.getMemberId(), Sha256.encrypt(member.getMemberPw()),
+        Member newMember = new Member(null, member.getMemberId(), Sha256.encrypt(member.getMemberPw()),
                 member.getMemberGrant(), null, 1, null, null, member.getMemberEmail());
         mapper.insertMember(newMember);
 

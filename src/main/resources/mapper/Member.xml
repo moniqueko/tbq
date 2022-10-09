@@ -6,6 +6,11 @@
 <mapper namespace="com.thebookquotes.TBQ.mapper.MemberMapper">
 
     <insert id="insertMember" parameterType="com.thebookquotes.TBQ.dto.Member">
+
+        <selectKey resultType="String" keyProperty="memberUuid" order="BEFORE">
+            select FN_GET_UUID('M') as memberUuid
+        </selectKey>
+
         INSERT INTO member
         VALUES(#{memberUuid},#{memberId},#{memberPw},#{memberGrant},NOW(),#{memberInuse},NOW(),NOW(),#{memberEmail})
     </insert>

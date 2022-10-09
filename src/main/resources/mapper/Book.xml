@@ -5,6 +5,11 @@
 
     <insert id="insertBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
         /* BookQuotes.insertBook */
+
+        <selectKey resultType="String" keyProperty="bookUuid" order="BEFORE">
+            select FN_GET_UUID('TBQ') as bookUuid
+        </selectKey>
+
         INSERT INTO bookquotes
         SET
         <trim prefixOverrides = ",">
@@ -73,6 +78,11 @@
 
     <insert id="insertCmt" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Comment">
         /* BookQuotes.insertCmt */
+
+        <selectKey resultType="String" keyProperty="cmtUuid" order="BEFORE">
+            select FN_GET_UUID('CMT') as cmtUuid
+        </selectKey>
+
         INSERT INTO cmt
         VALUES
         (0,#{memberUuid},#{bookUuid},#{contents},NOW(),#{inuse},#{cmtUuid})

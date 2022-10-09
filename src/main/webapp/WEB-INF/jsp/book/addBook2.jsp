@@ -98,58 +98,52 @@
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 
 <script>
-	const title = document.getElementById("title");
-	const img = document.getElementById("bookImg");
-	const contents = document.getElementById("contents");
-	const writer = document.getElementById("writer");
-
-	const checked = document.getElementsByName('lang');
-	let lang;
-
-	for (let i = 0; i < checked.length; i++) {
-		if (checked[i].checked == true) {
-			lang = checked[i].value;
-		}
-	}
-
 	function validation() {
 
+		var title = document.getElementById("title").value;
+		var img = document.getElementById("bookImg").value;
+		var contents = document.getElementById("contents").value;
+		var writer = document.getElementById("writer").value;
 
-		if (!title.value) {
+		var checked = document.getElementsByName('lang');
+		var lang;
+
+		for (let i = 0; i < checked.length; i++) {
+			if (checked[i].checked == true) {
+				lang = checked[i].value;
+			}
+		}
+
+		if (title == null || title == "") {
 			alert('제목을 입력해주세요');
 			title.focus();
 			return false;
-		}
-
-		if (!img.value) {
+		}else if (img == null) {
 			alert('이미지를 첨부해주세요');
 			return false;
-		}
-
-		if (!contents.value) {
+		}else if (contents == null || contents =="") {
 			alert('텍스트를 입력해주세요');
 			contents.focus();
 			return false;
-		}
-
-		if (!writer.value) {
+		}else if (writer == null || writer =="") {
 			alert('작가를 입력해주세요');
+			writer.focus();
 			return false;
-		}
-
-		if (lang==null) {
+		}else if (lang==null) {
 			alert('언어를 선택해주세요');
+			lang.focus();
 			return false;
+		}else {
+			submit();
 		}
-		submit();
 
 	}
 
 	function submit() {
-		const memberUuid = '${memberInfo.memberId}';
+		//const memberUuid = '${memberInfo.memberId}';
 		const form = $('#bookWriteForm')[0];
 		const data = new FormData(form);
-		data.append("memberUuid", memberUuid);
+		//data.append("memberUuid", memberUuid);
 
 		$.ajax({
 			type: "POST",

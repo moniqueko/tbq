@@ -41,10 +41,10 @@
 			<div class="site-section pb-0">
 				<div class="container">
 					<div class="row align-items-stretch">
-						<div class="col-md-8" data-aos="fade-up">
+						<div class="col-md-7" data-aos="fade-up">
 							<img src="/bookImg/${book.bookUuid}" alt="Image" class="img-fluid">
 						</div>
-						<div class="col-md-3 ml-auto" data-aos="fade-up" data-aos-delay="100">
+						<div class="col-md-4 ml-auto" data-aos="fade-up" data-aos-delay="100">
 							<div class="sticky-content">
 								<h3 class="h3">${book.title}</h3>
 								<p class="mb-4"><span class="text-muted">${book.writer}</span></p>
@@ -131,6 +131,11 @@
 		</div>
 	</div>
 
+	<div class="modal">
+		<div class="modalBox">
+		</div>
+	</div>
+
 </main>
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 
@@ -192,6 +197,22 @@
 		});
 
 	}
+
+	$(function(){
+//     이미지 클릭시 해당 이미지 모달
+		$("div img").click(function(){
+			let img = new Image();
+			img.src = $(this).attr("src")
+			$('.modalBox').html(img);
+			$(".modal").show();
+		});
+// 모달 클릭할때 이미지 닫음
+		$(".modal").click(function (e) {
+			$(".modal").toggle();
+		});
+	});
 </script>
+
+
 </body>
 </html>

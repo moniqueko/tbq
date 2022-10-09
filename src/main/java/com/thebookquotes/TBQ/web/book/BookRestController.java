@@ -29,8 +29,11 @@ public class BookRestController {
     private static final String path = System.getProperty("user.home") + "/Downloads/bookImg";
 
     @PostMapping("/addBook")
-    public SingleResult<?> post(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("memberUuid") String memberUuid, @RequestParam("bookImg") MultipartFile multipartFile,
+    public SingleResult<?> post(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("bookImg") MultipartFile multipartFile,
                                 HttpServletRequest request, HttpSession session) throws Exception {
+
+        Member member = (Member) session.getAttribute("memberInfo");
+        String memberUuid = member.getMemberUuid();
 
         List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents());
         if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);

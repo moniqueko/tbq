@@ -90,50 +90,56 @@
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
-		function validation() { //이메일 정규식 추가
-		let memberId = document.getElementById("memberId");
-		let memberPw = document.getElementById("memberPw");
-		let memberEmail = document.getElementById("memberEmail");
+	function validation() { //이메일 정규식 추가
 
-		const regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/; //아이디 정규식
-		const pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
-		const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
+		var idcheck = document.forms["memberForm"]["memberId"].value;
+		var pwcheck = document.forms["memberForm"]["memberPw"].value;
+		var emailcheck = document.forms["memberForm"]["memberEmail"].value;
 
-		const tb = document.getElementById('tb');
-		const msg = document.getElementById('msg');
+		var regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/; //아이디 정규식
+		var pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
+		var emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
 
-		if (!memberId) {
-			msg.innerHTML = "Id is empty";
+
+		var tb = document.getElementById('tb');
+		var msg = document.getElementById('msg');
+
+
+		if (idcheck == null || idcheck == "") {
+
+			msg.innerHTML = "아이디가 입력되지 않았습니다.";
 			tb.append(msg);
+
 			return false;
-		}
-		if (!memberPw) {
-			msg.innerHTML = "Password is empty";
+
+		} else if (pwcheck == null || pwcheck == "") {
+
+			msg.innerHTML = "비밀번호가 입력되지 않았습니다";
 			tb.append(msg);
+
 			return false;
-		}
-		if (!memberEmail) {
-			msg.innerHTML = "Email is empty";
-			tb.append(msg);
+
+		} else if(!regExp.test(idcheck)) {
+
+			alert('아이디 첫글자는 영문이어야하며 4~12자의 영문 대소문자와 숫자,하이픈,언더바 사용가능')
 			return false;
-		}
-		if(!regExp.test(memberId)) {
-			alert('Id must start with alphabet and should be 4~12 length.');
+
+		} else if(!pwExp.test(pwcheck)) {
+
+			alert('비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.')
 			return false;
-		}
-		if(!pwExp.test(memberPw)) {
-			alert('PW must be mixed with English/Number/!@#$%^&* and 8~16 length.');
+
+		} else if(!emailregExp.test(emailcheck)) {
+
+			alert('이메일 형식이 맞지 않습니다.')
 			return false;
-		}
-		if(!emailRegExp.test(memberEmail)) {
-			alert('Wrong email form');
-			return false;
-		}
+
+		} else{
 
 			$.ajax({
 				url: "/emailDupl",
 				type: "POST",
-				data: JSON.stringify(memberEmail),
+				data: JSON.stringify(emailcheck),
 				dataType: "JSON",
 				contentType: "application/json",
 				accept: "application/json",
@@ -147,7 +153,7 @@
 						$.ajax({
 							url: "/idCheck",
 							type: "POST",
-							data: JSON.stringify(memberId),
+							data: JSON.stringify(idcheck),
 							dataType: "JSON",
 							contentType: "application/json",
 							accept: "application/json",
@@ -163,7 +169,8 @@
 
 							},
 							error: function(result) {
-								console.log(result.responseText);
+
+								console.log(result.responseText); //responseText의 에러메세지 확인
 							}
 						});
 
@@ -172,10 +179,14 @@
 
 				},
 				error: function(result) {
-					console.log(result.responseText);
+
+					console.log(result.responseText); //responseText의 에러메세지 확인
 				}
 			});
 
+
+
+		}
 	}
 
 	function enterKey() {
