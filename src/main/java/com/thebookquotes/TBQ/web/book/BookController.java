@@ -79,13 +79,6 @@ public class BookController {
         List<BookQuotes> board = bookQuoteService.bookList(cri); //for more
         model.addAttribute("board", board);
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCount());
-        pageMaker.setTotalPage(bookQuoteService.selectCount());
-
-        model.addAttribute("pageMaker", pageMaker);
-
         List<BookQuotes.Comment> comment = bookQuoteService.cmtList(bookUuid);
         model.addAttribute("cmt", comment);
 

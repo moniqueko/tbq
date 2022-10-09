@@ -17,7 +17,8 @@ public class BookQuoteServiceImpl implements BookQuoteService {
 
     @Resource
     BookMapper mapper;
-    private final String bookUuid = "TBQ" + UUID.randomUUID().toString().replace("-", "").substring(20);
+    private String bookUuid = "TBQ" + UUID.randomUUID().toString().replace("-", "").substring(20);
+    private String cmtUuid = "CMT" + UUID.randomUUID().toString().replace("-", "").substring(20);
 
 
     @Override
@@ -56,10 +57,9 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public int insertCmt(BookQuotes.Comment cmt) {
-        BookQuotes.Comment insert = new BookQuotes.Comment(cmt.getBookUuid(),cmt.getMemberUuid(),cmt.getContents(), null, 1);
-        int cmtNum = mapper.insertCmt(insert);
-        return cmtNum;
+    public void insertCmt(BookQuotes.Comment cmt) {
+        BookQuotes.Comment insert = new BookQuotes.Comment(cmtUuid, cmt.getBookUuid(),cmt.getMemberUuid(),cmt.getContents(), null, 1);
+        mapper.insertCmt(insert);
     }
 
     @Override
@@ -68,8 +68,8 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public BookQuotes.Comment selectByCmt(int cmtNum) {
-        return mapper.selectByCmt(cmtNum);
+    public BookQuotes.CommentList selectByCmtUuid(BookQuotes.Comment cmt) {
+        return mapper.selectByCmtUuid(cmt);
     }
 
 }

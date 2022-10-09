@@ -99,26 +99,22 @@ public class BookRestController {
     }
 
     @PostMapping("/cmtWrite")
-    public SingleResult<?> cmtWrite(@RequestBody BookQuotes.Comment cmt, HttpSession session) throws Exception {
-//        Member member = (Member) session.getAttribute("memberInfo");
-//        if(member==null){
-//            return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
-//        }
-//
-//        if (!StringUtils.hasText(cmt.getBookUuid()) || !StringUtils.hasText(cmt.getContents())) {
-//            return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
-//        }
-//
-//        String uuid = member.getMemberUuid();
-//        cmt.setMemberUuid(uuid);
+    public SingleResult<?> cmtWrite(@RequestBody BookQuotes.Comment cmt, HttpSession session, BookQuotes.CommentList cmtList) throws Exception {
+        Member member = (Member) session.getAttribute("memberInfo");
+        if(member==null){
+            return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
+        }
 
+        if (!StringUtils.hasText(cmt.getBookUuid()) || !StringUtils.hasText(cmt.getContents())) {
+            return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+        }
 
-        int cmtNum = bookQuoteService.insertCmt(cmt);
+        String uuid = member.getMemberUuid();
+        cmt.setMemberUuid(uuid);
 
-        BookQuotes.Comment comment = bookQuoteService.selectByCmt(cmtNum);
+        bookQuoteService.insertCmt(cmt);
+        String result = "OK";
 
-        System.out.println(comment+"결과값 <<<<<<<<<<<<<<<<<<<<");
-
-        return responseService.getSingleResult(comment);
+        return responseService.getSingleResult(result);
     }
 }

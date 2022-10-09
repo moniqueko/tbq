@@ -3,6 +3,7 @@ package com.thebookquotes.TBQ.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -39,7 +40,8 @@ public class BookQuotes {
     }
     @Data
     public static class Comment {
-        private int cmtNum;
+        private Integer cmtNum;
+        private String cmtUuid;
         private String bookUuid;
         private String memberUuid;
         private String contents;
@@ -47,7 +49,8 @@ public class BookQuotes {
         private int inuse;
         private String memberId;
 
-        public Comment(String bookUuid, String memberUuid, String contents, Date sysRegDt, int inuse) {
+        public Comment(String cmtUuid, String bookUuid, String memberUuid, String contents, Date sysRegDt, int inuse) {
+            this.cmtUuid = cmtUuid;
             this.bookUuid = bookUuid;
             this.memberUuid = memberUuid;
             this.contents = contents;
@@ -56,4 +59,15 @@ public class BookQuotes {
         }
     }
 
+    @Data
+    public static class CommentList {
+        private Integer cmtNum;
+        private String cmtUuid;
+        private String bookUuid;
+        private String memberUuid;
+        private String contents;
+        private Date sysRegDt;
+        private int inuse;
+        private String memberId;
+    }
 }

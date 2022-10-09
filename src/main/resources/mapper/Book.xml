@@ -74,23 +74,17 @@
     <insert id="insertCmt" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Comment">
         /* BookQuotes.insertCmt */
         INSERT INTO cmt
-        SET
-        <trim prefixOverrides = ",">
-            <if test="bookUuid                 != null">, book_uuid     =   #{bookUuid}         </if>
-            <if test="memberUuid                 != null">, member_uuid     =   #{memberUuid}         </if>
-            <if test="contents             != null">, contents     =       #{contents}           </if>
-            <if test="inuse          != null">, cmt_inuse          =          #{inuse}               </if>
-            , CMT_REGI_DATE           = NOW()               /* 등록일 */
-        </trim>
+        VALUES
+        (0,#{memberUuid},#{bookUuid},#{contents},NOW(),#{inuse},#{cmtUuid})
 
-        <selectKey keyProperty="cmtNum" resultType="int" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+<!--        <selectKey keyProperty="cmtUuid" keyColumn="cmt_uuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" order="AFTER">-->
+<!--            SELECT cmt_uuid as cmtUuid from cmt where book_uuid=#{bookUuid} and member_uuid=#{memberUuid} and cmt_uuid = #{cmtUuid}-->
+<!--        </selectKey>-->
     </insert>
 
-    <select id="cmtList" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment">
+    <select id="cmtList" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" parameterType="String">
         /* BookQuotes.cmtList */
-        SELECT cmt_num , m.member_uuid , book_uuid ,cmt_regi_date , cmt_inuse ,contents , m.member_id as memberId
+        SELECT cmt_num , m.member_uuid , book_uuid , contents ,cmt_regi_date , cmt_inuse, cmt_uuid, m.member_id as memberId
         FROM cmt
         LEFT JOIN member m ON m.member_uuid = cmt.member_uuid
         WHERE CMT_INUSE = 1
@@ -98,11 +92,12 @@
         ORDER BY CMT_REGI_DATE desc
     </select>
 
-    <select id="selectByCmt" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" parameterType="int">
-        /* BookQuotes.selectByCmt */
-        SELECT cmt_num ,member_uuid , book_uuid ,cmt_regi_date , cmt_inuse ,contents
+    <select id="selectByCmtUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes$CommentList" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Comment">
+        /* BookQuotes.selectByCmtUuid */
+        SELECT cmt_num , m.member_uuid , book_uuid , contents ,cmt_regi_date , cmt_inuse, cmt_uuid, m.member_id as memberId
         FROM cmt
-        WHERE CMT_NUM=#{cmtNum}
-          AND CMT_INUSE = 1
+        LEFT JOIN member m ON m.member_uuid = cmt.member_uuid
+        WHERE cmt_uuid=#{cmtUuid}
+        AND cmt_inuse = 1
     </select>
 </mapper>
