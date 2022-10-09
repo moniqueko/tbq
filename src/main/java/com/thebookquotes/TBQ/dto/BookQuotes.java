@@ -3,7 +3,6 @@ package com.thebookquotes.TBQ.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -23,6 +22,7 @@ public class BookQuotes {
     private Date sysUdtDt;
     private int inuse;
     private String lang;
+    private String quotes;
 
     @Data
     public static class BookQuotesWrite {
@@ -36,6 +36,7 @@ public class BookQuotes {
         private MultipartFile bookImg;
         private int inuse;
         private String lang;
+        private String quotes;
 
     }
     @Data
@@ -45,6 +46,7 @@ public class BookQuotes {
         private String bookUuid;
         private String memberUuid;
         private String contents;
+        private String quotes;
         private Date sysRegDt;
         private int inuse;
         private String memberId;

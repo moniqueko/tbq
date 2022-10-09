@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -24,14 +23,35 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
+    public List<BookQuotes> listKor(Criteria cri) {
+        return mapper.listKor(cri);
+    }
+    @Override
+    public List<BookQuotes> listEng(Criteria cri) {
+        return mapper.listEng(cri);
+    }
+
+    @Override
     public int selectCount() {
         return mapper.selectCount();
     }
 
     @Override
+    public int selectCountKor() {
+        return mapper.selectCountKor();
+
+    }
+
+    @Override
+    public int selectCountEng() {
+        return mapper.selectCountEng();
+
+    }
+
+    @Override
     public void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
         BookQuotes insert = new BookQuotes(null, bookQuotesWrite.getTitle(), bookQuotesWrite.getWriter(), bookQuotesWrite.getMemberUuid(),
-                        bookQuotesWrite.getContents(),0, bookQuotesWrite.getImg(), null, null, 1,bookQuotesWrite.getLang());
+                        bookQuotesWrite.getContents(),0, bookQuotesWrite.getImg(), null, null, 1,bookQuotesWrite.getLang(),bookQuotesWrite.getQuotes());
 
         mapper.insertBook(insert);
     }

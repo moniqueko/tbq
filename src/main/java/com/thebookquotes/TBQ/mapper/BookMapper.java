@@ -9,7 +9,11 @@ import java.util.List;
 @Mapper
 public interface BookMapper {
     List<BookQuotes> bookList(Criteria cri);
+    List<BookQuotes> listKor(Criteria cri);
+    List<BookQuotes> listEng(Criteria cri);
     int selectCount();
+    int selectCountKor();
+    int selectCountEng();
     void insertBook(BookQuotes bookQuotes);
     BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(String bookUuid);

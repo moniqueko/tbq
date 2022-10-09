@@ -18,37 +18,25 @@
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" href="<c:url value='${start}'/>" aria-label="Start">
-                    <%--<span aria-hidden="true"></span>--%>
-                        <i class="fa-solid fa-angles-left" style="line-height: 1.5;" aria-hidden="true"></i>
-                </a>
+                <a href="<c:url value='${start}'/>" aria-label="Start"> <<&nbsp;</a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" href="<c:url value='${prev}'/>" aria-label="Previous">
-                    <%--<span aria-hidden="true">prev</span>--%>
-                        <i class="fa-solid fa-angle-left" style="line-height: 1.5;" aria-hidden="true"></i>
-                </a>
+                <a href="<c:url value='${prev}'/>" aria-label="Previous"> <&nbsp;</a>
             </li>
 
             <c:forEach var="idx" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                <li class='page-item ${pageMaker.cri.page == idx ? "active" : ""}'>
-                    <a class="page-link" href="<c:url value='${paginationTargetLink}?page=${idx}'/>">${idx}</a>
+                <li>
+                    <a href="<c:url value='${paginationTargetLink}?page=${idx}'/>">&nbsp;${idx}&nbsp;</a>
                 </li>
             </c:forEach>
 
-            <li class="page-item">
-                <a class="page-link" href="<c:url value='${next}'/>" aria-label="Next">
-                    <%--<span aria-hidden="true">next</span>--%>
-                        <i class="fa-solid fa-angle-right" style="line-height: 1.5;" aria-hidden="true"></i>
-                </a>
+            <li>
+                <a href="<c:url value='${next}'/>" aria-label="Next">&nbsp;> </a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" href="<c:url value='${end}'/>" aria-label="End">
-                    <%--<span aria-hidden="true">»</span>--%>
-                        <i class="fa-solid fa-angles-right" style="line-height: 1.5;" aria-hidden="true"></i>
-                </a>
+                <a href="<c:url value='${end}'/>" aria-label="End">&nbsp;>> </a>
             </li>
         </ul>
     </nav>

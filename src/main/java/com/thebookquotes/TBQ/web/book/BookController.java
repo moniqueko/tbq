@@ -40,6 +40,21 @@ public class BookController {
         List<BookQuotes> board = bookQuoteService.bookList(cri);
         model.addAttribute("board", board);
 
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        return "/index";
+    }
+
+    @GetMapping("/bookList")
+    public String bookList(HttpSession session, Model model, Criteria cri) {
+
+        List<BookQuotes> board = bookQuoteService.bookList(cri);
+        model.addAttribute("board", board);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
         PageMaker pageMaker = new PageMaker();
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(bookQuoteService.selectCount());
@@ -47,13 +62,50 @@ public class BookController {
 
         model.addAttribute("pageMaker", pageMaker);
 
+
+        return "/book/bookList";
+    }
+
+    @GetMapping("/book/eng")
+    public String langKor(HttpSession session, Model model, Criteria cri) {
+
+        List<BookQuotes> board = bookQuoteService.listEng(cri);
+        model.addAttribute("english", board);
+
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
 
-        return "/index";
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(bookQuoteService.selectCountEng());
+        pageMaker.setTotalPage(bookQuoteService.selectCountEng());
+
+        model.addAttribute("pageMaker", pageMaker);
+
+        return "/book/bookList";
     }
 
-    @GetMapping("/book")
+    @GetMapping("/book/kor")
+    public String langEng(HttpSession session, Model model, Criteria cri) {
+
+        List<BookQuotes> board = bookQuoteService.listKor(cri);
+        model.addAttribute("korean", board);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(bookQuoteService.selectCountKor());
+        pageMaker.setTotalPage(bookQuoteService.selectCountKor());
+
+        model.addAttribute("pageMaker", pageMaker);
+
+        return "/book/bookList";
+    }
+
+
+    @GetMapping("/book") //글쓰기
     public String addBook(HttpSession session, Model model) {
         Member member = (Member) session.getAttribute("memberInfo");
 

@@ -14,14 +14,15 @@
         SET
         <trim prefixOverrides = ",">
             <if test="bookUuid                 != null">, book_uuid     =   #{bookUuid}         </if>
-            <if test="title                != null">, title         =       #{title}             </if>
-            <if test="writer                != null">, writer         =     #{writer}            </if>
-            <if test="contents             != null">, contents     =       #{contents}           </if>
+            <if test="title                != null">, title         =       #{title}            </if>
+            <if test="writer                != null">, writer         =     #{writer}           </if>
+            <if test="contents             != null">, contents     =       #{contents}          </if>
             <if test="memberUuid         != null">, member_uuid=       #{memberUuid}            </if>
-            <if test="inuse          != null">, inuse          =          #{inuse}               </if>
+            <if test="inuse          != null">, inuse          =          #{inuse}              </if>
             <if test="readNum              != null">, read_num      =       #{readNum}          </if>
-            <if test="img             != null">, img     =                 #{img}                </if>
-            <if test="lang             != null">, lang     =                 #{lang}                </if>
+            <if test="img             != null">, img     =                 #{img}               </if>
+            <if test="lang             != null">, lang     =                 #{lang}            </if>
+            <if test="quotes             != null">, quotes     =           #{quotes}            </if>
             , REGI_DATE           = NOW()               /* 등록일 */
             , EDIT_DATE           = NOW()               /* 수정일 */
         </trim>
@@ -31,9 +32,27 @@
         /* BookQuotes.bookList */
         SELECT *
         FROM bookquotes
-        WHERE INUSE=1
+        WHERE INUSE = 1
         ORDER BY REGI_DATE desc
         limit #{pageStart},#{pageSize}
+    </select>
+
+    <select id="listKor" resultType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.listKor */
+        SELECT *
+        FROM bookquotes
+        WHERE INUSE = 1 AND lang = 'KOR'
+        ORDER BY REGI_DATE desc
+            limit #{pageStart},#{pageSize}
+    </select>
+
+    <select id="listEng" resultType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.listEng */
+        SELECT *
+        FROM bookquotes
+        WHERE INUSE = 1 AND lang = 'ENG'
+        ORDER BY REGI_DATE desc
+            limit #{pageStart},#{pageSize}
     </select>
 
     <select id="selectBookByUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="String">
@@ -51,6 +70,20 @@
         WHERE INUSE = 1
     </select>
 
+    <select id="selectCountKor" resultType="int">
+        /* BookQuotes.selectCount */
+        SELECT count(*)
+        FROM bookquotes
+        WHERE INUSE = 1 AND lang = 'KOR'
+    </select>
+
+    <select id="selectCountEng" resultType="int">
+        /* BookQuotes.selectCount */
+        SELECT count(*)
+        FROM bookquotes
+        WHERE INUSE = 1 AND lang = 'ENG'
+    </select>
+
     <update id="updateBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
         /* BookQuotes.updateBook */
         UPDATE bookquotes
@@ -64,6 +97,7 @@
             <if test="inuse          != null">, inuse          =          #{inuse}               </if>
             <if test="readNum              != null">, read_num      =       #{readNum}          </if>
             <if test="img             != null">, img     =                 #{img}                </if>
+            <if test="quotes             != null">, quotes     =                 #{quotes}                </if>
             , EDIT_DATE           = NOW()               /* 수정일 */
         </trim>
         WHERE BOOK_UUID=#{bookUuid}

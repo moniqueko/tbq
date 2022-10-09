@@ -51,6 +51,11 @@
 							<div class="validate"></div>
 						</div>
 						<div class="col-md-12 form-group">
+							<label for="quotes">Quotes</label>
+							<input type="text" class="form-control" name="quotes" id="quotes" data-rule="minlen:4" data-msg="Please insert up to 150 characters" />
+							<div class="validate"></div>
+						</div>
+						<div class="col-md-12 form-group">
 							<label for="contents">Comment</label>
 							<textarea class="form-control" name="contents" id="contents" cols="30" rows="10" data-rule="required" data-msg="Write comments here"></textarea>
 							<div class="validate"></div>
@@ -104,6 +109,7 @@
 		var img = document.getElementById("bookImg").value;
 		var contents = document.getElementById("contents").value;
 		var writer = document.getElementById("writer").value;
+		var quotes = document.getElementById("quotes").value;
 
 		var checked = document.getElementsByName('lang');
 		var lang;
@@ -129,6 +135,10 @@
 			alert('작가를 입력해주세요');
 			writer.focus();
 			return false;
+		}else if (quotes == null || quotes =="") {
+			alert('문장을 입력해주세요');
+			writer.focus();
+			return false;
 		}else if (lang==null) {
 			alert('언어를 선택해주세요');
 			lang.focus();
@@ -140,10 +150,8 @@
 	}
 
 	function submit() {
-		//const memberUuid = '${memberInfo.memberId}';
 		const form = $('#bookWriteForm')[0];
 		const data = new FormData(form);
-		//data.append("memberUuid", memberUuid);
 
 		$.ajax({
 			type: "POST",
