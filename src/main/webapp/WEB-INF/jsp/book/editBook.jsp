@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-	<title>Amend</title>
+	<title>Modify</title>
 </head>
 
 <body>

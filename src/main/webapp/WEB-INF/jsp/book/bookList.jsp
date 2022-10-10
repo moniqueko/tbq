@@ -28,7 +28,7 @@
 					<div id="menus" class="menus">
 						<a href="/" >Home</a>
 						<a href="/bookList" class="active">Book List</a>
-						<a href="#" >My book</a>
+						<a href="/myBook" >My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
 								<a href="#" id="myInfo">My Info</a>
@@ -102,7 +102,7 @@
 							</div>
 						</div>
 						<c:if test="${english!=null}">
-						<c:set var="paginationTargetLink" value="/book/eng"/>
+							<c:set var="paginationTargetLink" value="/book/eng"/>
 						</c:if>
 
 						<c:if test="${korean!=null}">

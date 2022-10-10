@@ -164,7 +164,8 @@
 				document.location = "/bookList";
 			},
 			error: function (error) {
-				alert("에러발생");
+				alert("Error occurred");
+				history.back();
 			}
 		});
 	}

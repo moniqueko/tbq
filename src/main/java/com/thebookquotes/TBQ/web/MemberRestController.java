@@ -94,11 +94,11 @@ public class MemberRestController {
 
             if (check != null) { //아이디는 있을때
 
-                if (memberId.equals(check.getMemberId()) && encodingPw.equals(check.getMemberPw())) { //사용자가 입력한 pw 가db와 일치하는지
+                if (memberId.equals(check.getMemberId()) && encodingPw.equals(check.getMemberPw())) {
                     System.out.print("로그인 정보가 일치합니다");
                     memberType = 1;
 
-                    if (memberId.equals("admin")) {
+                    if (memberId.equals("admin") || check.getMemberGrant() == 1) {
                         memberType = 2;
                         System.out.print("#############관리자 로그인");
                     }

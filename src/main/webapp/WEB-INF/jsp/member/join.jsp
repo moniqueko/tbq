@@ -21,7 +21,7 @@
 					<div id="menus" class="menus">
 						<a href="/" id="home">Home</a>
 						<a href="/bookList" id="bookList">Book List</a>
-						<a href="#" id="myBook">My book</a>
+						<a href="/myBook" id="myBook">My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
 								<a href="#" id="myInfo">My Info</a>
@@ -39,36 +39,31 @@
 			<div class="row justify-content-center">
 				<div class="col-md-4">
 					<div class="justify-content-center" style="text-align: center">
-						<h2>Join Us?</h2><br>
+						<h2>Join Us?</h2><br><br>
 						<div class="container-sm" id="tb">
-							<div class="col-md-12 form-group">
 
 							<form:form name="memberForm" id="memberForm">
-								<table>
-									<tr>
-										<td>ID</td>
-										<td>
-											<input type="text" style="width:200px;" id="memberId"  name="memberId" oninput="idCheck();" class="form-control"/>
-											<div id="idCheckDiv"></div>
-										</td>
-									</tr>
-									<tr>
-										<td>E-mail</td>
-										<td>
-											<input type="text" style="width:200px;" id="memberEmail"  name="memberEmail" oninput="emailCheck();" class="form-control"/>
-											<div id="emailCheckDiv"></div>
-										</td>
-									</tr>
-									<tr>
-										<td>Password</td>
-										<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();" class="form-control"/></td>
-									</tr>
-									<tr>
-										<td colspan="2" style="text-align: center"  id="msg"><br>
-											<p><a href="#" class="readmore" onclick="validation();">Submit</a></p>
-										</td>
-									</tr>
-								</table>
+								<div class="col-md-12 form-group">
+									<label for="memberId" style="text-align: left">ID</label>
+									<input type="text" id="memberId"  name="memberId" class="form-control" oninput="idCheck();"/>
+									<div id="idCheckDiv"></div>
+								</div>
+
+								<div class="col-md-12 form-group">
+									<label for="memberEmail" style="text-align: left">Email</label>
+									<input type="email" id="memberEmail"  name="memberEmail" class="form-control" oninput="emailCheck();"/>
+									<div id="emailCheckDiv"></div>
+								</div>
+
+								<div class="col-md-12 form-group">
+									<label for="memberPw" style="text-align: left">Password</label>
+									<input type="password" id="memberPw"  name="memberPw" class="form-control" onkeyup="enterKey();"/>
+								</div>
+
+								<div class="col-md-12 form-group">
+									<div id="msg"></div>
+										<span><a href="#" class="readmore" onclick="validation();">Submit</a></span>
+								</div>
 
 							</form:form>
 							</div>
@@ -170,7 +165,7 @@
 							},
 							error: function(result) {
 
-								console.log(result.responseText); //responseText의 에러메세지 확인
+								console.log(result.responseText);
 							}
 						});
 
@@ -180,7 +175,7 @@
 				},
 				error: function(result) {
 
-					console.log(result.responseText); //responseText의 에러메세지 확인
+					console.log(result.responseText);
 				}
 			});
 
@@ -190,7 +185,7 @@
 	}
 
 	function enterKey() {
-		if (window.keyCode === 13) {
+		if (window.event.keyCode === 13) {
 			validation();
 		}
 	}
@@ -248,7 +243,7 @@
 
 			},
 			error: function(result) {
-				console.log(result.responseText); //responseText의 에러메세지 확인
+				console.log(result.responseText);
 			}
 		});
 	}
@@ -282,7 +277,7 @@
 			error: function(result) {
 				console.log(result.data);
 				alert('회원가입 실패. 다시 시도해 주세요');
-				console.log(result.responseText); //responseText의 에러메세지 확인
+				console.log(result.responseText);
 			}
 		});
 

@@ -47,16 +47,17 @@
 						<div class="col-md-4 ml-auto" data-aos="fade-up" data-aos-delay="100">
 							<div class="sticky-content">
 								<h3 class="h3">${book.title}</h3>
-								<p class="mb-4"><span class="text-muted">${book.writer}</span></p>
+								<p class="mb-4"><span class="text-muted">Author : ${book.writer}</span></p>
 
 								<div class="mb-5">
 									<p>${book.contents}</p>
 								</div>
-		<%--							<h4 class="h4 mb-3"></h4>--%>
-		<%--							<ul class="list-unstyled list-line mb-5">--%>
-		<%--								<li></li>--%>
-		<%--								<li></li>--%>
-		<%--							</ul>--%>
+
+									<h4 class="h4 mb-3"></h4>
+									<ul class="list-unstyled list-line mb-5">
+										<li>${book.quotes}</li>
+									</ul>
+
 								<c:if test="${book.memberUuid==memberInfo.memberUuid}">
 									<p><a href="/editBook/${book.bookUuid}" class="readmore">Edit</a></p>
 									<p><a href="#" class="readmore" onclick="del();">Delete</a></p>

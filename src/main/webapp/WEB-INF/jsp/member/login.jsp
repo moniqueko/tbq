@@ -22,7 +22,7 @@
 					<div id="menus" class="menus">
 						<a href="/" id="home">Home</a>
 						<a href="/bookList" id="bookList">Book List</a>
-						<a href="#" id="myBook">My book</a>
+						<a href="/myBook" id="myBook">My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
 								<a href="#" id="myInfo">My Info</a>
@@ -37,50 +37,36 @@
 				</div>
 			</div>
 
-			<c:if test="${memberInfo!=null}">
-				<div class="row justify-content-center">
-					<div class="col-md-4">
-						<div class="justify-content-center" style="text-align: center">
+			<div id="memberLogin">
+				<c:if test="${memberInfo==null}">
+					<div class="row justify-content-center">
+						<div class="col-md-4">
+							<div class="justify-content-center" style="text-align: center">
+								<h2>Login</h2><br><br>
+								<div class="container-sm" id="tb">
+									<form:form name="memberForm" id="memberForm">
+										<div class="col-md-12 form-group">
+											<label for="memberId">ID</label>
+											<input type="text" id="memberId"  name="memberId" class="form-control"/>
+										</div>
 
-						   <h2>Hello, ${memberInfo.memberId}</h2><br>
-							<div class="container-sm">
-								<p><a href="/logout" class="readmore">Logout</a></p>
+										<div class="col-md-12 form-group">
+											<label for="memberPw">Password</label>
+											<input type="password" id="memberPw"  name="memberPw" class="form-control" onkeyup="enterKey();"/>
+										</div>
+
+										<div class="col-md-12 form-group">
+											<div id="msg"></div>
+											<div><a href="#" class="readmore" onclick="validation();">Login</a> &nbsp;
+												<a href="#" class="readmore" onclick="location.href='/findPw'">Find</a></div>
+										</div>
+									</form:form>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</c:if>
-
-			<c:if test="${memberInfo==null}">
-				<div class="row justify-content-center">
-					<div class="col-md-4">
-						<div class="justify-content-center" style="text-align: center">
-
-							<h2>Login</h2><br>
-							<div class="container-sm">
-								<form:form name="memberForm" id="memberForm">
-									<table class="table table-bordered">
-										<tr>
-											<td>ID</td>
-											<td><input type="text"  style="width:200px;" id="memberId"  name="memberId" /></td>
-										</tr>
-										<tr>
-											<td>Password</td>
-											<td><input type="password"  style="width:200px;" id="memberPw"  name="memberPw" onkeyup="enterKey();"/></td>
-										</tr>
-										<tr style="text-align: center">
-											<td colspan="2">
-												<input type="button" value="Login"  onclick="login();">
-												<input type="button" value="Find PW"  onclick="location.href='/findPw'">
-											</td>
-										</tr>
-									</table>
-								</form:form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</c:if>
+				</c:if>
+			</div>
 
 		</div>
 
@@ -93,62 +79,74 @@
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
+	var tb = document.getElementById('tb');
+	var msg = document.getElementById('msg');
+
 	function enterKey() {
 		if (window.event.keyCode == 13) {
-			login();
+			validation();
 		}
 	}
 
-	function login(){
-		
+	function login() {
+
 		let memberId = document.forms["memberForm"]["memberId"].value;
 		let memberPw = document.forms["memberForm"]["memberPw"].value;
-		
+
 		var data = {
-			'memberId' : memberId,
-			'memberPw' : memberPw
+			'memberId': memberId,
+			'memberPw': memberPw
 		};
-		   
-		console.log("아이디"+memberId);
 
-		 
 		$.ajax({
-	             url: "/login",  
-	             type: "POST",
-	             data: JSON.stringify(data),
-	             dataType: "JSON",
-	             contentType: "application/json",
-	             accept: "application/json",
-	             success: function(result) {          
+			url: "/login",
+			type: "POST",
+			data: JSON.stringify(data),
+			dataType: "JSON",
+			contentType: "application/json",
+			accept: "application/json",
+			success: function (result) {
+				console.log(result);
 
-	            	 console.log(result.code+":"+result.message);
- 
-	            	 if(result.code==200){
-	            		 if(result.data == '1'){
-	            			 alert('Login Success');
-			            	 location.href="/";
-			            	 
-	            		 }else if(result.data=='2'){
-		            		 console.log("관리자 로그인");
-		            		 location.href="/adminOk";
-		            	 }	            		 
-	            	 }else if(result.code==408){
-	            		 console.log(result.message);
-	            		 alert('아이디나 패스워드가 일치하지 않습니다');
-	            		 
-	            	 }else if(result.code==409){
-	            		 console.log(result.message);
-	            		 alert('회원정보 없음: 로그인 실패');
-	            	 }
-		            	 
-		            		 
-	            	 },
+				if (result.code == 200) {
+					if (result.data == '1') {
+						location.href="/loginOk";
 
-	             error: function(result) {
-	                 console.log(result.responseText); //responseText의 에러메세지 확인
-	             }
-	         });
-			
+					} else if (result.data == '2') {
+						location.href = "/adminOk";
+					}
+				} else if (result.code == 401) {
+					console.log(result.message);
+					msg.innerHTML = "Login Failed: ID/PW not matching";
+					tb.append(msg);
+				}
+
+			},
+
+			error: function (result) {
+				console.log(result.responseText);
+			}
+		});
+	}
+
+	function validation() {
+
+		var idcheck = document.forms["memberForm"]["memberId"].value;
+		var pwcheck = document.forms["memberForm"]["memberPw"].value;
+
+		if (idcheck == null || idcheck == "") {
+			msg.innerHTML = "Please input ID";
+			tb.append(msg);
+			return false;
+
+		} else if (pwcheck == null || pwcheck == "") {
+			msg.innerHTML = "Please input PW";
+			tb.append(msg);
+			return false;
+		}
+
+		login();
+
 	}
 
 </script>
