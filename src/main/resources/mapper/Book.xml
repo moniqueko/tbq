@@ -55,6 +55,15 @@
             limit #{pageStart},#{pageSize}
     </select>
 
+    <select id="myBookList" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$ListRequest">
+        /* BookQuotes.myBookList */
+        SELECT *
+        FROM bookquotes
+        WHERE INUSE = 1 AND member_uuid=#{memberUuid}
+        ORDER BY REGI_DATE desc
+            limit #{criteria.pageStart},#{criteria.pageSize}
+    </select>
+
     <select id="selectBookByUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="String">
         /* BookQuotes.selectBookByUuid */
         SELECT *
@@ -82,6 +91,13 @@
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'ENG'
+    </select>
+
+    <select id="selectCountMyBook" resultType="int">
+        /* BookQuotes.selectCount */
+        SELECT count(*)
+        FROM bookquotes
+        WHERE INUSE = 1 AND member_uuid=#{memberUuid}
     </select>
 
     <update id="updateBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">

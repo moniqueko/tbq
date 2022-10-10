@@ -104,6 +104,53 @@ public class BookController {
         return "/book/bookList";
     }
 
+//    @GetMapping("/scrapBook")
+//    public String scrapBook(HttpSession session, Model model, Criteria cri) {
+//
+//        List<BookQuotes> board = bookQuoteService.scrapBookList(cri);
+//        model.addAttribute("board", board);
+//
+//        List<Maxim> maxim = maximService.maximList();
+//        model.addAttribute("maxim", maxim);
+//
+//        PageMaker pageMaker = new PageMaker();
+//        pageMaker.setCri(cri);
+//        pageMaker.setTotalCount(bookQuoteService.selectCount());
+//        pageMaker.setTotalPage(bookQuoteService.selectCount());
+//
+//        model.addAttribute("pageMaker", pageMaker);
+//
+//
+//        return "/book/bookList";
+//    }
+
+    @GetMapping("/myBook")
+    public String myBook(BookQuotes.ListRequest listRequest, HttpSession session, Model model, Criteria cri) {
+        Member member = (Member) session.getAttribute("memberInfo");
+
+        if(member==null){
+            return "/member/login";
+        }
+        listRequest.setCriteria(cri);
+        listRequest.setMemberUuid(member.getMemberUuid());
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(bookQuoteService.selectCountMyBook(member.getMemberUuid()));
+        pageMaker.setTotalPage(bookQuoteService.selectCountMyBook(member.getMemberUuid()));
+
+        model.addAttribute("pageMaker", pageMaker);
+
+        List<BookQuotes> board = bookQuoteService.myBookList(listRequest);
+        model.addAttribute("board", board);
+
+
+        return "/my/myBook";
+    }
+
 
     @GetMapping("/book") //글쓰기
     public String addBook(HttpSession session, Model model) {

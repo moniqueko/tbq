@@ -32,8 +32,18 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
+    public List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest) {
+        return mapper.myBookList(listRequest);
+    }
+
+    @Override
     public int selectCount() {
         return mapper.selectCount();
+    }
+
+    @Override
+    public int selectCountMyBook(String memberUuid) {
+        return mapper.selectCountMyBook(memberUuid);
     }
 
     @Override

@@ -8,7 +8,11 @@ public interface BookQuoteService {
     List<BookQuotes> bookList(Criteria cri);
     List<BookQuotes> listKor(Criteria cri);
     List<BookQuotes> listEng(Criteria cri);
+
+    List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest);
+
     int selectCount();
+    int selectCountMyBook(String memberUuid);
 
     int selectCountKor();
     int selectCountEng();

@@ -1,5 +1,6 @@
 package com.thebookquotes.TBQ.dto;
 
+import com.thebookquotes.TBQ.common.Criteria;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,13 @@ public class BookQuotes {
         private String quotes;
 
     }
+
+    @Data
+    public static class ListRequest {
+        private Criteria criteria;
+        private String memberUuid;
+    }
+
     @Data
     public static class Comment {
         private Integer cmtNum;
