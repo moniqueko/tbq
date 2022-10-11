@@ -24,6 +24,28 @@ public class BookQuotes {
     private int inuse;
     private String lang;
     private String quotes;
+    private String quotes1;
+    private String quotes2;
+    private String quotes3;
+    private int count;
+
+    public BookQuotes(String bookUuid, String title, String writer, String memberUuid, String contents, int readNum,
+                      String img, Date sysRegDt, Date sysUdtDt, int inuse, String lang, String quotes1, String quotes2, String quotes3) {
+        this.bookUuid = bookUuid;
+        this.title = title;
+        this.writer = writer;
+        this.memberUuid = memberUuid;
+        this.contents = contents;
+        this.readNum = readNum;
+        this.img = img;
+        this.sysRegDt = sysRegDt;
+        this.sysUdtDt = sysUdtDt;
+        this.inuse = inuse;
+        this.lang = lang;
+        this.quotes1 = quotes1;
+        this.quotes2 = quotes2;
+        this.quotes3 = quotes3;
+    }
 
     @Data
     public static class BookQuotesWrite {
@@ -38,6 +60,9 @@ public class BookQuotes {
         private int inuse;
         private String lang;
         private String quotes;
+        private String quotes1;
+        private String quotes2;
+        private String quotes3;
 
     }
 
@@ -54,6 +79,7 @@ public class BookQuotes {
         private String bookUuid;
         private String memberUuid;
         private String contents;
+
         private String quotes;
         private Date sysRegDt;
         private int inuse;
@@ -79,5 +105,23 @@ public class BookQuotes {
         private Date sysRegDt;
         private int inuse;
         private String memberId;
+    }
+
+    @Data
+    public static class Scrap {
+        private int scrapNum;
+        private String scrapUuid;
+        private String bookUuid;
+        private String memberUuid;
+        private Integer inuseScrap;
+        private Date sysRegDt;
+
+        public Scrap(String scrapUuid, String bookUuid, String memberUuid, Integer inuseScrap, Date sysRegDt) {
+            this.scrapUuid = scrapUuid;
+            this.bookUuid = bookUuid;
+            this.memberUuid = memberUuid;
+            this.inuseScrap = inuseScrap;
+            this.sysRegDt = sysRegDt;
+        }
     }
 }

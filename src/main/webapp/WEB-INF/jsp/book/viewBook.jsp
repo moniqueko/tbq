@@ -37,7 +37,6 @@
 				</div>
 			</div>
 
-
 			<div class="site-section pb-0">
 				<div class="container">
 					<div class="row align-items-stretch">
@@ -55,8 +54,13 @@
 
 									<h4 class="h4 mb-3"></h4>
 									<ul class="list-unstyled list-line mb-5">
-										<li>${book.quotes}</li>
+										<li>${book.quotes1}</li>
+										<c:if test="${book.quotes2!=null}">	<li>${book.quotes2}</li></c:if>
+										<c:if test="${book.quotes3!=null}">	<li>${book.quotes3}</li></c:if>
 									</ul>
+								<c:if test="${memberInfo!=null}">
+								<p><a href="#" class="readmore" onclick="addScrap();"><span id="count">Scrap (${book.count})</span></a></p>
+								</c:if>
 
 								<c:if test="${book.memberUuid==memberInfo.memberUuid}">
 									<p><a href="/editBook/${book.bookUuid}" class="readmore">Edit</a></p>
@@ -173,7 +177,6 @@
 	function cmtWrite(){
 		const contents = document.getElementById("contents").value;
 		const bookUuid = '${book.bookUuid}';
-		//let cmtSection = document.getElementById("cmtSection");
 
 		const data = {
 			"bookUuid" : bookUuid,
@@ -188,7 +191,37 @@
 			contentType : "application/json",
 			processData : false,
 			success: function(result) { //저장하고 반환된 결과
-				location.href="/view/"+bookUuid;
+				location.href="/view/" + bookUuid;
+			},
+			error: function(request, status, error) {
+				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
+
+				alert("Error occurred");
+			}
+		});
+
+	}
+
+	function addScrap(){
+		const bookUuid = '${book.bookUuid}';
+		const span = document.getElementById("count");
+
+		$.ajax({
+			type: "POST",
+			url: "/addScrap",
+			data: bookUuid,
+			dataType: "JSON",
+			contentType : "application/json",
+			processData : false,
+			success: function(result) { //저장 성공시에 일반 스크랩된 수 돌려줌
+				console.log(result);
+
+				if(result.status==406){
+					alert("Already registered");
+					return false;
+				}
+				span.innerHTML="Scrap (" + result.data + ")";
+
 			},
 			error: function(request, status, error) {
 				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);

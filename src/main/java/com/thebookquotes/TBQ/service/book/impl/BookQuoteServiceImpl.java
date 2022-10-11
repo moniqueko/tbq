@@ -61,7 +61,8 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     @Override
     public void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
         BookQuotes insert = new BookQuotes(null, bookQuotesWrite.getTitle(), bookQuotesWrite.getWriter(), bookQuotesWrite.getMemberUuid(),
-                        bookQuotesWrite.getContents(),0, bookQuotesWrite.getImg(), null, null, 1,bookQuotesWrite.getLang(),bookQuotesWrite.getQuotes());
+                bookQuotesWrite.getContents(),0, bookQuotesWrite.getImg(), null, null, 1,bookQuotesWrite.getLang(),
+                bookQuotesWrite.getQuotes(), bookQuotesWrite.getQuotes1(), bookQuotesWrite.getQuotes2(), bookQuotesWrite.getQuotes3(), 0);
 
         mapper.insertBook(insert);
     }
@@ -97,6 +98,23 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     @Override
     public BookQuotes.CommentList selectByCmtUuid(BookQuotes.Comment cmt) {
         return mapper.selectByCmtUuid(cmt);
+    }
+
+    @Override
+    public void insertScrap(BookQuotes.Scrap scrap) {
+        BookQuotes.Scrap insert = new BookQuotes.Scrap(null,scrap.getBookUuid(),scrap.getMemberUuid(), 1, null);
+        mapper.insertScrap(insert);
+    }
+
+    @Override
+    public void updateCountBook(String bookUuid) {
+        mapper.updateCountBook(bookUuid);
+    }
+
+    @Override
+    public int checkScrap(BookQuotes.Scrap scrap) {
+        int cnt = mapper.checkScrap(scrap);
+        return cnt;
     }
 
 }

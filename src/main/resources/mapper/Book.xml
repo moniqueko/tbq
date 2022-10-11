@@ -23,6 +23,10 @@
             <if test="img             != null">, img     =                 #{img}               </if>
             <if test="lang             != null">, lang     =                 #{lang}            </if>
             <if test="quotes             != null">, quotes     =           #{quotes}            </if>
+            <if test="quotes1             != null">, quotes1     =           #{quotes1}         </if>
+            <if test="quotes2             != null">, quotes2     =           #{quotes2}         </if>
+            <if test="quotes3             != null">, quotes3     =           #{quotes3}         </if>
+            <if test="count             != null">, count     =                 #{count}         </if>
             , REGI_DATE           = NOW()               /* 등록일 */
             , EDIT_DATE           = NOW()               /* 수정일 */
         </trim>
@@ -114,6 +118,7 @@
             <if test="readNum              != null">, read_num      =       #{readNum}          </if>
             <if test="img             != null">, img     =                 #{img}                </if>
             <if test="quotes             != null">, quotes     =                 #{quotes}                </if>
+            <if test="count             != null">, count     =                 #{count}                </if>
             , EDIT_DATE           = NOW()               /* 수정일 */
         </trim>
         WHERE BOOK_UUID=#{bookUuid}
@@ -159,5 +164,37 @@
         LEFT JOIN member m ON m.member_uuid = cmt.member_uuid
         WHERE cmt_uuid=#{cmtUuid}
         AND cmt_inuse = 1
+    </select>
+
+    <insert id="insertScrap" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Scrap">
+        /* BookQuotes.insertScrap */
+
+        <selectKey resultType="String" keyProperty="scrapUuid" order="BEFORE">
+            select FN_GET_UUID('SCR') as scrapUuid
+        </selectKey>
+
+        INSERT INTO scrap
+        VALUES
+        (0, #{scrapUuid}, #{memberUuid}, #{bookUuid}, NOW() ,#{inuseScrap})
+    </insert>
+
+    <!-- 스크랩 카운트 갯수 -->
+    <update id="updateCountBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.updateCountBook */
+
+        UPDATE bookquotes
+        SET count = count + 1
+        WHERE book_uuid=#{bookUuid}
+    </update>
+
+    <!-- 스크랩 중복 체크 -->
+    <select id="checkScrap" resultType="int" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Scrap">
+        /* BookQuotes.checkScrap */
+        SELECT count(s.book_uuid) AS cnt
+        FROM (
+            SELECT DISTINCT b.book_uuid FROM scrap s JOIN bookquotes b ON b.book_uuid = s.book_uuid
+            WHERE s.book_uuid = #{bookUuid} AND inuse = 1 AND s.member_uuid = #{memberUuid}
+            )
+        AS s
     </select>
 </mapper>

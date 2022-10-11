@@ -24,4 +24,7 @@ public interface BookQuoteService {
     void insertCmt(BookQuotes.Comment cmt);
     List<BookQuotes.Comment> cmtList(String bookUuid);
     BookQuotes.CommentList selectByCmtUuid(BookQuotes.Comment cmt);
+    void insertScrap(BookQuotes.Scrap scrap);
+    void updateCountBook(String bookUuid);
+    int checkScrap(BookQuotes.Scrap scrap);
 }

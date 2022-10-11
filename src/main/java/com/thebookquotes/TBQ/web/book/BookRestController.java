@@ -8,6 +8,7 @@ import com.thebookquotes.TBQ.dto.Member;
 import com.thebookquotes.TBQ.service.ResponseService;
 import com.thebookquotes.TBQ.service.book.BookQuoteService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,31 +32,42 @@ public class BookRestController {
 
     @PostMapping("/addBook")
     public SingleResult<?> post(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("bookImg") MultipartFile multipartFile,
-                                HttpServletRequest request, HttpSession session) throws Exception {
+                                HttpSession session) throws Exception {
 
         Member member = (Member) session.getAttribute("memberInfo");
         String memberUuid = member.getMemberUuid();
 
-        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents());
+        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents(), bookQuotesWrite.getWriter(), bookQuotesWrite.getQuotes());
         if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
 
         if (multipartFile.isEmpty()) {
             return responseService.getFailResult(ErrorCode.NO_FILE);
         }
 
-        String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid); //멤버아이디 넣기
+        String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid);
 
         bookQuotesWrite.setImg(filePath);
         bookQuotesWrite.setMemberUuid(memberUuid);
+
+        String quotes = bookQuotesWrite.getQuotes(); //1,2,3
+        String[] array=  quotes.split(",");
+
+        if(array.length==1){
+            bookQuotesWrite.setQuotes1(array[0]);
+            bookQuotesWrite.setQuotes(array[0]);
+
+        }else if(array.length==2){
+            bookQuotesWrite.setQuotes1(array[0]);
+            bookQuotesWrite.setQuotes2(array[1]);
+            bookQuotesWrite.setQuotes(array[0] + "," + array[1]);
+
+        }else if(array.length==3){
+            bookQuotesWrite.setQuotes1(array[0]);
+            bookQuotesWrite.setQuotes2(array[1]);
+            bookQuotesWrite.setQuotes3(array[2]);
+        }
+
         bookQuoteService.insertBook(bookQuotesWrite);
-
-
-//        BookQuotes.BookQuotesWrite bookUpdate = new BookQuotes.BookQuotesWrite();
-//        bookUpdate.setBookUid(adMedia.getTvUid());
-//        bookUpdate.setImgFile(filePath);
-//        bookUpdate.setImgFileReal(path + "/" + adMedia.getTvUid() + "/" + multipartFile.getOriginalFilename());
-//
-//        adMediaService.updateAdMedia(adMediaUpdate);
 
         return responseService.getSuccessResult();
     }
@@ -116,8 +129,36 @@ public class BookRestController {
         cmt.setMemberUuid(uuid);
 
         bookQuoteService.insertCmt(cmt);
-        String result = "OK";
+        return responseService.getSuccessResult();
+    }
 
-        return responseService.getSingleResult(result);
+    @PostMapping("/addScrap")
+    public SingleResult<?> addScrap(BookQuotes.Scrap scrap, @RequestBody String bookUuid, HttpSession session) throws Exception {
+        Member member = (Member) session.getAttribute("memberInfo");
+        String memberUuid = member.getMemberUuid();
+
+        if(member==null){
+            return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
+        }
+        if (!StringUtils.hasText(bookUuid)) {
+            return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+        }
+
+        scrap.setMemberUuid(memberUuid);
+        scrap.setBookUuid(bookUuid);
+        int result = bookQuoteService.checkScrap(scrap);
+
+        if(result==0){
+            bookQuoteService.insertScrap(scrap);
+            bookQuoteService.updateCountBook(bookUuid);
+
+            BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid); //이미 스크랩된수
+            int count = bookQuotes.getCount();
+            return responseService.getSingleResult(count);
+
+        }else if(result>=1){
+            return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
+        }
+        return responseService.getSuccessResult();
     }
 }

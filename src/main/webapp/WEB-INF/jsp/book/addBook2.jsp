@@ -55,6 +55,21 @@
 							<input type="text" class="form-control" name="quotes" id="quotes" data-rule="minlen:4" data-msg="Please insert up to 150 characters" />
 							<div class="validate"></div>
 						</div>
+
+						<div class="col-md-12 form-group">
+							<a href="#" onclick="plus();"><i class='fas fa-plus'></i>&nbsp; Add (up to 3 quotes)</a>
+						</div>
+
+						<div class="col-md-12 form-group" id="quote1">
+							<input type="text" class="form-control" name="quotes" id="quotes2" data-rule="minlen:4" data-msg="Please insert up to 150 characters" />
+							<div class="validate"></div>
+						</div>
+
+						<div class="col-md-12 form-group" id="quote2">
+							<input type="text" class="form-control" name="quotes" id="quotes3" data-rule="minlen:4" data-msg="Please insert up to 150 characters" />
+							<div class="validate"></div>
+						</div>
+
 						<div class="col-md-12 form-group">
 							<label for="contents">Comment</label>
 							<textarea class="form-control" name="contents" id="contents" cols="30" rows="10" data-rule="required" data-msg="Write comments here"></textarea>
@@ -101,8 +116,30 @@
 <hr><br>
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
-
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <script>
+	const quote1 = document.getElementById("quote1");
+	const quote2 = document.getElementById("quote2");
+	let cnt = 0;
+
+	$(document).ready(function(){
+		quote1.style.display='none';
+		quote2.style.display='none';
+	})
+
+	function plus(){
+		cnt = cnt + 1;
+
+		if(cnt==1) {
+			quote1.style.display = 'block';
+		}else if(cnt==2){
+			quote2.style.display = 'block';
+		}else{
+			alert("Quotes can be added up to 3");
+		}
+
+	}
+
 	function validation() {
 
 		var title = document.getElementById("title").value;

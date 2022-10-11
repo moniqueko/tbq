@@ -11,6 +11,20 @@
 		float: left;
 		margin: 15px;
 	}
+	.word {
+		display: block;
+		width: 500px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.title {
+		display: block;
+		width: 400px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	</style>
 </head>
 
@@ -67,9 +81,9 @@
 										<c:forEach var="book" items="${board}" varStatus="status">
 											<tr>
 												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td><a href="/view/${book.bookUuid}">${book.title}</a></td>
+												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
 												<td>${book.writer}</td>
-												<td>${book.quotes}</td>
+												<td class="word">${book.quotes}</td>
 											</tr>
 										</c:forEach>
 									</c:if>
@@ -78,9 +92,9 @@
 										<c:forEach var="book" items="${scrap}" varStatus="status">
 											<tr>
 												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td><a href="/view/${book.bookUuid}">${book.title}</a></td>
+												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
 												<td>${book.writer}</td>
-												<td>${book.quotes}</td>
+												<td class="word">${book.quotes}</td>
 											</tr>
 										</c:forEach>
 									</c:if>
