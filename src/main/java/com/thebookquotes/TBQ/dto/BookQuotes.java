@@ -19,8 +19,8 @@ public class BookQuotes {
     private String contents;
     private int readNum;
     private String img;
-    private Date sysRegDt;
-    private Date sysUdtDt;
+    private Date regiDate;
+    private Date editDate;
     private int inuse;
     private String lang;
     private String quotes;
@@ -30,7 +30,7 @@ public class BookQuotes {
     private int count;
 
     public BookQuotes(String bookUuid, String title, String writer, String memberUuid, String contents, int readNum,
-                      String img, Date sysRegDt, Date sysUdtDt, int inuse, String lang, String quotes1, String quotes2, String quotes3) {
+                      String img, Date regiDate, Date editDate, int inuse, String lang, String quotes1, String quotes2, String quotes3) {
         this.bookUuid = bookUuid;
         this.title = title;
         this.writer = writer;
@@ -38,8 +38,8 @@ public class BookQuotes {
         this.contents = contents;
         this.readNum = readNum;
         this.img = img;
-        this.sysRegDt = sysRegDt;
-        this.sysUdtDt = sysUdtDt;
+        this.regiDate = regiDate;
+        this.editDate = editDate;
         this.inuse = inuse;
         this.lang = lang;
         this.quotes1 = quotes1;

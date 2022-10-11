@@ -13,14 +13,14 @@
 	}
 	.word {
 		display: block;
-		width: 500px;
+		width: 450px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 	.title {
 		display: block;
-		width: 400px;
+		width: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -35,8 +35,8 @@
 		<div class="container">
 			<div class="row mb-5 align-items-end">
 				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-					<h2>Are you a bookaholic?</h2>
-					<p class="mb-0">Share your quotes from your favorite books! Upload images of quotes, that is all!</p>
+					<h2>Shared book quotes list</h2>
+					<p class="mb-0">Check out shared book quotes form others!</p>
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
@@ -68,12 +68,13 @@
 								</ul>
 
 								<table class="table">
-									<thead>
+									<thead style="text-align: center;">
 									<tr>
 										<th scope="col" width="5%">#</th>
-										<th scope="col" width="35%">Title</th>
-										<th scope="col" width="15%">Author</th>
-										<th scope="col" width="45%">Quotes</th>
+										<th scope="col" width="30%">Title</th>
+										<th scope="col" width="15%" style="text-align: center;">Author</th>
+										<th scope="col" width="40%">Quotes</th>
+										<th scope="col" width="10%" style="text-align: center;">Date</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -82,8 +83,9 @@
 											<tr>
 												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
 												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td>${book.writer}</td>
+												<td style="text-align: center;">${book.writer}</td>
 												<td class="word">${book.quotes}</td>
+												<td><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
 											</tr>
 										</c:forEach>
 									</c:if>
@@ -93,8 +95,9 @@
 											<tr>
 												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
 												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td>${book.writer}</td>
+												<td style="text-align: center;">${book.writer}</td>
 												<td class="word">${book.quotes}</td>
+												<td><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
 											</tr>
 										</c:forEach>
 									</c:if>
@@ -104,8 +107,9 @@
 											<tr>
 												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
 												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td>${book.writer}</td>
+												<td style="text-align: center;">${book.writer}</td>
 												<td class="word">${book.quotes}</td>
+												<td><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
 											</tr>
 										</c:forEach>
 									</c:if>

@@ -13,14 +13,14 @@
 	}
 	.word {
 		display: block;
-		width: 500px;
+		width: 340px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 	.title {
 		display: block;
-		width: 400px;
+		width: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -35,8 +35,8 @@
 		<div class="container">
 			<div class="row mb-5 align-items-end">
 				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-					<h2>Are you a bookaholic?</h2>
-					<p class="mb-0">Share your quotes from your favorite books! Upload images of quotes, that is all!</p>
+					<h2>My books</h2>
+					<p class="mb-0">You can check your books and scraped items.</p>
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
@@ -68,39 +68,51 @@
 								</ul>
 
 								<table class="table">
-									<thead>
-									<tr>
-										<th scope="col" width="5%">#</th>
-										<th scope="col" width="35%">Title</th>
-										<th scope="col" width="15%">Author</th>
-										<th scope="col" width="40%">Quotes</th>
-									</tr>
-									</thead>
-									<tbody>
 									<c:if test="${board!=null}">
-										<c:forEach var="book" items="${board}" varStatus="status">
-											<tr>
-												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td>${book.writer}</td>
-												<td class="word">${book.quotes}</td>
-											</tr>
-										</c:forEach>
+										<thead style="text-align: center;">
+										<tr>
+											<th scope="col" width="5%">#</th>
+											<th scope="col" width="45%">Title</th>
+											<th scope="col" width="20%" style="text-align: center;">Author</th>
+											<th scope="col" width="40%">Quotes</th>
+										</tr>
+										</thead>
+
+										<tbody>
+											<c:forEach var="book" items="${board}" varStatus="status">
+												<tr>
+													<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
+													<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
+													<td style="text-align: center;">${book.writer}</td>
+													<td class="word">${book.quotes}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
 									</c:if>
 
 									<c:if test="${scrap!=null}">
-										<c:forEach var="book" items="${scrap}" varStatus="status">
-											<tr>
-												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td>${book.writer}</td>
-												<td class="word">${book.quotes}</td>
-											</tr>
-										</c:forEach>
+										<thead style="text-align: center;">
+										<tr>
+											<th scope="col" width="5%">#</th>
+											<th scope="col" width="45%">Title</th>
+											<th scope="col" width="20%" style="text-align: center;">Author</th>
+											<th scope="col" width="15%" style="text-align: center;">Scrap Date</th>
+											<th scope="col" width="15%" style="text-align: center;">Scrap count</th>
+										</tr>
+										</thead>
+
+										<tbody>
+											<c:forEach var="book" items="${scrap}" varStatus="status">
+												<tr>
+													<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
+													<td class="title" style="text-align: center;"><a href="/view/${book.bookUuid}">${book.title}</a></td>
+													<td style="text-align: center;">${book.writer}</td>
+													<td style="text-align: center;"><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
+													<td style="text-align: center;">${book.count}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
 									</c:if>
-
-
-									</tbody>
 								</table>
 								<p><a href="/book" class="readmore">Write</a></p>
 							</div>

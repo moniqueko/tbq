@@ -22,7 +22,7 @@
 					<div id="menus" class="menus">
 						<a href="/" id="home">Home</a>
 						<a href="/bookList" id="bookList" class="active">Book List</a>
-						<a href="#" id="myBook">My book</a>
+						<a href="/myBook" id="myBook">My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
 								<a href="#" id="myInfo">My Info</a>

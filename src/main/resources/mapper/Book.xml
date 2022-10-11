@@ -68,6 +68,15 @@
             limit #{criteria.pageStart},#{criteria.pageSize}
     </select>
 
+    <select id="myScrapList" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$ListRequest">
+        /* BookQuotes.myScrapList */
+        SELECT s.regi_date as regiDate, title, writer, b.count, s.book_uuid
+        FROM scrap s LEFT JOIN bookquotes b ON b.book_uuid  = s.book_uuid
+        WHERE INUSE = 1 AND s.member_uuid = #{memberUuid}
+        ORDER BY b.REGI_DATE desc
+            limit #{criteria.pageStart},#{criteria.pageSize}
+    </select>
+
     <select id="selectBookByUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="String">
         /* BookQuotes.selectBookByUuid */
         SELECT *
@@ -84,24 +93,31 @@
     </select>
 
     <select id="selectCountKor" resultType="int">
-        /* BookQuotes.selectCount */
+        /* BookQuotes.selectCountKor */
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'KOR'
     </select>
 
     <select id="selectCountEng" resultType="int">
-        /* BookQuotes.selectCount */
+        /* BookQuotes.selectCountEng */
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'ENG'
     </select>
 
     <select id="selectCountMyBook" resultType="int">
-        /* BookQuotes.selectCount */
+        /* BookQuotes.selectCountMyBook */
         SELECT count(*)
         FROM bookquotes
-        WHERE INUSE = 1 AND member_uuid=#{memberUuid}
+        WHERE INUSE = 1 AND member_uuid = #{memberUuid}
+    </select>
+
+    <select id="selectCountMyScrap" resultType="int">
+        /* BookQuotes.selectCountMyScrap */
+        SELECT count(*)
+        FROM scrap s LEFT JOIN bookquotes b ON b.book_uuid  = s.book_uuid
+        WHERE INUSE = 1 AND s.member_uuid = #{memberUuid}
     </select>
 
     <update id="updateBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">

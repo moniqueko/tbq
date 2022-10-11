@@ -10,9 +10,11 @@ public interface BookQuoteService {
     List<BookQuotes> listEng(Criteria cri);
 
     List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest);
+    List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest);
 
     int selectCount();
     int selectCountMyBook(String memberUuid);
+    int selectCountMyScrap(String memberUuid);
 
     int selectCountKor();
     int selectCountEng();

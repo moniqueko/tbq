@@ -37,6 +37,11 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
+    public List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest) {
+        return mapper.myScrapList(listRequest);
+    }
+
+    @Override
     public int selectCount() {
         return mapper.selectCount();
     }
@@ -44,6 +49,11 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     @Override
     public int selectCountMyBook(String memberUuid) {
         return mapper.selectCountMyBook(memberUuid);
+    }
+
+    @Override
+    public int selectCountMyScrap(String memberUuid) {
+        return mapper.selectCountMyScrap(memberUuid);
     }
 
     @Override

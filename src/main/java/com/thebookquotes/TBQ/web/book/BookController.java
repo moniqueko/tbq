@@ -35,7 +35,7 @@ public class BookController {
 
 
     @GetMapping("/")
-    public String index(HttpSession session, Model model, Criteria cri) {
+    public String index(Model model, Criteria cri) {
 
         List<BookQuotes> board = bookQuoteService.bookList(cri);
         model.addAttribute("board", board);
@@ -47,9 +47,10 @@ public class BookController {
     }
 
     @GetMapping("/bookList")
-    public String bookList(HttpSession session, Model model, Criteria cri) {
+    public String bookList(Model model, Criteria cri) {
 
         List<BookQuotes> board = bookQuoteService.bookList(cri);
+        System.out.println(board+"board <<<<<<<<<<<<<<<<<<<<<<<<<");
         model.addAttribute("board", board);
 
         List<Maxim> maxim = maximService.maximList();
@@ -67,7 +68,7 @@ public class BookController {
     }
 
     @GetMapping("/book/eng")
-    public String langKor(HttpSession session, Model model, Criteria cri) {
+    public String langKor(Model model, Criteria cri) {
 
         List<BookQuotes> board = bookQuoteService.listEng(cri);
         model.addAttribute("english", board);
@@ -86,7 +87,7 @@ public class BookController {
     }
 
     @GetMapping("/book/kor")
-    public String langEng(HttpSession session, Model model, Criteria cri) {
+    public String langEng(Model model, Criteria cri) {
 
         List<BookQuotes> board = bookQuoteService.listKor(cri);
         model.addAttribute("korean", board);
@@ -104,25 +105,31 @@ public class BookController {
         return "/book/bookList";
     }
 
-//    @GetMapping("/scrapBook")
-//    public String scrapBook(HttpSession session, Model model, Criteria cri) {
-//
-//        List<BookQuotes> board = bookQuoteService.scrapBookList(cri);
-//        model.addAttribute("board", board);
-//
-//        List<Maxim> maxim = maximService.maximList();
-//        model.addAttribute("maxim", maxim);
-//
-//        PageMaker pageMaker = new PageMaker();
-//        pageMaker.setCri(cri);
-//        pageMaker.setTotalCount(bookQuoteService.selectCount());
-//        pageMaker.setTotalPage(bookQuoteService.selectCount());
-//
-//        model.addAttribute("pageMaker", pageMaker);
-//
-//
-//        return "/book/bookList";
-//    }
+    @GetMapping("/scrapBook")
+    public String scrapBook(BookQuotes.ListRequest listRequest, Model model, HttpSession session, Criteria cri) {
+        Member member = (Member) session.getAttribute("memberInfo");
+
+        if(member==null){
+            return "/member/login";
+        }
+        listRequest.setCriteria(cri);
+        listRequest.setMemberUuid(member.getMemberUuid());
+
+        List<BookQuotes> board = bookQuoteService.myScrapList(listRequest);
+        model.addAttribute("scrap", board);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(bookQuoteService.selectCountMyScrap(member.getMemberUuid()));
+        pageMaker.setTotalPage(bookQuoteService.selectCountMyScrap(member.getMemberUuid()));
+
+        model.addAttribute("pageMaker", pageMaker);
+
+        return "/my/myBook";
+    }
 
     @GetMapping("/myBook")
     public String myBook(BookQuotes.ListRequest listRequest, HttpSession session, Model model, Criteria cri) {
@@ -146,7 +153,6 @@ public class BookController {
 
         List<BookQuotes> board = bookQuoteService.myBookList(listRequest);
         model.addAttribute("board", board);
-
 
         return "/my/myBook";
     }
