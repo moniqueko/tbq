@@ -67,11 +67,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void delMember(Member member) {
+    public void deleteMember(Member member) {
 
         Member mem = new Member(member.getMemberUuid(), 0, null); //inuse 상태 0:탈퇴
 
-        mapper.delMember(mem);
+        mapper.deleteMember(mem);
     }
 
 

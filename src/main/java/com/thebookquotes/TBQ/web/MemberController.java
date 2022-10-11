@@ -55,8 +55,6 @@ public class MemberController {
         return "member/loginOk";
     }
 
-
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
@@ -64,10 +62,16 @@ public class MemberController {
         return "member/login";
     }
 
-    @GetMapping("/adminOk") //관리자 로그인 성공 페이지
-    public String admin(Model model, Member member) {
+    @GetMapping("/admin") //관리자 페이지
+    public String admin(Model model, Member member, HttpSession session) {
+        Member memberSession = (Member) session.getAttribute("memberInfo");
 
-        return "member/admin";
+        if (memberSession.getMemberGrant()==1){
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
+            return "member/admin";
+        }
+        return "member/login";
     }
 
     @GetMapping("/accessFail") //접근제한 페이지
@@ -77,30 +81,42 @@ public class MemberController {
     }
 
     @GetMapping("/memberList") //회원목록
-    public String memberList(Model model, Member member, Criteria cri) {
+    public String memberList(Model model, Member member, Criteria cri, HttpSession session) {
 
+        Member memberSession = (Member) session.getAttribute("memberInfo");
 
-        List<Member> mem = memberService.selectMemberList(cri); //criteria로 페이지 수 세서 보드 조회
+        if (memberSession.getMemberGrant()==1){
+
+        List<Member> mem = memberService.selectMemberList(cri);
         model.addAttribute("member", mem);
 
-        PageMaker pm = new PageMaker();
-        pm.setCri(cri);
-        pm.setTotalCount(memberService.selectCount());
-        model.addAttribute("pm", pm);
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(memberService.selectCount());
+        pageMaker.setTotalPage(memberService.selectCount());
+        model.addAttribute("pageMaker", pageMaker);
 
-
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
         return "member/memberList";
+
+        }
+
+        return "member/login";
     }
 
 
-    @GetMapping("/member/edit/{memberUuid}")
-    public String editMember(@PathVariable("memberUuid") String memberUuid, Model model, Member member) {
+    @GetMapping("/member/{memberUuid}")
+    public String editMember(@PathVariable("memberUuid") String memberUuid, Model model, Member member, HttpSession session) {
+        Member memberSession = (Member) session.getAttribute("memberInfo");
 
-        Member mem = memberService.selectByUuid(memberUuid);
+        if (memberSession.getMemberGrant()==1) {
+            Member mem = memberService.selectByUuid(memberUuid);
+            model.addAttribute("member", mem);
+            return "member/editMember";
+        }
+        return "member/login";
 
-        model.addAttribute("member", mem);
-
-        return "sample/memberEdit";
     }
 
 

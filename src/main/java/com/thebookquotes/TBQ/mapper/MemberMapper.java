@@ -21,7 +21,7 @@ public interface MemberMapper {
 
     void updateMember(Member member);
 
-    void delMember(Member member);
+    void deleteMember(Member member);
 
     Integer idCheck(String memberId);
 

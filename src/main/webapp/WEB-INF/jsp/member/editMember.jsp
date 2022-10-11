@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-	<title>Sign in</title>
+	<title>Modify Member Information</title>
 </head>
 
 <body>
@@ -14,22 +14,18 @@
 		<div class="container">
 			<div class="row mb-5 align-items-end">
 				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-					<h2>Are you a bookaholic?</h2>
-					<p class="mb-0">Share your quotes from your favorite books! Upload images of quotes, that is all!</p>
+					<h2>Admin page</h2>
+					<p class="mb-0">Admin page</p>
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
-						<a href="/" id="home">Home</a>
-						<a href="/bookList" id="bookList">Book List</a>
-						<a href="/myBook" id="myBook">My book</a>
+						<a href="/" >Home</a>
+						<a href="/boardAdmin" >Board</a>
+						<a href="/memberList" >Member</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
 								<a href="/member/${memberInfo.memberUuid}" id="myInfo">My Info</a>
 								<a href="/logout">Logout</a>
-							</c:when>
-							<c:when test="${memberInfo==null}">
-								<a href="/login" id="login">Login</a>
-								<a href="/join" id="join" class="active">Join</a>
 							</c:when>
 						</c:choose>
 					</div>
@@ -39,30 +35,30 @@
 			<div class="row justify-content-center">
 				<div class="col-md-4">
 					<div class="justify-content-center" style="text-align: center">
-						<h2>Join Us?</h2><br><br>
+						<h2>Modify Info</h2><br><br>
 						<div class="container-sm" id="tb">
 
 							<form:form name="memberForm" id="memberForm">
 								<div class="col-md-12 form-group">
 									<label for="memberId" style="text-align: left">ID</label>
-									<input type="text" id="memberId"  name="memberId" class="form-control" oninput="idCheck();"/>
+									<input type="text" id="memberId"  name="memberId" class="form-control" oninput="idCheck();" value="${member.memberId}" readonly/>
 									<div id="idCheckDiv"></div>
 								</div>
 
 								<div class="col-md-12 form-group">
 									<label for="memberEmail" style="text-align: left">Email</label>
-									<input type="email" id="memberEmail"  name="memberEmail" class="form-control" oninput="emailCheck();"/>
+									<input type="email" id="memberEmail"  name="memberEmail" class="form-control" oninput="emailCheck();" value="${member.memberEmail}"/>
 									<div id="emailCheckDiv"></div>
 								</div>
 
 								<div class="col-md-12 form-group">
 									<label for="memberPw" style="text-align: left">Password</label>
-									<input type="password" id="memberPw"  name="memberPw" class="form-control" onkeyup="enterKey();"/>
+									<input type="password" id="memberPw"  name="memberPw" class="form-control" onkeyup="enterKey();" value="${member.memberPw}"/>
 								</div>
 
 								<div class="col-md-12 form-group">
 									<div id="msg"></div>
-										<span><a href="#" class="readmore" onclick="validation();">Submit</a></span>
+										<span><a href="#" class="readmore" onclick="validation();">Modify</a></span>
 								</div>
 
 							</form:form>
@@ -158,7 +154,7 @@
 									alert("아이디 중복입니다. 다른 아이디를 입력해주세요.");
 
 								}else if(result.data ==0){
-									signIn();//******모두 통과하면 실행
+									modifyInfo();//******모두 통과하면 실행
 								}
 
 
@@ -248,7 +244,7 @@
 		});
 	}
 
-	function signIn(){
+	function modifyInfo(){
 		let memberId = document.getElementById("memberId").value;
 		let memberPw = document.getElementById("memberPw").value;
 		let memberEmail = document.getElementById("memberEmail").value;
@@ -260,7 +256,7 @@
 		};
 
 		$.ajax({
-			url: "/join",  //회원가입완료
+			url: "/member/editMember",
 			type: "POST",
 			data: JSON.stringify(data),
 			dataType: "JSON",
@@ -269,14 +265,11 @@
 			success: function(result) {
 				console.log(result.data);
 				console.log("전송/저장 성공");
-				alert('회원가입이 완료되었습니다. 다시 로그인해 주세요');
-
-				//location.href="/login";
+				alert('Modified');
+				location.href="/admin";
 
 			},
 			error: function(result) {
-				console.log(result.data);
-				alert('회원가입 실패. 다시 시도해 주세요');
 				console.log(result.responseText);
 			}
 		});

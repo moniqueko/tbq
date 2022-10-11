@@ -137,7 +137,7 @@ public class MemberRestController {
 
 
     @PostMapping("/member/del")
-    public SingleResult<?> deleteMember(@RequestBody String uuid) throws IOException {
+    public SingleResult<?> deleteMember(@RequestBody String uuid, Member member) throws IOException {
 
         if (uuid == null || uuid.equals("")) { //받은값 null
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
@@ -147,7 +147,8 @@ public class MemberRestController {
         if (mem == null) { //조회한값 null
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
-        memberService.delMember(mem); //inuse 번호만 바꿈.
+        member.setMemberUuid(uuid);
+        memberService.deleteMember(mem); //inuse 번호만 바꿈.
 
         return responseService.getSuccessResult();
     }

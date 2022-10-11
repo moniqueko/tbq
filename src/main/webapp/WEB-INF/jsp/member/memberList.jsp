@@ -1,147 +1,120 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
-
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@page isELIgnored="false" %>
-
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/jsp/component/head.jsp" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-<title>회원목록</title>
-
-<style>
-	body{font-family: 'Noto Sans KR', sans-serif;}
-	h2{text-align: left;}
-
-	a:link {color: black;}
-    a:visited {color: black;}
-    a:hover {color: black; text-decoration: none;}
-    a:active {color: black;}
-    
-</style>
+	<title>Member List</title>
 </head>
 
 <body>
-<br><br>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-        <h2>회원목록</h2>
-	        <div class="justify-content-center" style="text-align: center">
-				<table class="table table-bordered">
-					<tr>
-						<th style="text-align:center;">회원아이디</th>
-						<th style="text-align:center;">가입일</th>
-						<th style="text-align:center;">마지막로그인</th>
-						<th style="text-align:center;">회원타입</th>
-						<th style="text-align:center;">수정</th>
-						<th style="text-align:center;">삭제</th>
-					</tr>
-					<c:forEach var="member" items="${member}" varStatus="status">
-						<tr data-uuid="${member.memberUuid}">
-							<td>${member.memberId}</td>
-							<td>${member.memberRegiDate}</td>
-							<td>${member.memberLastLogin}</td>
-							
-								<c:if test="${member.memberGrant==0}">
-									<td>관리자</td>
-								</c:if>
-									<c:if test="${member.memberGrant==1}">
-									<td>일반회원</td>
-								</c:if>
-							
-							<td style="text-align:center;"><a href="/member/edit/${member.memberUuid}">수정</a></td>
-							<td style="text-align:center;"><a href="#" onclick="del(this)">삭제</a></td>
-					
-						</tr>
-					</c:forEach>
-				</table>
-			</div>
-			
-			<br><br>
-				<div class="row justify-content-md-center">
-					<div class="text-center">
-						<ul class="pagination">
-							<!-- 이전prev -->
-							<c:if test="${pm.prev }">
-								<li><a href="memberList?page=${pm.startPage-1}">[&laquo;]</a></li>
-							</c:if>
-							<!-- 페이지블럭 -->
-						<c:forEach var="idx" begin="${pm.startPage }" end="${pm.endPage }">
-							<!-- 삼항연산자를 사용해서 class로 스타일적용  -->
-				 			<li ${pm.cri.page == idx? 'class=active':''}>
-				 				<a href="memberList?page=${idx }">[&nbsp;${idx}&nbsp;]&nbsp;&nbsp;</a>
-				 			</li>				
-						</c:forEach>
-							<!-- 다음next -->
-							<c:if test="${pm.next && pm.endPage > 0}">
-								<li><a href="memberList?page=${pm.endPage+1}">[&raquo;]</a></li>
-							</c:if>
-						</ul>
+<%@ include file="/WEB-INF/jsp/component/header.jsp" %>
+<main id="main">
+	<div class="site-section pb-0 site-portfolio">
+		<div class="container">
+			<div class="row mb-5 align-items-end">
+				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
+					<h2>Member list</h2>
+					<p class="mb-0">Member manage</p>
+				</div>
+				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
+					<div id="menus" class="menus">
+						<a href="/" >Home</a>
+						<a href="/boardAdmin" >Board</a>
+						<a href="/memberList" class="active">Member</a>
+						<c:choose>
+							<c:when test="${memberInfo!=null}">
+								<a href="/member/${memberInfo.memberUuid}" id="myInfo">My Info</a>
+								<a href="/logout">Logout</a>
+							</c:when>
+						</c:choose>
 					</div>
-			
+				</div>
+			</div>
+
+			<div class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
+					<div class="container">
+						<div class="row justify-content-center text-right mb-4">
+							<div class="item web col-md-12">
+								<table class="table">
+									<thead style="text-align: center;">
+										<tr>
+											<th scope="col" width="10%">#</th>
+											<th scope="col" width="20%">ID</th>
+											<th scope="col" width="25%">Regi Date</th>
+											<th scope="col" width="30%">Modify</th>
+											<th scope="col" width="30%">Delete</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<c:if test="${member!=null}">
+											<c:forEach var="member" items="${member}" varStatus="status">
+												<tr data-uuid="${member.memberUuid}">
+													<th scope="row" style="text-align: center;">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
+													<td style="text-align: center;">${member.memberId}</td>
+													<td style="text-align: center;"><fmt:formatDate value="${member.memberRegiDate}" pattern="yyyy-MM-dd"/></td>
+													<td style="text-align: center;"><a href="/member/${member.memberUuid}">Modify</a></td>
+													<td style="text-align: center;"><a href="#" onclick="del(this);">Delete</a></td>
+												</tr>
+											</c:forEach>
+										</c:if>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+						<c:if test="${member!=null}">
+							<c:set var="paginationTargetLink" value="/memberList"/>
+						</c:if>
+
+						<%@ include file="/WEB-INF/jsp/component/pagination.jsp" %>
+					</div>
+
+			</div>
+
+
 		</div>
+
 	</div>
-</div>
 
-
+	<div class="site-section">
+	<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
+	</div>
+</main>
 
 <script>
-function del(obj){
-	
-	//uuid만 서버에 보내서 inuse상태 변경
-	var uuid = obj.parentElement.parentElement.dataset.uuid;
+	function del(obj){
+		let uuid = obj.parentElement.parentElement.dataset.uuid;
 
-	var check = confirm("정말 삭제 하시겠습니까?");
-	
-	if(check==false){
-		location.href="/memberList";   
+		console.log(uuid);
+		let check = confirm("Delete?");
+
+		if(check==false){
+			history.back();
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "/member/del",
+			data: uuid,
+			dataType: "text",
+			contentType : "application/json",
+			processData : false,
+			success: function(result) {
+				alert("Deletion success");
+
+				location.href="/memberList";
+			},
+			error: function(request, status, error) {
+				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
+
+				alert("Error occurred");
+			}
+		});
+
 	}
-	
-	$.ajax({
-		type: "POST",
-        url: "/member/del", 
-        data: JSON.stringify(uuid),
-        dataType: "JSON",
-        contentType : "application/json",
-        processData : false,
-        success: function(result) {
-        	
-        	if(result.code==200){
-        		alert("회원 삭제 완료");
-        		console.log(result.message);
-        		location.href="/memberList";       
-        		
-        	}else if(result.code==410){
-        		console.log(result.message);
-        		
-        	}else if(result.code==409){
-        		console.log(result.message);
-
-        	        }
-        },
-        error: function(request, status, error) {
-        	console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);     
-            
-            alert("오류발생");    
-        }
-    });
-
-}
-
 
 </script>
 
-</body>
-</html>
+<%@ include file="/WEB-INF/jsp/component/footer.jsp" %>

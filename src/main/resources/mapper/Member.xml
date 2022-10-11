@@ -36,7 +36,7 @@
     <select id="selectMemberList" resultType="com.thebookquotes.TBQ.dto.Member">
         SELECT *
         FROM 	member
-        WHERE	member_inuse=1
+        WHERE	member_inuse = 1
             limit #{pageStart},#{pageSize}
     </select>
 
@@ -48,19 +48,20 @@
 
     <update id="updateMember" parameterType="com.thebookquotes.TBQ.dto.Member">
         UPDATE member
-        SET member_id=#{memberId}, member_pw=#{memberPw}, member_email=#{memberEmail},member_edit_date=NOW()
-        WHERE member_uuid=#{memberUuid}
+        SET member_pw = #{memberPw}, member_email = #{memberEmail}, member_edit_date = NOW()
+        WHERE member_uuid = #{memberUuid}
     </update>
 
     <update id="deleteMember" parameterType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.deleteMember */
         UPDATE member
-        SET member_edit_date=NOW(),  member_inuse=#{memberInuse}
-        WHERE member_uuid=#{memberUuid}
+        SET member_edit_date = NOW(),  member_inuse = #{memberInuse}
+        WHERE member_uuid = #{memberUuid}
     </update>
 
     <select id="selectCount" resultType="int">
         SELECT count(*) FROM member
-        WHERE member_inuse=1
+        WHERE member_inuse = 1
     </select>
 
     <select id="selectByEmail" resultType="com.thebookquotes.TBQ.dto.Member">

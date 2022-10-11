@@ -25,7 +25,7 @@
 						<a href="/myBook" id="myBook">My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
-								<a href="#" id="myInfo">My Info</a>
+								<a href="/member/${memberInfo.memberUuid}" id="myInfo">My Info</a>
 								<a href="/logout">Logout</a>
 							</c:when>
 							<c:when test="${memberInfo==null}">
@@ -106,21 +106,19 @@
 			contentType: "application/json",
 			accept: "application/json",
 			success: function (result) {
-				console.log(result);
 
 				if (result.code == 200) {
 					if (result.data == '1') {
 						location.href="/loginOk";
 
 					} else if (result.data == '2') {
-						location.href = "/adminOk";
+						location.href = "/admin";
 					}
 				} else if (result.code == 401) {
 					console.log(result.message);
 					msg.innerHTML = "Login Failed: ID/PW not matching";
 					tb.append(msg);
 				}
-
 			},
 
 			error: function (result) {
