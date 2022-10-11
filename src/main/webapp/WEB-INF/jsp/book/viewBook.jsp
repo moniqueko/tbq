@@ -137,7 +137,7 @@
 	</div>
 
 	<div class="modal">
-		<div class="modalBox">
+		<div class="modalBox" style="text-align: center;">
 		</div>
 	</div>
 
@@ -233,14 +233,18 @@
 	}
 
 	$(function(){
-//     이미지 클릭시 해당 이미지 모달
+
 		$("div img").click(function(){
 			let img = new Image();
+			img.style.objectFit = 'cover';
+			img.style.maxWidth = '1200px';
+			img.style.maxHeight = '1200px';
 			img.src = $(this).attr("src")
+
 			$('.modalBox').html(img);
 			$(".modal").show();
 		});
-// 모달 클릭할때 이미지 닫음
+
 		$(".modal").click(function (e) {
 			$(".modal").toggle();
 		});

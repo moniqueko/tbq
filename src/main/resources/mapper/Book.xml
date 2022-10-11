@@ -124,20 +124,16 @@
         /* BookQuotes.updateBook */
         UPDATE bookquotes
         SET
-        <trim prefixOverrides = ",">
-            <if test="bookUuid                 != null">, book_uuid     =   #{bookUuid}         </if>
-            <if test="title                != null">, title         =       #{title}             </if>
-            <if test="writer                != null">, writer         =     #{writer}            </if>
-            <if test="contents             != null">, contents     =       #{contents}           </if>
-            <if test="memberUuid         != null">, member_uuid=       #{memberUuid}            </if>
-            <if test="inuse          != null">, inuse          =          #{inuse}               </if>
-            <if test="readNum              != null">, read_num      =       #{readNum}          </if>
-            <if test="img             != null">, img     =                 #{img}                </if>
-            <if test="quotes             != null">, quotes     =                 #{quotes}                </if>
-            <if test="count             != null">, count     =                 #{count}                </if>
-            , EDIT_DATE           = NOW()               /* 수정일 */
-        </trim>
-        WHERE BOOK_UUID=#{bookUuid}
+        <if test="title                != null">, title         =       #{title}            </if>
+        <if test="writer                != null">, writer         =     #{writer}           </if>
+        <if test="contents             != null">, contents     =       #{contents}          </if>
+        <if test="img             != null">, img     =                 #{img}               </if>
+        <if test="quotes             != null">, quotes     =           #{quotes}            </if>
+        <if test="quotes1             != null">, quotes1     =           #{quotes1}         </if>
+        <if test="quotes2             != null">, quotes2     =           #{quotes2}         </if>
+        <if test="quotes3             != null">, quotes3     =           #{quotes3}         </if>
+        , EDIT_DATE           = NOW()
+        WHERE BOOK_UUID = #{bookUuid}
     </update>
 
     <update id="deleteBook" parameterType="String">

@@ -72,24 +72,32 @@ public class BookRestController {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping("/addBook/{memberUuid}")
-    public SingleResult<?> modify(BookQuotes.BookQuotesWrite bookQuotesWrite, @PathVariable String memberUuid, @RequestParam("bookImg") MultipartFile multipartFile,
-                                  HttpServletRequest request) throws Exception {
+    @PostMapping("/modify")
+    public SingleResult<?> modifyBook(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("bookImg") MultipartFile multipartFile,
+                                  HttpSession session) throws Exception {
+        Member member = (Member) session.getAttribute("memberInfo");
+        String memberUuid = member.getMemberUuid();
 
-        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents());
-        if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+        System.out.println(bookQuotesWrite+"<<<<<<<<<<<<<<<<<<<<<<<<<");
 
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(memberUuid);
-
-        if (bookQuotes == null) {
-            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
+        if (member == null) {
+            return responseService.getFailResult(ErrorCode.NO_PARAMETERS);
         }
 
+        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents(), bookQuotesWrite.getQuotes());
+        if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookQuotesWrite.getBookUuid());
+
         if (!multipartFile.isEmpty()) {
-            FileHandler.fileDelete(bookQuotes.getImg());
+            FileHandler.fileDelete(bookQuotes.getImg()); //이전 파일 삭제
 
             String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid);
             bookQuotesWrite.setImg(filePath);
+        }
+
+        if(multipartFile.isEmpty()){
+            bookQuotesWrite.setImg(bookQuotes.getImg());
         }
 
         bookQuoteService.updateBook(bookQuotesWrite);

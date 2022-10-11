@@ -16,8 +16,8 @@
 
 		<div class="row mb-5 align-items-end">
 			<div class="col-md-6" data-aos="fade-up">
-				<h2>Write</h2>
-				<p class="mb-0">Upload your favorite quotes and share the quotes with community!
+				<h2>Modify</h2>
+				<p class="mb-0">Modify article
 				</p>
 			</div>
 
@@ -35,12 +35,6 @@
 							<div class="validate"></div>
 						</div>
 						<div class="col-md-12 form-group">
-							<label for="lang">Language</label><br>
-							<input type="radio" name="lang" value="KOR" id="lang" <c:if test="${book.lang eq 'KOR'}">checked</c:if>/>&nbsp;Korean
-							<input type="radio" name="lang" value="ENG" <c:if test="${book.lang eq 'ENG'}">checked</c:if>/>&nbsp;English
-							<div class="validate"></div>
-						</div>
-						<div class="col-md-12 form-group">
 							<label for="writer">Author</label>
 							<input type="text" class="form-control" name="writer" id="writer" value="${book.writer}"/>
 							<div class="validate"></div>
@@ -52,13 +46,33 @@
 							<div class="validate"></div>
 						</div>
 						<div class="col-md-12 form-group">
+							<label for="quotes">Quotes</label>
+							<input type="text" class="form-control" name="quotes" id="quotes" value="${book.quotes1}"/>
+							<div class="validate"></div>
+						</div>
+
+						<c:if test="${book.quotes2!=null}">
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" name="quotes" id="quotes2" value="${book.quotes2}"/>
+								<div class="validate"></div>
+							</div>
+						</c:if>
+
+						<c:if test="${book.quotes3!=null}">
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" name="quotes" id="quotes3" value="${book.quotes3}"/>
+								<div class="validate"></div>
+							</div>
+						</c:if>
+
+						<div class="col-md-12 form-group">
 							<label for="contents">Comment</label>
 							<textarea class="form-control" name="contents" id="contents" cols="30" rows="10" >${book.contents}</textarea>
 							<div class="validate"></div>
 						</div>
 
 						<div class="col-md-6 form-group">
-							<input type="button" class="readmore d-block w-100" value="W r i t e" onclick="validation();">
+							<input type="button" class="readmore d-block w-100" value="M o d i f y" onclick="validation();">
 						</div>
 					</div>
 				</form:form>
@@ -100,18 +114,9 @@
 
 <script>
 	const title = document.getElementById("title");
-	const img = document.getElementById("bookImg");
 	const contents = document.getElementById("contents");
 	const writer = document.getElementById("writer");
-
-	const checked = document.getElementsByName('lang');
-	let lang;
-
-	for (let i = 0; i < checked.length; i++) {
-		if (checked[i].checked == true) {
-			lang = checked[i].value;
-		}
-	}
+	const quotes = document.getElementById("quotes");
 
 	function validation() {
 		if (!title.value) {
@@ -131,23 +136,25 @@
 			return false;
 		}
 
-		if (lang==null) {
-			alert('언어를 선택해주세요');
+		if (!quotes.value) {
+			alert('문장을 입력해주세요');
 			return false;
 		}
+
 		submit();
 
 	}
 
 	function submit() {
-		const memberUuid = '${memberInfo.memberId}';
+		const bookUuid = '${book.bookUuid}';
 		const form = $('#bookWriteForm')[0];
 		const data = new FormData(form);
-		data.append("memberUuid", memberUuid);
+
+		data.append("bookUuid",bookUuid);
 
 		$.ajax({
 			type: "POST",
-			url: "/addBook",
+			url: "/modify",
 			data: data,
 			dataType: "JSON",
 			contentType: false,

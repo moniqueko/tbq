@@ -169,7 +169,7 @@ public class BookController {
         Member info = memberService.selectByUuid(member.getMemberUuid());
         model.addAttribute("memberInfo", info);
 
-        return "/book/addBook2";
+        return "/book/addBook";
     }
 
 
@@ -192,7 +192,7 @@ public class BookController {
     }
 
     @GetMapping("/editBook/{bookUuid}") //수정폼연결
-    public String editBook(@PathVariable("bookUuid") String bookUuid,Model model, HttpServletRequest request) {
+    public String editBook(@PathVariable("bookUuid") String bookUuid,Model model) {
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         model.addAttribute("book", bookQuotes);
 

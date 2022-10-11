@@ -78,10 +78,8 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
+    public void updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
         mapper.updateBook(bookQuotesWrite);
-
-        return selectBookByUuid(bookQuotesWrite.getBookUuid());
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface BookQuoteService {
     int selectCountKor();
     int selectCountEng();
     void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
-    BookQuotes updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
+    void updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(String bookUuid);
     BookQuotes selectBookByUuid(String bookUuid);
 
