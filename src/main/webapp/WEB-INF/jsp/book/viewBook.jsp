@@ -54,7 +54,7 @@
 
 									<h4 class="h4 mb-3"></h4>
 									<ul class="list-unstyled list-line mb-5">
-										<li>${book.quotes1}</li>
+										<c:if test="${book.quotes!=null}"> <li>${book.quotes1}</li></c:if>
 										<c:if test="${book.quotes2!=null}">	<li>${book.quotes2}</li></c:if>
 										<c:if test="${book.quotes3!=null}">	<li>${book.quotes3}</li></c:if>
 									</ul>

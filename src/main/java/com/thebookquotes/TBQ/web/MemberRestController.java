@@ -137,9 +137,9 @@ public class MemberRestController {
 
 
     @PostMapping("/member/del")
-    public SingleResult<?> deleteMember(@RequestBody String uuid, Member member) throws IOException {
+    public SingleResult<?> deleteMember(@RequestBody String uuid, Member member, HttpSession session) throws IOException {
 
-        if (uuid == null || uuid.equals("")) { //받은값 null
+        if (!StringUtils.hasText(uuid)) { //받은값 null
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
         Member mem = memberService.selectByUuid(uuid);
@@ -149,6 +149,7 @@ public class MemberRestController {
         }
         member.setMemberUuid(uuid);
         memberService.deleteMember(mem); //inuse 번호만 바꿈.
+        session.invalidate();
 
         return responseService.getSuccessResult();
     }
@@ -157,12 +158,10 @@ public class MemberRestController {
     @PostMapping("/idCheck") // 중복 아이디 체크
     public SingleResult<?> idCheck(@RequestBody String memberId) throws IOException {
 
-        if (memberId == null) { //받은값 null
+        if (memberId == null) {
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
-        Integer check = memberService.idCheck(memberId);    //갯수 카운트
-
-        System.out.println("check print<<<<<<<<<<<<<<<<<<<<<<"+check);
+        Integer check = memberService.idCheck(memberId);
 
         if (check > 1) {
             return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
@@ -170,74 +169,65 @@ public class MemberRestController {
         return responseService.getSingleResult(check);
     }
 
-    @PostMapping("/emailDupl") // 중복 이메일 체크
+    @PostMapping("/emailDupl")
     public SingleResult<?> emailDuplication(@RequestBody String memberEmail) throws IOException {
-
         int check = 1;
 
-        if (memberEmail == null) { //받은값 null
+        if (memberEmail == null) {
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
 
         check = memberService.emailDuplication(memberEmail);
 
-        System.out.println("check print<<<<<<<<<<<<<<<<<<<<<<"+check);
-
         if (check > 1) {
             return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
 
         } else if (check == 1) {
-            return responseService.getSingleResult(check); //200과 함께 데이터 보냄
+            return responseService.getSingleResult(check);
 
         } else if (check == 0) {
-            return responseService.getSingleResult(check); //200과 함께 데이터 보냄
+            return responseService.getSingleResult(check);
         }
-
         return responseService.getSuccessResult();
     }
 
     @PostMapping("/emailCheck") // 아이디, 이메일 일치 체크
     public SingleResult<?> emailCheck(@RequestBody Member member) throws IOException {
 
-        if (member.getMemberEmail() == null || member.getMemberEmail().equals("") || member.getMemberId() == null || member.getMemberId().equals("")) { //받은값 null
+        if (!StringUtils.hasText(member.getMemberId()) || !StringUtils.hasText(member.getMemberEmail())) {
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
+        int check= memberService.emailCheck(member);
 
-        int check = memberService.emailCheck(member);
-
-        if (check == 0) {//아이디 이메일 불일치
-            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA); //411
+        if(check==0) {//아이디 이메일 불일치
+            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
         return responseService.getSingleResult(check);
     }
 
     @PostMapping("/member/editMember") // 수정된 정보 받아오기
-    public SingleResult<?> editMemberPost(Model model, @RequestBody Member member) throws IOException {
+    public SingleResult<?> editMember(@RequestBody Member member) throws IOException {
 
         String pw_regex = "^.*(?=^.{8,16}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$"; //패스워드 정규식 8~16자 이내
         String email_regex = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 형식
 
         try {
 
-            if (member.getMemberPw() == null || member.getMemberPw().equals("") ||
-                    member.getMemberEmail() == null || member.getMemberEmail().equals("") ||
-                    member.getMemberUuid() == null || member.getMemberUuid().equals("")) { // 받아온값이 null - 아이디, 패스워드 따로하면 유추가능하니까 안됨.
-
+            if (!StringUtils.hasText(member.getMemberPw()) || !StringUtils.hasText(member.getMemberEmail()) ||
+                   !StringUtils.hasText(member.getMemberUuid()) ){
                 return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
 
-            } else if (!Pattern.matches(pw_regex, member.getMemberPw())) {//비밀번호가 정규식에 부합하는지
-
+            } else if (!Pattern.matches(pw_regex, member.getMemberPw())) {
                 return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
-            } else if (!Pattern.matches(email_regex, member.getMemberEmail())) { //이메일이 정규식에 부합하는지
-
+            } else if (!Pattern.matches(email_regex, member.getMemberEmail())) {
                 return responseService.getFailResult(ErrorCode.NOT_FOLLOW_REGEX);
 
             } else {
 
                 //중복테스트 : inuse가 1인것만 가져옴
                 int checkDupl = memberService.emailDuplication(member.getMemberEmail()); //0: 새로운이메일 , 1:존재이메일, 2:다중
-                int checkId = memberService.emailCheck(member); // 0:아이디 이메일 불일치, 1:일치
+                int checkId = memberService.idCheck(member.getMemberId()); // 0:아이디 이메일 불일치, 1:일치
 
                 if (checkId == 1) {
                     System.out.println("사용가능한 이메일(기존메일)");
@@ -274,4 +264,7 @@ public class MemberRestController {
 
         return responseService.getSingleResult(member);
     }
+
+
+
 }

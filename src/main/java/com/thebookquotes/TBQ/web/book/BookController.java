@@ -1,7 +1,6 @@
 package com.thebookquotes.TBQ.web.book;
 
-import com.thebookquotes.TBQ.common.Criteria;
-import com.thebookquotes.TBQ.common.PageMaker;
+import com.thebookquotes.TBQ.common.*;
 import com.thebookquotes.TBQ.dto.BookQuotes;
 import com.thebookquotes.TBQ.dto.Maxim;
 import com.thebookquotes.TBQ.dto.Member;
@@ -14,11 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.FileInputStream;
 import java.io.IOException;

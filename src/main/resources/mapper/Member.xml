@@ -15,10 +15,10 @@
         VALUES(#{memberUuid},#{memberId},#{memberPw},#{memberGrant},NOW(),#{memberInuse},NOW(),NOW(),#{memberEmail})
     </insert>
 
-    <select id="idCheck" resultType="Integer" parameterType="com.thebookquotes.TBQ.dto.Member">
+    <select id="idCheck" resultType="Integer" parameterType="String">
         SELECT  count(member_id)
         FROM 	member
-        WHERE	member_id=#{memberId} and member_inuse=1
+        WHERE	member_id = #{memberId} and member_inuse=1
     </select>
 
     <select id="selectById" resultType="com.thebookquotes.TBQ.dto.Member">
@@ -38,6 +38,7 @@
         FROM 	member
         WHERE	member_inuse = 1
             limit #{pageStart},#{pageSize}
+        ORDER BY member_regi_date desc
     </select>
 
     <update id="lastLoginUpdate" parameterType="com.thebookquotes.TBQ.dto.Member">
@@ -77,9 +78,15 @@
     </update>
 
     <select id="emailDuplication" resultType="int" parameterType="com.thebookquotes.TBQ.dto.Member"><!-- 이메일 중복 체크 -->
-        /*emailDuplication*/
+        /* emailDuplication */
         SELECT  count(member_email)
         FROM 	member
-        WHERE	member_email=#{memberEmail} and member_inuse=1
+        WHERE	member_email = #{memberEmail} and member_inuse=1
+    </select>
+
+    <select id="emailCheck" resultType="int" parameterType="com.thebookquotes.TBQ.dto.Member"><!-- 아이디 이메일 일치 체크 -->
+        SELECT  count(member_id)
+        FROM 	member
+        WHERE	member_id = #{memberId} and member_email = #{memberEmail} and member_inuse=1
     </select>
 </mapper>

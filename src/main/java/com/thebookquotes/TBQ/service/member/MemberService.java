@@ -25,15 +25,13 @@ public interface MemberService {
 
     Integer idCheck(String memberId);
 
-    int emailCheck(Member member);
-
     int selectCount();
 
     String pwGenerate(Member member);
 
     int emailDuplication(String memberEmail);
 
-
+    int emailCheck(Member member);
 
 
 }

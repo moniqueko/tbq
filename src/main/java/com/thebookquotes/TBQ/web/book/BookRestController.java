@@ -8,16 +8,13 @@ import com.thebookquotes.TBQ.dto.Member;
 import com.thebookquotes.TBQ.service.ResponseService;
 import com.thebookquotes.TBQ.service.book.BookQuoteService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,39 +65,6 @@ public class BookRestController {
         }
 
         bookQuoteService.insertBook(bookQuotesWrite);
-
-        return responseService.getSuccessResult();
-    }
-
-    @PostMapping("/modify")
-    public SingleResult<?> modifyBook(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("bookImg") MultipartFile multipartFile,
-                                  HttpSession session) throws Exception {
-        Member member = (Member) session.getAttribute("memberInfo");
-        String memberUuid = member.getMemberUuid();
-
-        System.out.println(bookQuotesWrite+"<<<<<<<<<<<<<<<<<<<<<<<<<");
-
-        if (member == null) {
-            return responseService.getFailResult(ErrorCode.NO_PARAMETERS);
-        }
-
-        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents(), bookQuotesWrite.getQuotes());
-        if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
-
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookQuotesWrite.getBookUuid());
-
-        if (!multipartFile.isEmpty()) {
-            FileHandler.fileDelete(bookQuotes.getImg()); //이전 파일 삭제
-
-            String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid);
-            bookQuotesWrite.setImg(filePath);
-        }
-
-        if(multipartFile.isEmpty()){
-            bookQuotesWrite.setImg(bookQuotes.getImg());
-        }
-
-        bookQuoteService.updateBook(bookQuotesWrite);
 
         return responseService.getSuccessResult();
     }
@@ -167,6 +131,40 @@ public class BookRestController {
         }else if(result>=1){
             return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
         }
+        return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/editBook")
+    public SingleResult<?> editBook(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("bookImg") MultipartFile multipartFile,
+                                  HttpSession session) throws Exception {
+//        Member member = (Member) session.getAttribute("memberInfo");
+//        String memberUuid = member.getMemberUuid();
+//
+//        System.out.println(bookQuotesWrite+"<<<<<<<<<<<<<<<<<<<<<<<<<");
+//
+//        if (member == null) {
+//            return responseService.getFailResult(ErrorCode.NO_PARAMETERS);
+//        }
+//
+//        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents(), bookQuotesWrite.getQuotes());
+//        if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+//
+//        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookQuotesWrite.getBookUuid());
+//
+//        if (!multipartFile.isEmpty()) {
+//            FileHandler.fileDelete(bookQuotes.getImg()); //이전 파일 삭제
+//
+//            String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid);
+//            bookQuotesWrite.setImg(filePath);
+//        }
+//
+//        if(multipartFile.isEmpty()){
+//            bookQuotesWrite.setImg(bookQuotes.getImg());
+//        }
+//
+//        bookQuoteService.updateBook(bookQuotesWrite);
+        System.out.println("넘어왔는지 테스트");
+
         return responseService.getSuccessResult();
     }
 }

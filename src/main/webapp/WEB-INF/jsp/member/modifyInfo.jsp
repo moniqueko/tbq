@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-	<title>Sign in</title>
+	<title>Modify Member Information</title>
 </head>
 
 <body>
@@ -19,17 +19,18 @@
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
-						<a href="/" id="home">Home</a>
-						<a href="/bookList" id="bookList">Book List</a>
-						<a href="/myBook" id="myBook">My book</a>
+						<a href="/" >Home</a>
+						<a href="bookList" >Book List</a>
+						<a href="/myBook" >My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
-								<a href="/member/${memberInfo.memberUuid}" id="myInfo">My Info</a>
+								<a href="/member/${memberInfo.memberUuid}" id="myInfo" class="active">My Info</a>
+								<a href="/login" id="login">Login</a>
 								<a href="/logout">Logout</a>
 							</c:when>
 							<c:when test="${memberInfo==null}">
 								<a href="/login" id="login">Login</a>
-								<a href="/join" id="join" class="active">Join</a>
+								<a href="/join" id="join">Join</a>
 							</c:when>
 						</c:choose>
 					</div>
@@ -39,19 +40,19 @@
 			<div class="row justify-content-center">
 				<div class="col-md-4">
 					<div class="justify-content-center" style="text-align: center">
-						<h2>Join Us?</h2><br><br>
+						<h2>Modify Info</h2><br><br>
 						<div class="container-sm" id="tb">
 
 							<form:form name="memberForm" id="memberForm">
 								<div class="col-md-12 form-group">
 									<label for="memberId" style="text-align: left">ID</label>
-									<input type="text" id="memberId"  name="memberId" class="form-control" oninput="idCheck();"/>
+									<input type="text" id="memberId"  name="memberId" class="form-control" oninput="idCheck();" value="${member.memberId}" readonly/>
 									<div id="idCheckDiv"></div>
 								</div>
 
 								<div class="col-md-12 form-group">
 									<label for="memberEmail" style="text-align: left">Email</label>
-									<input type="email" id="memberEmail"  name="memberEmail" class="form-control" oninput="emailCheck();"/>
+									<input type="email" id="memberEmail"  name="memberEmail" class="form-control" oninput="emailCheck();" value="${member.memberEmail}"/>
 									<div id="emailCheckDiv"></div>
 								</div>
 
@@ -62,7 +63,8 @@
 
 								<div class="col-md-12 form-group">
 									<div id="msg"></div>
-										<span><a href="#" class="readmore" onclick="validation();">Submit</a></span>
+										<span><a href="#" class="readmore" onclick="validation();">Modify</a>
+											<a href="#" class="readmore" onclick="del();">Delete info</a></span>
 								</div>
 
 							</form:form>
@@ -154,16 +156,17 @@
 							accept: "application/json",
 							success: function(result) {
 
-								if(result.data ==1){
+								if(result.data ==1){// 아이디 중복
 									alert("아이디 중복입니다. 다른 아이디를 입력해주세요.");
 
 								}else if(result.data ==0){
-									signIn();
+									modifyInfo();//******모두 통과하면 실행
 								}
 
 
 							},
 							error: function(result) {
+
 								console.log(result.responseText);
 							}
 						});
@@ -173,9 +176,12 @@
 
 				},
 				error: function(result) {
+
 					console.log(result.responseText);
 				}
 			});
+
+
 
 		}
 	}
@@ -197,6 +203,8 @@
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
+				console.log(result.data);
+				console.log(result);
 
 				if(result.data ==1){// 아이디 중복
 					document.getElementById("idCheckDiv").innerHTML = "<span style='color: red;'>아이디 중복</span>";
@@ -242,7 +250,7 @@
 		});
 	}
 
-	function signIn(){
+	function modifyInfo(){
 		let memberId = document.getElementById("memberId").value;
 		let memberPw = document.getElementById("memberPw").value;
 		let memberEmail = document.getElementById("memberEmail").value;
@@ -254,23 +262,53 @@
 		};
 
 		$.ajax({
-			url: "/join",
+			url: "/member/editMember",
 			type: "POST",
 			data: JSON.stringify(data),
 			dataType: "JSON",
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
-				alert('회원가입이 완료되었습니다. 다시 로그인해 주세요');
-				location.href="/login";
+				console.log(result.data);
+				console.log("전송/저장 성공");
+				alert('Modified');
+				location.href="/admin";
 
 			},
 			error: function(result) {
-				alert('회원가입 실패. 다시 시도해 주세요');
 				console.log(result.responseText);
 			}
 		});
 
 	}
 
+	function del(){
+		let check = confirm("Delete?");
+
+		if(check == false){
+			history.back();
+		}
+
+		let memberUuid = '${member.memberUuid}';
+
+		$.ajax({
+			type: "POST",
+			url: "/member/del",
+			data: memberUuid,
+			dataType: "text",
+			contentType : "application/json",
+			processData : false,
+			success: function(result) {
+				alert("Deletion success. Good Bye!");
+
+				location.href="/";
+			},
+			error: function(request, status, error) {
+				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
+
+				alert("Error occurred");
+			}
+		});
+
+	}
 </script>

@@ -114,6 +114,11 @@ public class MemberController {
             Member mem = memberService.selectByUuid(memberUuid);
             model.addAttribute("member", mem);
             return "member/editMember";
+
+        }else if (memberSession.getMemberGrant()==0){
+            Member mem = memberService.selectByUuid(memberUuid);
+            model.addAttribute("member", mem);
+            return "member/modifyInfo";
         }
         return "member/login";
 

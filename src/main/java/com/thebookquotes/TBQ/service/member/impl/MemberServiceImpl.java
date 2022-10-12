@@ -87,14 +87,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int emailCheck(Member member) {
-        int cnt = mapper.emailCheck(member);
-        return cnt;
+    public int emailDuplication(String memberEmail) {
+        return mapper.emailDuplication(memberEmail);
     }
 
     @Override
-    public int emailDuplication(String memberEmail) {
-        return mapper.emailDuplication(memberEmail);
+    public int emailCheck(Member member) {
+        return mapper.emailCheck(member);
     }
 
     @Override
@@ -111,8 +110,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member selectByEmail(String memberEmail) {
-        Member emailCheck =  mapper.selectByEmail(memberEmail);
-        return emailCheck;
+        Member member =  mapper.selectByEmail(memberEmail);
+        return member;
     }
 
 

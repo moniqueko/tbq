@@ -109,43 +109,39 @@
 </main>
 
 <hr><br>
-
-<%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
-
 <script>
-	const title = document.getElementById("title");
-	const contents = document.getElementById("contents");
-	const writer = document.getElementById("writer");
-	const quotes = document.getElementById("quotes");
+	var title = document.getElementById("title").value;
+	var contents = document.getElementById("contents").value;
+	var writer = document.getElementById("writer").value;
+	var quotes = document.getElementById("quotes").value;
 
 	function validation() {
-		if (!title.value) {
+
+		if (title == null || title === "") {
 			alert('제목을 입력해주세요');
-			title.focus();
 			return false;
-		}
 
-		if (!contents.value) {
+		}else if (contents == null || contents ==="") {
 			alert('텍스트를 입력해주세요');
-			contents.focus();
 			return false;
-		}
 
-		if (!writer.value) {
+		}else if (writer == null || writer ==="") {
 			alert('작가를 입력해주세요');
 			return false;
-		}
 
-		if (!quotes.value) {
+		}else if (quotes == null || quotes ==="") {
 			alert('문장을 입력해주세요');
 			return false;
-		}
 
-		submit();
+		}else {
+			submitEditBook();
+		}
 
 	}
 
-	function submit() {
+	function submitEditBook() {
+		console.log("실행됨");
+
 		const bookUuid = '${book.bookUuid}';
 		const form = $('#bookWriteForm')[0];
 		const data = new FormData(form);
@@ -154,8 +150,8 @@
 
 		$.ajax({
 			type: "POST",
-			url: "/modify",
-			data: data,
+			url: "/editBook",
+			data: JSON.stringify(data),
 			dataType: "JSON",
 			contentType: false,
 			processData: false,
@@ -163,8 +159,10 @@
 				document.location = "/bookList";
 			},
 			error: function (error) {
-				alert("에러발생");
+				alert("Error occurred");
 			}
 		});
 	}
 </script>
+
+<%@ include file="/WEB-INF/jsp/component/footer.jsp" %>

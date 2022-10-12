@@ -53,7 +53,7 @@
 
 								<div class="col-md-12 form-group">
 									<label for="memberPw" style="text-align: left">Password</label>
-									<input type="password" id="memberPw"  name="memberPw" class="form-control" onkeyup="enterKey();" value="${member.memberPw}"/>
+									<input type="password" id="memberPw"  name="memberPw" class="form-control" onkeyup="enterKey();"/>
 								</div>
 
 								<div class="col-md-12 form-group">
@@ -91,10 +91,8 @@
 		var pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
 		var emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
 
-
 		var tb = document.getElementById('tb');
 		var msg = document.getElementById('msg');
-
 
 		if (idcheck == null || idcheck == "") {
 
@@ -127,57 +125,73 @@
 
 		} else{
 
+			var data = {
+				'memberId': idcheck,
+				'memberEmail' : emailcheck
+			};
+
 			$.ajax({
-				url: "/emailDupl",
+				url: "/emailCheck", //아이디 이메일 일치여부. 0:불일치 1:일치
 				type: "POST",
-				data: JSON.stringify(emailcheck),
+				data: JSON.stringify(data),
 				dataType: "JSON",
 				contentType: "application/json",
 				accept: "application/json",
 				success: function(result) {
 
-					if(result.data ==1){
-						alert("이메일 중복입니다. 다른 이메일을 입력해주세요.");
+					if(result.code == 200){ //원래 이메일 주소 사용할수 있게 하기 위함.
+						modifyInfo();
 
-					}else if(result.data ==0){ //이메일 통과
+					}else if(result.code == 401){ //새로운 이메일 주소
 
 						$.ajax({
-							url: "/idCheck",
+							url: "/emailDupl", //갯수만
 							type: "POST",
-							data: JSON.stringify(idcheck),
+							data: emailcheck,
 							dataType: "JSON",
 							contentType: "application/json",
 							accept: "application/json",
 							success: function(result) {
 
-								if(result.data ==1){// 아이디 중복
-									alert("아이디 중복입니다. 다른 아이디를 입력해주세요.");
+								if(result.code == 406){ //이미 db에 두개 있는경우
+									alert("이메일 주소가 사용중입니다. 이메일을 다시 확인해주세요.");
+									return;
 
-								}else if(result.data ==0){
-									modifyInfo();//******모두 통과하면 실행
+								}else if(result.code == 200){ //db에 없는 아예 새로운 이메일
+
+									if(result.data == 1){ //본인 이메일 재사용
+										alert("이메일 재사용");
+										modifyInfo();
+
+									}else if(result.data == 0){
+										modifyInfo();
+									}
+
+								}else if(result.code == 410){
+									console.log(result.message);
 								}
 
 
 							},
 							error: function(result) {
-
-								console.log(result.responseText);
+								console.log(result.responseText); //responseText의 에러메세지 확인
 							}
 						});
 
+					}else if(emailcheck==null|| emailcheck==''){
+						document.getElementById("msg").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
 
 					}
 
 				},
 				error: function(result) {
-
 					console.log(result.responseText);
 				}
 			});
 
 
-
 		}
+
 	}
 
 	function enterKey() {
@@ -192,17 +206,14 @@
 		$.ajax({
 			url: "/idCheck",
 			type: "POST",
-			data: JSON.stringify(memberId),
+			data: memberId,
 			dataType: "JSON",
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
-				console.log(result.data);
-				console.log(result);
 
 				if(result.data ==1){// 아이디 중복
 					document.getElementById("idCheckDiv").innerHTML = "<span style='color: red;'>아이디 중복</span>";
-
 
 				}else if(result.data ==0){
 					document.getElementById("idCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 아이디</span>";
@@ -216,30 +227,66 @@
 	}
 
 	function emailCheck(){
-		let memberEmail = document.getElementById("memberEmail").value;
+		var memberId = document.forms["memberForm"]["memberId"].value;
+		var memberEmail = document.forms["memberForm"]["memberEmail"].value;
+
+		var data = {
+			'memberId': memberId,
+			'memberEmail' : memberEmail
+		};
 
 		$.ajax({
-			url: "/emailDupl",
+			url: "/emailCheck",
 			type: "POST",
-			data: JSON.stringify(memberEmail),
+			data: JSON.stringify(data),
 			dataType: "JSON",
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
 
-				if(result.data ==1){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: red;'>이메일 중복</span>";
+				if(result.code == 401){
+					$.ajax({
+						url: "/emailDupl", //이메일 중복 갯수만
+						type: "POST",
+						data: memberEmail,
+						dataType: "JSON",
+						contentType: "application/json",
+						accept: "application/json",
+						success: function(result) {
 
-				}else if(result.data ==0){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 이메일</span>";
+							if(result.code == 406){ //이미 db에 두개 있는경우
+								document.getElementById("msg").innerHTML = "<span style='color: red;'>사용중인 이메일</span>";
+
+							}else if(result.code == 200){ //db에 없는 아예 새로운 이메일
+
+								if(result.data == 1){ //타인이 사용중인 이메일
+									document.getElementById("msg").innerHTML = "<span style='color: red;'>사용중인 이메일</span>";
+
+								}else if(result.data == 0){
+									document.getElementById("msg").innerHTML = "<span style='color: green;'>사용가능한 이메일</span>";
+								}
+
+							}
+
+						},
+						error: function(result) {
+							console.log(result.responseText); //responseText의 에러메세지 확인
+						}
+					});
+
+					//본인 이메일주소
+
+				}else if(result.code == 200){ //새로운 이메일 주소
+					document.getElementById("msg").innerHTML = "<span style='color: green;'>사용가능한 이메일 (변경없음)</span>";
 
 				}else if(memberEmail==null|| memberEmail==''){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
+					document.getElementById("msg").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
+
 				}
 
 			},
 			error: function(result) {
-				console.log(result.responseText);
+				console.log(result.responseText); //responseText의 에러메세지 확인
 			}
 		});
 	}
@@ -266,7 +313,8 @@
 				console.log(result.data);
 				console.log("전송/저장 성공");
 				alert('Modified');
-				location.href="/admin";
+
+				location.href="/memberList";
 
 			},
 			error: function(result) {
