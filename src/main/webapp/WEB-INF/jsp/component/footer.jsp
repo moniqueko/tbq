@@ -32,3 +32,4 @@
 
 <!-- Template Main JS File -->
 <script src="<c:url value='../js/main.js'/>"></script>
+<script src="<c:url value='../js/FileSaver.min.js'/>"></script>

@@ -5,6 +5,16 @@
 
 <head>
 	<title>Book List</title>
+
+	<style>
+		canvas{
+			background-image: url("/bookImg/${book.bookUuid}");
+			background-position: center;
+			background-size: 100% 100%;
+			-webkit-transform: scale(1);
+			transform: scale(1);
+		}
+	</style>
 </head>
 
 <body>
@@ -41,7 +51,8 @@
 				<div class="container">
 					<div class="row align-items-stretch">
 						<div class="col-md-7" data-aos="fade-up">
-							<img src="/bookImg/${book.bookUuid}" alt="Image" class="img-fluid">
+<%--							<img src="/bookImg/${book.bookUuid}" alt="Image" class="img-fluid">--%>
+							<canvas id="canvas" name="canvas" class="img-fluid" width="600" height="700"></canvas>
 						</div>
 						<div class="col-md-4 ml-auto" data-aos="fade-up" data-aos-delay="100">
 							<div class="sticky-content">
@@ -59,6 +70,7 @@
 										<c:if test="${book.quotes3!=null}">	<li>${book.quotes3}</li></c:if>
 									</ul>
 								<c:if test="${memberInfo!=null}">
+									<p><a href="#" class="readmore" id="down" onclick="DownloadCanvasAsImage();"><span>Highlight Down</span></a></p>
 									<p><a href="#" class="readmore" onclick="addScrap();"><span id="count">Scrap (${book.count})</span></a></p>
 									<p><a href="#" class="readmore" onclick="kakaoShare();"><span>Share Kakao</span></a></p>
 								</c:if>
@@ -137,15 +149,60 @@
 		</div>
 	</div>
 
-	<div class="modal">
-		<div class="modalBox" style="text-align: center;">
-		</div>
-	</div>
-
 </main>
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
+
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
 <script>
+	$(document).ready(function(){
+		var canvas = document.querySelector('canvas'),
+				c = canvas.getContext('2d');
+				c.globalAlpha = 0.03;
+				c.fillStyle = 'yellow';
+
+		let isDrawing = false;
+
+		var background = new Image(600, 700);
+		background.setAttribute("class", "canvas");
+		background.src = "/bookImg/${book.bookUuid}";
+
+		function draw(x, y) {
+			if (isDrawing) {
+				c.beginPath();
+				c.arc(x, y, 10, 0, Math.PI*2);
+				c.closePath();
+				c.fill();
+
+				c.globalCompositeOperation="source-over";
+				c.drawImage(background, 0, 0);
+			}
+		}
+
+			canvas.addEventListener('mousemove', event =>
+					draw(event.offsetX, event.offsetY)
+			);
+			canvas.addEventListener('mousedown', () => isDrawing = true);
+			canvas.addEventListener('mouseup', () => isDrawing = false);
+
+			// document.querySelector('a').addEventListener('click', event =>
+			// 		event.target.href = canvas.toDataURL()
+			// );
+
+	});
+
+	function DownloadCanvasAsImage(){
+		let downloadLink = document.createElement('a');
+		downloadLink.setAttribute('download', 'CanvasAsImage.png');
+		let canvas = document.getElementById('canvas');
+		canvas.toBlob(function(blob) {
+			let url = URL.createObjectURL(blob);
+			downloadLink.setAttribute('href', url);
+			downloadLink.click();
+		});
+	}
+
+
 	function del(){
 		const bookUuid = '${book.bookUuid}';
 		let check = confirm("Delete?");
@@ -232,25 +289,6 @@
 		});
 
 	}
-
-	$(function(){
-
-		$("div img").click(function(){
-			let img = new Image();
-			img.style.objectFit = 'cover';
-			img.style.maxWidth = '1200px';
-			img.style.maxHeight = '1200px';
-			img.src = $(this).attr("src")
-
-			$('.modalBox').html(img);
-			$(".modal").show();
-		});
-
-		$(".modal").click(function (e) {
-			$(".modal").toggle();
-		});
-	});
-
 
 	if (!Kakao.isInitialized()) {
 		Kakao.init('3ca30286ce62eef499d71954c63154fc');
