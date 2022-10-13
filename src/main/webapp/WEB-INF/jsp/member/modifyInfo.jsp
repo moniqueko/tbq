@@ -43,11 +43,10 @@
 						<h2>Modify Info</h2><br><br>
 						<div class="container-sm" id="tb">
 
-							<form:form name="memberForm" id="memberForm">
+							<form:form name="memberForm" id="memberForm" role="form">
 								<div class="col-md-12 form-group">
 									<label for="memberId" style="text-align: left">ID</label>
-									<input type="text" id="memberId"  name="memberId" class="form-control" oninput="idCheck();" value="${member.memberId}" readonly/>
-									<div id="idCheckDiv"></div>
+									<input type="text" id="memberId"  name="memberId" class="form-control" value="${member.memberId}" readonly/>
 								</div>
 
 								<div class="col-md-12 form-group">
@@ -62,12 +61,11 @@
 								</div>
 
 								<div class="col-md-12 form-group">
-									<div id="msg"></div>
-										<span><a href="#" class="readmore" onclick="validation();">Modify</a>
-											<a href="#" class="readmore" onclick="del();">Delete info</a></span>
+									<span><a href="#" class="readmore" onclick="validation();">Modify</a>
+										<a href="#" class="readmore" onclick="del();">Delete info</a></span>
 								</div>
-
 							</form:form>
+							<div id="msg"></div>
 							</div>
 
 						</div>
@@ -93,97 +91,98 @@
 		var pwcheck = document.forms["memberForm"]["memberPw"].value;
 		var emailcheck = document.forms["memberForm"]["memberEmail"].value;
 
-		var regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/; //아이디 정규식
 		var pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
 		var emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
-
 
 		var tb = document.getElementById('tb');
 		var msg = document.getElementById('msg');
 
+		if (pwcheck == null || pwcheck == "") {
 
-		if (idcheck == null || idcheck == "") {
-
-			msg.innerHTML = "아이디가 입력되지 않았습니다.";
+			msg.innerHTML = "Password is empty";
 			tb.append(msg);
 
-			return false;
-
-		} else if (pwcheck == null || pwcheck == "") {
-
-			msg.innerHTML = "비밀번호가 입력되지 않았습니다";
-			tb.append(msg);
-
-			return false;
-
-		} else if(!regExp.test(idcheck)) {
-
-			alert('아이디 첫글자는 영문이어야하며 4~12자의 영문 대소문자와 숫자,하이픈,언더바 사용가능')
 			return false;
 
 		} else if(!pwExp.test(pwcheck)) {
 
-			alert('비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.')
+			alert('Follow PW format: mixed with alphabet/number/!@#$%^&* within 8~16 long')
 			return false;
 
 		} else if(!emailregExp.test(emailcheck)) {
 
-			alert('이메일 형식이 맞지 않습니다.')
+			msg.innerHTML = "Please follow E-mail format";
+			tb.append(msg);
 			return false;
 
 		} else{
 
+			var data = {
+				'memberId': idcheck,
+				'memberEmail' : emailcheck
+			};
+
 			$.ajax({
-				url: "/emailDupl",
+				url: "/emailCheck", //아이디 이메일 일치여부. 0:불일치 1:일치
 				type: "POST",
-				data: emailcheck,
+				data: JSON.stringify(data),
 				dataType: "JSON",
 				contentType: "application/json",
 				accept: "application/json",
 				success: function(result) {
 
-					if(result.data ==1){
-						alert("이메일 중복입니다. 다른 이메일을 입력해주세요.");
+					if(result.code == 200){ //원래 이메일 주소 사용할수 있게 하기 위함.
+						modifyInfo();
 
-					}else if(result.data ==0){ //이메일 통과
+					}else if(result.code == 401){ //새로운 이메일 주소
 
 						$.ajax({
-							url: "/idCheck",
+							url: "/emailDupl",
 							type: "POST",
-							data: idcheck,
+							data: emailcheck,
 							dataType: "JSON",
 							contentType: "application/json",
 							accept: "application/json",
 							success: function(result) {
 
-								if(result.data ==1){// 아이디 중복
-									alert("아이디 중복입니다. 다른 아이디를 입력해주세요.");
+								if(result.code == 406){ //이미 db에 두개 있는경우
+									alert("This E-mail address is used");
+									return;
 
-								}else if(result.data ==0){
-									modifyInfo();//******모두 통과하면 실행
+								}else if(result.code == 200){ //db에 없는 아예 새로운 이메일
+
+									if(result.data == 1){ //본인 or 타인이 이메일 사용
+										alert("This E-mail address is used");
+
+									}else if(result.data == 0){
+										modifyInfo();
+									}
+
+								}else if(result.code == 410){ //No input data error
+									console.log(result.message);
 								}
 
 
 							},
 							error: function(result) {
-
 								console.log(result.responseText);
 							}
 						});
 
+					}else if(emailcheck==null|| emailcheck==''){
+						document.getElementById("msg").innerHTML = "<span style='color: green;'>E-mail is empty</span>";
 
 					}
 
 				},
 				error: function(result) {
-
 					console.log(result.responseText);
 				}
 			});
 
 
-
 		}
+
 	}
 
 	function enterKey() {
@@ -192,55 +191,62 @@
 		}
 	}
 
-	function idCheck(){ //아이디 입력시
-		let memberId = document.getElementById("memberId").value;
-
-		$.ajax({
-			url: "/idCheck",
-			type: "POST",
-			data: memberId,
-			dataType: "JSON",
-			contentType: "application/json",
-			accept: "application/json",
-			success: function(result) {
-				console.log(result.data);
-				console.log(result);
-
-				if(result.data ==1){// 아이디 중복
-					document.getElementById("idCheckDiv").innerHTML = "<span style='color: red;'>아이디 중복</span>";
-
-
-				}else if(result.data ==0){
-					document.getElementById("idCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 아이디</span>";
-				}
-
-			},
-			error: function(result) {
-				console.log(result.responseText);
-			}
-		});
-	}
-
 	function emailCheck(){
-		let memberEmail = document.getElementById("memberEmail").value;
+		var memberId = document.forms["memberForm"]["memberId"].value;
+		var memberEmail = document.forms["memberForm"]["memberEmail"].value;
+
+		var data = {
+			'memberId': memberId,
+			'memberEmail' : memberEmail
+		};
 
 		$.ajax({
-			url: "/emailDupl",
+			url: "/emailCheck",
 			type: "POST",
-			data: memberEmail,
+			data: JSON.stringify(data),
 			dataType: "JSON",
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
 
-				if(result.data ==1){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: red;'>이메일 중복</span>";
+				if(result.code == 401){
+					$.ajax({
+						url: "/emailDupl", //이메일 중복 갯수만
+						type: "POST",
+						data: memberEmail,
+						dataType: "JSON",
+						contentType: "application/json",
+						accept: "application/json",
+						success: function(result) {
 
-				}else if(result.data ==0){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 이메일</span>";
+							if(result.code == 406){ //이미 db에 두개 있는경우
+								document.getElementById("msg").innerHTML = "<span style='color: red;'>The E-mail is used</span>";
+
+							}else if(result.code == 200){ //db에 없는 아예 새로운 이메일
+
+								if(result.data == 1){ //타인이 사용중인 이메일
+									document.getElementById("msg").innerHTML = "<span style='color: red;'>The E-mail is used</span>";
+
+								}else if(result.data == 0){
+									document.getElementById("msg").innerHTML = "<span style='color: green;'>Available</span>";
+								}
+
+							}
+
+						},
+						error: function(result) {
+							console.log(result.responseText);
+						}
+					});
+
+					//본인 이메일주소
+
+				}else if(result.code == 200){ //새로운 이메일 주소
+					document.getElementById("msg").innerHTML = "<span style='color: green;'>Available (No change)</span>";
 
 				}else if(memberEmail==null|| memberEmail==''){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
+					document.getElementById("msg").innerHTML = "<span style='color: green;'>Please input E-mail</span>";
+
 				}
 
 			},
@@ -254,11 +260,13 @@
 		let memberId = document.getElementById("memberId").value;
 		let memberPw = document.getElementById("memberPw").value;
 		let memberEmail = document.getElementById("memberEmail").value;
+		let memberUuid = '${member.memberUuid}';
 
 		var data = {
 			'memberId' : memberId,
 			'memberPw' : memberPw,
-			'memberEmail' : memberEmail
+			'memberEmail' : memberEmail,
+			'memberUuid' : memberUuid
 		};
 
 		$.ajax({
@@ -270,9 +278,10 @@
 			accept: "application/json",
 			success: function(result) {
 				console.log(result.data);
-				console.log("전송/저장 성공");
+
 				alert('Modified');
-				location.href="/admin";
+
+				location.href="/memberList";
 
 			},
 			error: function(result) {
@@ -282,33 +291,4 @@
 
 	}
 
-	function del(){
-		let check = confirm("Delete?");
-
-		if(check == false){
-			history.back();
-		}
-
-		let memberUuid = '${member.memberUuid}';
-
-		$.ajax({
-			type: "POST",
-			url: "/member/del",
-			data: memberUuid,
-			dataType: "text",
-			contentType : "application/json",
-			processData : false,
-			success: function(result) {
-				alert("Deletion success. Good Bye!");
-
-				location.href="/";
-			},
-			error: function(request, status, error) {
-				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
-
-				alert("Error occurred");
-			}
-		});
-
-	}
 </script>

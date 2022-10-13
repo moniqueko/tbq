@@ -48,6 +48,7 @@
     </update>
 
     <update id="updateMember" parameterType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.updateMember */
         UPDATE member
         SET member_pw = #{memberPw}, member_email = #{memberEmail}, member_edit_date = NOW()
         WHERE member_uuid = #{memberUuid}

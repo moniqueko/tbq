@@ -11,10 +11,10 @@
         <div id="menus" class="menus">
             <a href="/" id="home">Home</a>
             <a href="/bookList" id="bookList">Book List</a>
-            <a href="#" id="myBook">My book</a>
+            <a href="/myBook" id="myBook">My book</a>
             <c:choose>
                 <c:when test="${memberInfo!=null}">
-                    <a href="#" id="myInfo">My Info</a>
+                    <a href="/member/${memberInfo.memberUuid}" id="myInfo">My Info</a>
                     <a href="/logout">Logout</a>
                 </c:when>
                 <c:when test="${memberInfo==null}">

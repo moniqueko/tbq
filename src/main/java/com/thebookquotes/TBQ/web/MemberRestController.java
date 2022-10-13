@@ -139,12 +139,12 @@ public class MemberRestController {
     @PostMapping("/member/del")
     public SingleResult<?> deleteMember(@RequestBody String uuid, Member member, HttpSession session) throws IOException {
 
-        if (!StringUtils.hasText(uuid)) { //받은값 null
+        if (!StringUtils.hasText(uuid)) {
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
         Member mem = memberService.selectByUuid(uuid);
 
-        if (mem == null) { //조회한값 null
+        if (mem == null) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
         member.setMemberUuid(uuid);
@@ -171,13 +171,11 @@ public class MemberRestController {
 
     @PostMapping("/emailDupl")
     public SingleResult<?> emailDuplication(@RequestBody String memberEmail) throws IOException {
-        int check = 1;
-
         if (memberEmail == null) {
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
 
-        check = memberService.emailDuplication(memberEmail);
+        int check = memberService.emailDuplication(memberEmail);
 
         if (check > 1) {
             return responseService.getFailResult(ErrorCode.DUPLICATION_ERROR);
@@ -197,7 +195,7 @@ public class MemberRestController {
         if (!StringUtils.hasText(member.getMemberId()) || !StringUtils.hasText(member.getMemberEmail())) {
             return responseService.getFailResult(ErrorCode.NO_INPUT_DATA);
         }
-        int check= memberService.emailCheck(member);
+        int check = memberService.emailCheck(member);
 
         if(check==0) {//아이디 이메일 불일치
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
@@ -227,7 +225,7 @@ public class MemberRestController {
 
                 //중복테스트 : inuse가 1인것만 가져옴
                 int checkDupl = memberService.emailDuplication(member.getMemberEmail()); //0: 새로운이메일 , 1:존재이메일, 2:다중
-                int checkId = memberService.idCheck(member.getMemberId()); // 0:아이디 이메일 불일치, 1:일치
+                int checkId = memberService.emailCheck(member); // 0:아이디 이메일 불일치, 1:일치
 
                 if (checkId == 1) {
                     System.out.println("사용가능한 이메일(기존메일)");

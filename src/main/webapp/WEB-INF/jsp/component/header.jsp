@@ -4,7 +4,7 @@
       <div class="col-md-2">
         <ul class="custom-menu">
           <li><a href="/">Home</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mailto:enjuk0507@gmail.com">Contact</a></li>
         </ul>
       </div>
       <div class="col-md-6 d-none d-md-block  mr-auto">
