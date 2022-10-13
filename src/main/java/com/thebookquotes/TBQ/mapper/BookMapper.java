@@ -19,7 +19,7 @@ public interface BookMapper {
     int selectCountKor();
     int selectCountEng();
     void insertBook(BookQuotes bookQuotes);
-    void updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
+    void updateBook(BookQuotes bookQuotes);
     void deleteBook(String bookUuid);
     BookQuotes selectBookByUuid(String bookUuid);
     void insertCmt(BookQuotes.Comment cmt);

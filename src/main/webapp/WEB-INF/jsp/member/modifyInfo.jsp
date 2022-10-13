@@ -20,7 +20,7 @@
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
 					<div id="menus" class="menus">
 						<a href="/" >Home</a>
-						<a href="bookList" >Book List</a>
+						<a href="/bookList" >Book List</a>
 						<a href="/myBook" >My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">

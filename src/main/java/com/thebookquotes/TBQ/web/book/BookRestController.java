@@ -137,33 +137,51 @@ public class BookRestController {
     @PostMapping("/editBook")
     public SingleResult<?> editBook(BookQuotes.BookQuotesWrite bookQuotesWrite, @RequestParam("bookImg") MultipartFile multipartFile,
                                   HttpSession session) throws Exception {
-//        Member member = (Member) session.getAttribute("memberInfo");
-//        String memberUuid = member.getMemberUuid();
-//
-//        System.out.println(bookQuotesWrite+"<<<<<<<<<<<<<<<<<<<<<<<<<");
-//
-//        if (member == null) {
-//            return responseService.getFailResult(ErrorCode.NO_PARAMETERS);
-//        }
-//
-//        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents(), bookQuotesWrite.getQuotes());
-//        if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
-//
-//        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookQuotesWrite.getBookUuid());
-//
-//        if (!multipartFile.isEmpty()) {
-//            FileHandler.fileDelete(bookQuotes.getImg()); //이전 파일 삭제
-//
-//            String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid);
-//            bookQuotesWrite.setImg(filePath);
-//        }
-//
-//        if(multipartFile.isEmpty()){
-//            bookQuotesWrite.setImg(bookQuotes.getImg());
-//        }
-//
-//        bookQuoteService.updateBook(bookQuotesWrite);
-        System.out.println("넘어왔는지 테스트");
+        Member member = (Member) session.getAttribute("memberInfo");
+        String memberUuid = member.getMemberUuid();
+
+        if (member == null) {
+            return responseService.getFailResult(ErrorCode.NO_PARAMETERS);
+        }
+
+        List<String> list = Arrays.asList(bookQuotesWrite.getTitle(), bookQuotesWrite.getContents(), bookQuotesWrite.getQuotes());
+        if (list.stream().anyMatch(String::isEmpty)) return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookQuotesWrite.getBookUuid());
+
+        if (!member.getMemberUuid().equals(bookQuotes.getMemberUuid())){ // 글쓴이와 로그인한 uuid 다를때
+            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
+        }
+
+        if (!multipartFile.isEmpty()) {
+        FileHandler.fileDelete(bookQuotes.getImg()); //이전 파일 삭제
+
+        String filePath = FileHandler.saveFileFromMultipart(multipartFile, path + "/" + memberUuid);
+        bookQuotesWrite.setImg(filePath);
+
+        }else if(multipartFile.isEmpty()){
+            bookQuotesWrite.setImg(bookQuotes.getImg());
+        }
+
+        String quotes = bookQuotesWrite.getQuotes(); //1,2,3
+        String[] array=  quotes.split(",");
+
+        if(array.length==1){
+            bookQuotesWrite.setQuotes1(array[0]);
+            bookQuotesWrite.setQuotes(array[0]);
+
+        }else if(array.length==2){
+            bookQuotesWrite.setQuotes1(array[0]);
+            bookQuotesWrite.setQuotes2(array[1]);
+            bookQuotesWrite.setQuotes(array[0] + "," + array[1]);
+
+        }else if(array.length==3){
+            bookQuotesWrite.setQuotes1(array[0]);
+            bookQuotesWrite.setQuotes2(array[1]);
+            bookQuotesWrite.setQuotes3(array[2]);
+        }
+
+        bookQuoteService.updateBook(bookQuotesWrite);
 
         return responseService.getSuccessResult();
     }

@@ -79,7 +79,11 @@ public class BookQuoteServiceImpl implements BookQuoteService {
 
     @Override
     public void updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {
-        mapper.updateBook(bookQuotesWrite);
+        BookQuotes insert = new BookQuotes(bookQuotesWrite.getBookUuid(), bookQuotesWrite.getTitle(), bookQuotesWrite.getWriter(), bookQuotesWrite.getMemberUuid(),
+                bookQuotesWrite.getContents(),0, bookQuotesWrite.getImg(), null,
+                bookQuotesWrite.getQuotes(), bookQuotesWrite.getQuotes1(), bookQuotesWrite.getQuotes2(), bookQuotesWrite.getQuotes3());
+
+        mapper.updateBook(insert);
     }
 
     @Override

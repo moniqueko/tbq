@@ -37,8 +37,8 @@
         SELECT *
         FROM 	member
         WHERE	member_inuse = 1
-            limit #{pageStart},#{pageSize}
         ORDER BY member_regi_date desc
+            limit #{pageStart},#{pageSize}
     </select>
 
     <update id="lastLoginUpdate" parameterType="com.thebookquotes.TBQ.dto.Member">

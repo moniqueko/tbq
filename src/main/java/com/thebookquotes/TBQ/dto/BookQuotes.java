@@ -47,6 +47,22 @@ public class BookQuotes {
         this.quotes3 = quotes3;
     }
 
+    public BookQuotes(String bookUuid, String title, String writer, String memberUuid, String contents, int readNum,
+                      String img, Date editDate, String quotes, String quotes1, String quotes2, String quotes3) {
+        this.bookUuid = bookUuid;
+        this.title = title;
+        this.writer = writer;
+        this.memberUuid = memberUuid;
+        this.contents = contents;
+        this.readNum = readNum;
+        this.img = img;
+        this.editDate = editDate;
+        this.quotes = quotes;
+        this.quotes1 = quotes1;
+        this.quotes2 = quotes2;
+        this.quotes3 = quotes3;
+    }
+
     @Data
     public static class BookQuotesWrite {
         private String bookUuid;

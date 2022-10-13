@@ -140,18 +140,16 @@
 	}
 
 	function submitEditBook() {
-		console.log("실행됨");
 
 		const bookUuid = '${book.bookUuid}';
 		const form = $('#bookWriteForm')[0];
 		const data = new FormData(form);
-
 		data.append("bookUuid",bookUuid);
 
 		$.ajax({
 			type: "POST",
 			url: "/editBook",
-			data: JSON.stringify(data),
+			data: data,
 			dataType: "JSON",
 			contentType: false,
 			processData: false,
