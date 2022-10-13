@@ -281,7 +281,7 @@
 
 				alert('Modified');
 
-				location.href="/memberList";
+				location.href="/member/"+ memberUuid;
 
 			},
 			error: function(result) {

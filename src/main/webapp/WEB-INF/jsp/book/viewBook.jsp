@@ -59,7 +59,8 @@
 										<c:if test="${book.quotes3!=null}">	<li>${book.quotes3}</li></c:if>
 									</ul>
 								<c:if test="${memberInfo!=null}">
-								<p><a href="#" class="readmore" onclick="addScrap();"><span id="count">Scrap (${book.count})</span></a></p>
+									<p><a href="#" class="readmore" onclick="addScrap();"><span id="count">Scrap (${book.count})</span></a></p>
+									<p><a href="#" class="readmore" onclick="kakaoShare();"><span>Share Kakao</span></a></p>
 								</c:if>
 
 								<c:if test="${book.memberUuid==memberInfo.memberUuid}">
@@ -143,7 +144,7 @@
 
 </main>
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
-
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
 	function del(){
 		const bookUuid = '${book.bookUuid}';
@@ -249,8 +250,38 @@
 			$(".modal").toggle();
 		});
 	});
-</script>
 
+
+	if (!Kakao.isInitialized()) {
+		Kakao.init('3ca30286ce62eef499d71954c63154fc');
+	}
+
+	function kakaoShare() {
+		Kakao.Link.sendDefault({
+			objectType: 'feed',
+			content: {
+				title: '${book.title}',
+				description: '${book.contents}',
+				imageUrl: 'https://ifh.cc/g/4hsayZ.jpg',
+				link: {
+					mobileWebUrl: 'http://localhost:8080/view/${book.bookUuid}',
+					webUrl: 'http://localhost:8080/view/${book.bookUuid}',
+				},
+			},
+			buttons: [
+				{
+					title: '웹으로 보기',
+					link: {
+						mobileWebUrl: 'http://localhost:8080/view/${book.bookUuid}',
+						webUrl: 'http://localhost:8080/view/${book.bookUuid}',
+					},
+				},
+			],
+			installTalk: true,
+		})
+	}
+
+</script>
 
 </body>
 </html>
