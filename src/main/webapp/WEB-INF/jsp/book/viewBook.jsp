@@ -11,8 +11,7 @@
 			background-image: url("/bookImg/${book.bookUuid}");
 			background-position: center;
 			background-size: 100% 100%;
-			-webkit-transform: scale(1);
-			transform: scale(1);
+			object-fit: cover;
 		}
 	</style>
 </head>
@@ -52,7 +51,8 @@
 					<div class="row align-items-stretch">
 						<div class="col-md-7" data-aos="fade-up">
 <%--							<img src="/bookImg/${book.bookUuid}" alt="Image" class="img-fluid">--%>
-							<canvas id="canvas" name="canvas" class="img-fluid" width="600" height="700"></canvas>
+							<canvas id="canvas" name="canvas" class="img-fluid" width="600" height="700"></canvas><br>
+							* You can highlight on the image and download it!
 						</div>
 						<div class="col-md-4 ml-auto" data-aos="fade-up" data-aos-delay="100">
 							<div class="sticky-content">
@@ -158,16 +158,20 @@
 	$(document).ready(function(){
 		var canvas = document.querySelector('canvas'),
 				c = canvas.getContext('2d');
-				c.globalAlpha = 0.03;
-				c.fillStyle = 'yellow';
+				c.globalAlpha = 1;
+				c.fillStyle = "rgba(255, 255, 0, 0.04)";
+
+		var background = new Image(600, 700);
+		background.src = "/bookImg/${book.bookUuid}";
+
+		background.onload = function(){
+			c.drawImage(background,0,0,600,700);
+		}
 
 		let isDrawing = false;
 
-		var background = new Image(600, 700);
-		background.setAttribute("class", "canvas");
-		background.src = "/bookImg/${book.bookUuid}";
-
 		function draw(x, y) {
+
 			if (isDrawing) {
 				c.beginPath();
 				c.arc(x, y, 10, 0, Math.PI*2);
@@ -175,7 +179,6 @@
 				c.fill();
 
 				c.globalCompositeOperation="source-over";
-				c.drawImage(background, 0, 0);
 			}
 		}
 
