@@ -14,10 +14,11 @@ public interface BookMapper {
     List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest);
     List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest);
     int selectCount();
+    int selectCountSearch(String keyword);
     int selectCountMyBook(String memberUuid);
     int selectCountMyScrap(String memberUuid);
-    int selectCountKor();
-    int selectCountEng();
+    int selectCountKor(String keyword);
+    int selectCountEng(String keyword);
     void insertBook(BookQuotes bookQuotes);
     void updateBook(BookQuotes bookQuotes);
     void updateReadNum(String bookUuid);

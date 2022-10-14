@@ -32,11 +32,18 @@
         </trim>
     </insert>
 
+    <sql id="search">
+        <if test="keyword != null and keyword !=''">
+            AND CONCAT(title, writer, contents) regexp #{keyword}
+        </if>
+    </sql>
+
     <select id="bookList" resultType="com.thebookquotes.TBQ.dto.BookQuotes">
         /* BookQuotes.bookList */
         SELECT *
         FROM bookquotes
         WHERE INUSE = 1
+        <include refid="search"></include>
         ORDER BY REGI_DATE desc
         limit #{pageStart},#{pageSize}
     </select>
@@ -46,6 +53,7 @@
         SELECT *
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'KOR'
+        <include refid="search"></include>
         ORDER BY REGI_DATE desc
             limit #{pageStart},#{pageSize}
     </select>
@@ -55,6 +63,7 @@
         SELECT *
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'ENG'
+        <include refid="search"></include>
         ORDER BY REGI_DATE desc
             limit #{pageStart},#{pageSize}
     </select>
@@ -98,11 +107,20 @@
         WHERE INUSE = 1
     </select>
 
+    <select id="selectCountSearch" resultType="int" parameterType="String">
+        /* BookQuotes.selectCountSearch */
+        SELECT count(*)
+        FROM bookquotes
+        WHERE INUSE = 1
+        <include refid="search"></include>
+    </select>
+
     <select id="selectCountKor" resultType="int">
         /* BookQuotes.selectCountKor */
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'KOR'
+        <include refid="search"></include>
     </select>
 
     <select id="selectCountEng" resultType="int">
@@ -110,6 +128,7 @@
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'ENG'
+        <include refid="search"></include>
     </select>
 
     <select id="selectCountMyBook" resultType="int">

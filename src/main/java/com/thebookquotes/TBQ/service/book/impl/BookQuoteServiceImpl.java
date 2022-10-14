@@ -42,6 +42,11 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
+    public int selectCountSearch(String keyword) {
+        return mapper.selectCountSearch(keyword);
+    }
+
+    @Override
     public int selectCount() {
         return mapper.selectCount();
     }
@@ -57,14 +62,14 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public int selectCountKor() {
-        return mapper.selectCountKor();
+    public int selectCountKor(String keyword) {
+        return mapper.selectCountKor(keyword);
 
     }
 
     @Override
-    public int selectCountEng() {
-        return mapper.selectCountEng();
+    public int selectCountEng(String keyword) {
+        return mapper.selectCountEng(keyword);
 
     }
 

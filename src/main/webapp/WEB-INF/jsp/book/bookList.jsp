@@ -25,6 +25,10 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	.keyword{
+		border: 1px solid black;
+		width: 200px;
+	}
 	</style>
 </head>
 
@@ -136,20 +140,39 @@
 
 								<p style="text-align: right"><a href="/book" class="readmore">Write</a></p>
 							</div>
+							<div class="searchBar">
+								<c:if test="${english!=null}">
+									<form:form action="/book/eng" method="GET">
+										<input type="text" placeholder="author/title/contents" id="keyword" name="keyword" class="keyword">
+										<input type="submit" value="Search">
+									</form:form>
+
+									<c:set var="paginationTargetLink" value="/book/eng"/>
+								</c:if>
+
+								<c:if test="${korean!=null}">
+									<form:form action="/book/kor" method="GET">
+										<input type="text" placeholder="author/title/contents" id="keyword" name="keyword" class="keyword">
+										<input type="submit" value="Search">
+									</form:form>
+
+									<c:set var="paginationTargetLink" value="/book/kor"/>
+								</c:if>
+
+								<c:if test="${board!=null}">
+									<form:form action="/bookList" method="GET">
+										<input type="text" placeholder="author/title/contents" id="keyword" name="keyword" class="keyword">
+										<input type="submit" value="Search">
+									</form:form>
+
+									<c:set var="paginationTargetLink" value="/bookList"/>
+								</c:if>
+
+
+							</div>
 						</div>
-						<c:if test="${english!=null}">
-							<c:set var="paginationTargetLink" value="/book/eng"/>
-						</c:if>
 
-						<c:if test="${korean!=null}">
-							<c:set var="paginationTargetLink" value="/book/kor"/>
-						</c:if>
-
-						<c:if test="${board!=null}">
-							<c:set var="paginationTargetLink" value="/bookList"/>
-						</c:if>
-
-						<%@ include file="/WEB-INF/jsp/component/pagination.jsp" %>
+						<%@ include file="/WEB-INF/jsp/component/paginationSearch.jsp" %>
 					</div>
 
 			</div>
@@ -160,7 +183,7 @@
 	</div>
 
 	<div class="site-section">
-	<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
+		<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
 	</div>
 </main>
 

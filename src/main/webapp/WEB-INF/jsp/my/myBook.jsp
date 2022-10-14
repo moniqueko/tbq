@@ -45,7 +45,7 @@
 						<a href="/myBook" class="active">My book</a>
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
-								<a href="#" id="myInfo">My Info</a>
+								<a href="/member/${memberInfo.memberUuid}" id="myInfo">My Info</a>
 								<a href="/logout">Logout</a>
 							</c:when>
 							<c:when test="${memberInfo==null}">

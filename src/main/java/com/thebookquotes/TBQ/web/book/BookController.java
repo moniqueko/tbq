@@ -43,60 +43,133 @@ public class BookController {
     }
 
     @GetMapping("/bookList")
-    public String bookList(Model model, Criteria cri) {
+    public String searchList(Model model, Criteria cri) {
+        if(cri.getKeyword()==null) {
+            List<BookQuotes> board = bookQuoteService.bookList(cri);
+            model.addAttribute("board", board);
 
-        List<BookQuotes> board = bookQuoteService.bookList(cri);
-        System.out.println(board+"board <<<<<<<<<<<<<<<<<<<<<<<<<");
-        model.addAttribute("board", board);
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
 
-        List<Maxim> maxim = maximService.maximList();
-        model.addAttribute("maxim", maxim);
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setTotalCount(bookQuoteService.selectCount());
+            pageMaker.setTotalPage(bookQuoteService.selectCount());
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCount());
-        pageMaker.setTotalPage(bookQuoteService.selectCount());
+            model.addAttribute("pageMaker", pageMaker);
 
-        model.addAttribute("pageMaker", pageMaker);
+        }else if(cri.getKeyword()!=null){
 
+            List<BookQuotes> board = bookQuoteService.bookList(cri);
+            model.addAttribute("board", board);
+
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
+
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setKeyword(cri.getKeyword());
+            pageMaker.setTotalCount(bookQuoteService.selectCountSearch(cri.getKeyword()));
+            pageMaker.setTotalPage(bookQuoteService.selectCountSearch(cri.getKeyword()));
+
+            model.addAttribute("keyword", cri.getKeyword());
+            model.addAttribute("pageMaker", pageMaker);
+        }
 
         return "/book/bookList";
     }
 
+//    @GetMapping("/bookList") 검색기능 없음
+//    public String bookList(Model model, Criteria cri) {
+//
+//        List<BookQuotes> board = bookQuoteService.bookList(cri);
+//        System.out.println(board+"board <<<<<<<<<<<<<<<<<<<<<<<<<");
+//        model.addAttribute("board", board);
+//
+//        List<Maxim> maxim = maximService.maximList();
+//        model.addAttribute("maxim", maxim);
+//
+//        PageMaker pageMaker = new PageMaker();
+//        pageMaker.setCri(cri);
+//        pageMaker.setTotalCount(bookQuoteService.selectCount());
+//        pageMaker.setTotalPage(bookQuoteService.selectCount());
+//
+//        model.addAttribute("pageMaker", pageMaker);
+//
+//
+//        return "/book/bookList";
+//    }
+
     @GetMapping("/book/eng")
-    public String langKor(Model model, Criteria cri) {
+    public String langEng(Model model, Criteria cri) {
 
-        List<BookQuotes> board = bookQuoteService.listEng(cri);
-        model.addAttribute("english", board);
+        if(cri.getKeyword()==null) {
+            List<BookQuotes> board = bookQuoteService.listEng(cri);
+            model.addAttribute("english", board);
 
-        List<Maxim> maxim = maximService.maximList();
-        model.addAttribute("maxim", maxim);
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCountEng());
-        pageMaker.setTotalPage(bookQuoteService.selectCountEng());
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setTotalCount(bookQuoteService.selectCountEng(cri.getKeyword()));
+            pageMaker.setTotalPage(bookQuoteService.selectCountEng(cri.getKeyword()));
 
-        model.addAttribute("pageMaker", pageMaker);
+            model.addAttribute("pageMaker", pageMaker);
+
+        }else if(cri.getKeyword()!=null){
+            List<BookQuotes> board = bookQuoteService.listEng(cri);
+            model.addAttribute("english", board);
+
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
+
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setTotalCount(bookQuoteService.selectCountEng(cri.getKeyword()));
+            pageMaker.setTotalPage(bookQuoteService.selectCountEng(cri.getKeyword()));
+            pageMaker.setKeyword(cri.getKeyword());
+
+            model.addAttribute("pageMaker", pageMaker);
+            model.addAttribute("keyword", cri.getKeyword());
+
+        }
 
         return "/book/bookList";
     }
 
     @GetMapping("/book/kor")
-    public String langEng(Model model, Criteria cri) {
+    public String langKor(Model model, Criteria cri) {
+        if(cri.getKeyword()==null) {
+            List<BookQuotes> board = bookQuoteService.listKor(cri);
+            model.addAttribute("korean", board);
 
-        List<BookQuotes> board = bookQuoteService.listKor(cri);
-        model.addAttribute("korean", board);
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
 
-        List<Maxim> maxim = maximService.maximList();
-        model.addAttribute("maxim", maxim);
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setTotalCount(bookQuoteService.selectCountKor(cri.getKeyword()));
+            pageMaker.setTotalPage(bookQuoteService.selectCountKor(cri.getKeyword()));
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCountKor());
-        pageMaker.setTotalPage(bookQuoteService.selectCountKor());
+            model.addAttribute("pageMaker", pageMaker);
 
-        model.addAttribute("pageMaker", pageMaker);
+        }else if(cri.getKeyword()!=null){
+            List<BookQuotes> board = bookQuoteService.listKor(cri);
+            model.addAttribute("korean", board);
+
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
+
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setKeyword(cri.getKeyword());
+            pageMaker.setTotalCount(bookQuoteService.selectCountKor(cri.getKeyword()));
+            pageMaker.setTotalPage(bookQuoteService.selectCountKor(cri.getKeyword()));
+
+            model.addAttribute("pageMaker", pageMaker);
+            model.addAttribute("keyword", cri.getKeyword());
+        }
 
         return "/book/bookList";
     }
