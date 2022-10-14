@@ -1,6 +1,8 @@
 package com.thebookquotes.TBQ.web;
 
+import com.thebookquotes.TBQ.common.Sha256;
 import com.thebookquotes.TBQ.dto.Member;
+import com.thebookquotes.TBQ.service.GeneratePw;
 import com.thebookquotes.TBQ.service.MailService;
 import com.thebookquotes.TBQ.service.member.MemberService;
 import lombok.AllArgsConstructor;
@@ -15,13 +17,21 @@ public class MailSenderController {
 
     private final MemberService memberService;
     private final MailService mailService;
+    private final GeneratePw generatePw;
 
-    @PostMapping("/findPw") // 패스워드 변경 실행(이메일 보내기)
+    @PostMapping("/findPw")
     public String sendEmail(Member member) throws MessagingException {
 
-        String temp = memberService.pwGenerate(member); //아이디와 이메일 정보 넘겨받아 비밀번호 생성
+        String temp = generatePw.excuteGenerate(); //비밀번호 생성
+        member.setMemberPw(Sha256.encrypt(temp));
+
+        memberService.findPw(member);
+        System.out.println(temp+"1");
 
         Member mem = memberService.selectById(member.getMemberId());
+
+
+        System.out.println(mem+"2");
 
         String memberAddress = mem.getMemberEmail();
 
@@ -34,8 +44,7 @@ public class MailSenderController {
 
         mailService.sendNotiMail("[안내] 임시 비밀번호 발급", memberAddress, body);
 
-
-        return "sample/sendOk";
+        return "/member/sendOk";
 
     }
 

@@ -241,7 +241,6 @@ public class BookController {
         return "/book/addBook";
     }
 
-
     @GetMapping("/view/{bookUuid}") //상세보기
     public String viewBook(@PathVariable("bookUuid") String bookUuid, Model model, Criteria cri) {
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid); //view

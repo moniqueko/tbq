@@ -1,9 +1,6 @@
 package com.thebookquotes.TBQ.service.member.impl;
 
-
 import java.util.List;
-import java.util.UUID;
-
 import javax.annotation.Resource;
 
 import com.thebookquotes.TBQ.common.Criteria;
@@ -97,15 +94,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String pwGenerate(Member member) {
-
-        String temp = generatePw.excuteGenerate(); //비밀번호 생성
-
-        Member mem = new Member(member.getMemberId(), Sha256.encrypt(temp), null); //pw, date
-
-        mapper.pwGenerate(mem);
-
-        return temp;
+    public void findPw(Member member) {
+        Member mem = new Member(member.getMemberId(), member.getMemberPw(), null);
+        mapper.findPw(mem);
     }
 
     @Override

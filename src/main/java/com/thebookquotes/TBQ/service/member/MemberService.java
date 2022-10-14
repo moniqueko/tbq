@@ -27,7 +27,7 @@ public interface MemberService {
 
     int selectCount();
 
-    String pwGenerate(Member member);
+    void findPw(Member member);
 
     int emailDuplication(String memberEmail);
 

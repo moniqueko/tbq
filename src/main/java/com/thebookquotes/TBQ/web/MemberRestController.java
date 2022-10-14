@@ -8,7 +8,6 @@ import com.thebookquotes.TBQ.service.MailService;
 import com.thebookquotes.TBQ.service.ResponseService;
 import com.thebookquotes.TBQ.service.member.MemberService;
 import lombok.AllArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +29,9 @@ public class MemberRestController {
     @PostMapping("/join")
     public SingleResult<?> join(@RequestBody Member member) throws IOException {
 
-        String regex = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$"; //아이디 정규식
-        String pw_regex = "^.*(?=^.{8,16}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$"; //패스워드 정규식 8~16자 이내
-        String email_regex = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 형식
+        String regex = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$";
+        String pw_regex = "^.*(?=^.{8,16}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$";
+        String email_regex = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
 
         if (!StringUtils.hasText(member.getMemberId()) || !StringUtils.hasText(member.getMemberPw()) ||
                 !StringUtils.hasText(member.getMemberEmail())) {
@@ -77,16 +76,11 @@ public class MemberRestController {
         try {
 
             String memberId = member.getMemberId();
-            String memberPw = member.getMemberPw();//폼에서 가져온 아이디
-            String encodingPw = Sha256.encrypt(memberPw); //폼에서 가져온 아이디 encoding
+            String memberPw = member.getMemberPw();
+            String encodingPw = Sha256.encrypt(memberPw);
             int memberType = 0; //0:로그인안됨 1:일반회원 2:관리자
 
-            if (memberId == null || memberId.equals("")) { // 받아온값이 null - 아이디, 패스워드 따로하면 유추가능하니까 안됨.
-
-                return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
-
-            } else if (memberPw == null || memberPw.equals("")) {
-
+            if (!StringUtils.hasText(memberId) || !StringUtils.hasText(memberPw)) {
                 return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
             }
 
@@ -251,7 +245,6 @@ public class MemberRestController {
 
                 }
             }
-
 
         } catch (NullPointerException e) {
             e.printStackTrace();

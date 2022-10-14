@@ -26,7 +26,7 @@ public class MemberController {
     @GetMapping("/findPw") //비밀번호 찾기
     public String findPw(Model model, Member member) {
 
-        return "member/findPw";
+        return "member/find";
     }
 
     @GetMapping("/join")

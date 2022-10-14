@@ -58,7 +58,7 @@
 										<div class="col-md-12 form-group">
 											<div id="msg"></div>
 											<div><a href="#" class="readmore" onclick="validation();">Login</a> &nbsp;
-												<a href="#" class="readmore" onclick="location.href='/findPw'">Find</a></div>
+												<a href="/findPw" class="readmore">Find</a></div>
 										</div>
 									</form:form>
 								</div>
