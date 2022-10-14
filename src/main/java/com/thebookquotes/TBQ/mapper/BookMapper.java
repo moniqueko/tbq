@@ -20,12 +20,13 @@ public interface BookMapper {
     int selectCountEng();
     void insertBook(BookQuotes bookQuotes);
     void updateBook(BookQuotes bookQuotes);
+    void updateReadNum(String bookUuid);
     void deleteBook(String bookUuid);
     BookQuotes selectBookByUuid(String bookUuid);
     void insertCmt(BookQuotes.Comment cmt);
     List<BookQuotes.Comment> cmtList(String bookUuid);
-    BookQuotes.CommentList selectByCmtUuid(BookQuotes.Comment cmt);
-
+    BookQuotes.Comment selectByCmtUuid(String cmtUuid);
+    void deleteCmt(String cmtUuid);
     void insertScrap(BookQuotes.Scrap scrap);
     void updateCountBook(String bookUuid);
     int checkScrap(BookQuotes.Scrap scrap);

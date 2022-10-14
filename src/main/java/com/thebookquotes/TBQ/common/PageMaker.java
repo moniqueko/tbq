@@ -7,7 +7,7 @@ public class PageMaker {
     private boolean prev;
     private boolean next;
     private String keyword;
-    private int displayPageNum = 5;
+    private int displayPageNum = 9;
     private Criteria cri;
     private int totalPage;
 
@@ -115,7 +115,7 @@ public class PageMaker {
     }
 
     public void setTotalPage(int totalCount){
-        this.totalPage = this.totalCount / 10;
+        this.totalPage = this.totalCount / 9;
     }
     public int getTotalPage() {
         return totalPage;

@@ -92,6 +92,11 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
+    public void updateReadNum(String bookUuid) {
+        mapper.updateReadNum(bookUuid);
+    }
+
+    @Override
     public BookQuotes selectBookByUuid(String bookUuid) {
         return mapper.selectBookByUuid(bookUuid);
     }
@@ -108,8 +113,13 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public BookQuotes.CommentList selectByCmtUuid(BookQuotes.Comment cmt) {
-        return mapper.selectByCmtUuid(cmt);
+    public BookQuotes.Comment selectByCmtUuid(String cmtUuid) {
+        return mapper.selectByCmtUuid(cmtUuid);
+    }
+
+    @Override
+    public void deleteCmt(String cmtUuid) {
+        mapper.deleteCmt(cmtUuid);
     }
 
     @Override

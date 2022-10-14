@@ -49,8 +49,11 @@
                         </a>
                     </div>
                 </c:forEach>
-
             </div>
+            <br>
+            <span id="span" style="text-align: center">
+                <a href="/bookList"><h4>See more</h4></a>
+            </span>
         </div>
 
     </div>
@@ -62,7 +65,6 @@
 </main>
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
-
 </body>
 
 </html>

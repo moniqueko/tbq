@@ -103,9 +103,10 @@
 								<!--Comment section-->
 								<c:if test="${cmt!=null}">
 									<c:forEach var="cmt" items="${cmt}" varStatus="status">
-										<div class="col-md-12 form-group">
-											<div class="col-md-10 form-group">${cmt.memberId} | <fmt:formatDate value="${cmt.sysRegDt}" pattern="yyyy-MM-dd"/></div>
-											<div class="col-md-10 form-group">${cmt.contents}</div>
+										<div class="col-md-12 form-group" data-uuid="${cmt.cmtUuid}">
+											<div class="col-md-10 form-group">${cmt.memberId} | <fmt:formatDate value="${cmt.cmtRegiDate}" pattern="yyyy-MM-dd"/></div>
+											<div class="col-md-10 form-group">${cmt.contents} | <a href="#" onclick="cmtDelete(this);">[X]</a></div>
+
 										</div>
 									</c:forEach>
 								</c:if>
@@ -256,8 +257,47 @@
 			dataType: "JSON",
 			contentType : "application/json",
 			processData : false,
-			success: function(result) { //저장하고 반환된 결과
+			success: function(result) {
 				location.href="/view/" + bookUuid;
+			},
+			error: function(request, status, error) {
+				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
+
+				alert("Error occurred");
+			}
+		});
+
+	}
+
+	function cmtDelete(obj){
+		let cmtUuid = obj.parentElement.parentElement.dataset.uuid;
+
+		const bookUuid = '${book.bookUuid}';
+
+		let check = confirm("Delete?");
+
+		if(check==false){
+			return false;
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "/cmtDelete",
+			data: cmtUuid,
+			dataType: "JSON",
+			contentType : "application/json",
+			processData : false,
+			success: function(result) {
+
+				if(result.status==401){
+					alert("Only writer of this comment can delete");
+					return false;
+				}
+				if(result.status==200){
+					alert("Deletion success");
+					location.href="/view/"+ bookUuid;
+				}
+
 			},
 			error: function(request, status, error) {
 				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
@@ -280,7 +320,6 @@
 			contentType : "application/json",
 			processData : false,
 			success: function(result) { //저장 성공시에 일반 스크랩된 수 돌려줌
-				console.log(result);
 
 				if(result.status==406){
 					alert("Already registered");

@@ -89,6 +89,7 @@ public class BookQuotes {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Comment {
         private Integer cmtNum;
         private String cmtUuid;
@@ -97,16 +98,16 @@ public class BookQuotes {
         private String contents;
 
         private String quotes;
-        private Date sysRegDt;
+        private Date cmtRegiDate;
         private int inuse;
         private String memberId;
 
-        public Comment(String cmtUuid, String bookUuid, String memberUuid, String contents, Date sysRegDt, int inuse) {
+        public Comment(String cmtUuid, String bookUuid, String memberUuid, String contents, Date cmtRegiDate, int inuse) {
             this.cmtUuid = cmtUuid;
             this.bookUuid = bookUuid;
             this.memberUuid = memberUuid;
             this.contents = contents;
-            this.sysRegDt = sysRegDt;
+            this.cmtRegiDate = cmtRegiDate;
             this.inuse = inuse;
         }
     }

@@ -85,6 +85,12 @@
         AND INUSE = 1
     </select>
 
+    <update id="updateReadNum" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
+        UPDATE bookquotes
+        SET read_num = read_num+1
+        WHERE BOOK_UUID=#{bookUuid}
+    </update>
+
     <select id="selectCount" resultType="int">
         /* BookQuotes.selectCount */
         SELECT count(*)
@@ -171,7 +177,7 @@
         ORDER BY CMT_REGI_DATE desc
     </select>
 
-    <select id="selectByCmtUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes$CommentList" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Comment">
+    <select id="selectByCmtUuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" parameterType="String">
         /* BookQuotes.selectByCmtUuid */
         SELECT cmt_num , m.member_uuid , book_uuid , contents ,cmt_regi_date , cmt_inuse, cmt_uuid, m.member_id as memberId
         FROM cmt
@@ -179,6 +185,13 @@
         WHERE cmt_uuid=#{cmtUuid}
         AND cmt_inuse = 1
     </select>
+
+    <update id="deleteCmt" parameterType="String">
+        /* BookQuotes.deleteCmt */
+        UPDATE cmt
+        SET cmt_inuse = 0
+        WHERE CMT_UUID=#{cmtUuid}
+    </update>
 
     <insert id="insertScrap" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$Scrap">
         /* BookQuotes.insertScrap */

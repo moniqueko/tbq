@@ -21,11 +21,14 @@ public interface BookQuoteService {
     void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(String bookUuid);
+    void updateReadNum(String bookUuid);
     BookQuotes selectBookByUuid(String bookUuid);
 
     void insertCmt(BookQuotes.Comment cmt);
     List<BookQuotes.Comment> cmtList(String bookUuid);
-    BookQuotes.CommentList selectByCmtUuid(BookQuotes.Comment cmt);
+    BookQuotes.Comment selectByCmtUuid(String cmtUuid);
+    void deleteCmt(String cmtUuid);
+
     void insertScrap(BookQuotes.Scrap scrap);
     void updateCountBook(String bookUuid);
     int checkScrap(BookQuotes.Scrap scrap);

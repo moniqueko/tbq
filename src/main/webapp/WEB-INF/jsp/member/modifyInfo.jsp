@@ -25,7 +25,6 @@
 						<c:choose>
 							<c:when test="${memberInfo!=null}">
 								<a href="/member/${memberInfo.memberUuid}" id="myInfo" class="active">My Info</a>
-								<a href="/login" id="login">Login</a>
 								<a href="/logout">Logout</a>
 							</c:when>
 							<c:when test="${memberInfo==null}">

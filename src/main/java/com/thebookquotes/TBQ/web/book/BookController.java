@@ -183,6 +183,7 @@ public class BookController {
         List<BookQuotes.Comment> comment = bookQuoteService.cmtList(bookUuid);
         model.addAttribute("cmt", comment);
 
+        bookQuoteService.updateReadNum(bookUuid);
 
         return "/book/viewBook";
     }

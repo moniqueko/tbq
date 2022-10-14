@@ -104,6 +104,29 @@ public class BookRestController {
         return responseService.getSuccessResult();
     }
 
+    @PostMapping("/cmtDelete")
+    public SingleResult<?> cmtDelete(@RequestBody String cmtUuid, HttpSession session) throws Exception {
+        Member member = (Member) session.getAttribute("memberInfo");
+        String memberUuid = member.getMemberUuid();
+        System.out.println(cmtUuid+"print");
+
+        if(member==null){
+            return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
+        }
+        if (cmtUuid == null) {
+            return responseService.getFailResult(ErrorCode.PARAMETER_IS_EMPTY);
+        }
+        BookQuotes.Comment comment = bookQuoteService.selectByCmtUuid(cmtUuid);
+
+        if(!memberUuid.equals(comment.getMemberUuid())){
+            return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
+        }
+
+        bookQuoteService.deleteCmt(cmtUuid);
+
+        return responseService.getSuccessResult();
+    }
+
     @PostMapping("/addScrap")
     public SingleResult<?> addScrap(BookQuotes.Scrap scrap, @RequestBody String bookUuid, HttpSession session) throws Exception {
         Member member = (Member) session.getAttribute("memberInfo");
