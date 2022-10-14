@@ -35,7 +35,7 @@
 		<div class="container">
 			<div class="row mb-5 align-items-end">
 				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-					<h2>Shared book quotes list</h2>
+					<h2>Shared book quotes</h2>
 					<p class="mb-0">Check out shared book quotes form others!</p>
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">
@@ -59,64 +59,82 @@
 
 			<div class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
 					<div class="container">
-						<div class="row justify-content-center text-right mb-4">
-
-							<div class="item web col-md-12">
-								<ul>
-									<li class="li"><a href="/book/kor">Korean</a></li>
-									<li class="li"><a href="/book/eng">English</a></li>
-								</ul>
-
-								<table class="table">
-									<thead style="text-align: center;">
-									<tr>
-										<th scope="col" width="5%">#</th>
-										<th scope="col" width="30%">Title</th>
-										<th scope="col" width="15%" style="text-align: center;">Author</th>
-										<th scope="col" width="40%">Quotes</th>
-										<th scope="col" width="10%" style="text-align: center;">Date</th>
-									</tr>
-									</thead>
-									<tbody>
+						<div class="row justify-content-center text-center mb-4">
+							<ul>
+								<li class="li"><a href="/book/kor">Korean</a></li>
+								<li class="li"><a href="/book/eng">English</a></li>
+							</ul>
+							<div class="item col-md-12">
 									<c:if test="${board!=null}">
-										<c:forEach var="book" items="${board}" varStatus="status">
-											<tr>
-												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td style="text-align: center;">${book.writer}</td>
-												<td class="word">${book.quotes}</td>
-												<td><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
-											</tr>
-										</c:forEach>
+										<div id="portfolio-grid">
+											<c:forEach var="book" items="${board}" varStatus="status" end="8">
+												<div class="item col-sm-6 col-md-4 col-lg-4 mb-4">
+													<a href="/view/${book.bookUuid}" class="item-wrap fancybox">
+														<div class="work-info" data-uuid="${book.bookUuid}">
+															<h3>${book.quotes1}</h3>
+<%--															<span></span>--%>
+														</div>
+														<img class="img-fluid" src="/bookImg/${book.bookUuid}">
+													</a>
+													<br>
+													<span style="text-align: center">
+														${book.title}<br>
+														By ${book.writer}<br>
+														scrap(${book.count})
+													</span>
+												</div>
+
+											</c:forEach>
+										</div>
 									</c:if>
 
-									<c:if test="${korean!=null}">
-										<c:forEach var="book" items="${korean}" varStatus="status">
-											<tr>
-												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td style="text-align: center;">${book.writer}</td>
-												<td class="word">${book.quotes}</td>
-												<td><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
-											</tr>
-										</c:forEach>
-									</c:if>
+								<c:if test="${korean!=null}">
+									<div id="portfolio-grid">
+										<c:forEach var="book" items="${korean}" varStatus="status" end="8">
+											<div class="item col-sm-6 col-md-4 col-lg-4 mb-4">
+												<a href="/view/${book.bookUuid}" class="item-wrap fancybox">
+													<div class="work-info" data-uuid="${book.bookUuid}">
+														<h3>${book.quotes1}</h3>
+															<%--															<span></span>--%>
+													</div>
+													<img class="img-fluid" src="/bookImg/${book.bookUuid}">
+												</a>
+												<br>
+												<span style="text-align: center">
+														${book.title}<br>
+														${book.writer} 작가<br>
+														스크랩(${book.count})
+													</span>
+											</div>
 
-									<c:if test="${english!=null}">
-										<c:forEach var="book" items="${english}" varStatus="status">
-											<tr>
-												<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
-												<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
-												<td style="text-align: center;">${book.writer}</td>
-												<td class="word">${book.quotes}</td>
-												<td><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
-											</tr>
 										</c:forEach>
-									</c:if>
+									</div>
+								</c:if>
 
-									</tbody>
-								</table>
-								<p><a href="/book" class="readmore">Write</a></p>
+								<c:if test="${english!=null}">
+									<div id="portfolio-grid">
+										<c:forEach var="book" items="${english}" varStatus="status" end="8">
+											<div class="item col-sm-6 col-md-4 col-lg-4 mb-4">
+												<a href="/view/${book.bookUuid}" class="item-wrap fancybox">
+													<div class="work-info" data-uuid="${book.bookUuid}">
+														<h3>${book.quotes1}</h3>
+															<%--															<span></span>--%>
+													</div>
+													<img class="img-fluid" src="/bookImg/${book.bookUuid}">
+												</a>
+												<br>
+												<span style="text-align: center">
+														${book.title}<br>
+														By ${book.writer}<br>
+														scrap(${book.count})
+													</span>
+											</div>
+
+										</c:forEach>
+									</div>
+								</c:if>
+
+								<p style="text-align: right"><a href="/book" class="readmore">Write</a></p>
 							</div>
 						</div>
 						<c:if test="${english!=null}">

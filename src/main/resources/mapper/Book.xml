@@ -73,7 +73,7 @@
         SELECT s.regi_date as regiDate, title, writer, b.count, s.book_uuid
         FROM scrap s LEFT JOIN bookquotes b ON b.book_uuid  = s.book_uuid
         WHERE INUSE = 1 AND s.member_uuid = #{memberUuid}
-        ORDER BY b.REGI_DATE desc
+        ORDER BY s.REGI_DATE desc
             limit #{criteria.pageStart},#{criteria.pageSize}
     </select>
 

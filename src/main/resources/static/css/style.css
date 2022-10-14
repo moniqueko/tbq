@@ -151,6 +151,15 @@ h6,
 
 }
 
+.item2 .item-wrap img {
+  transition: .3s transform ease;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  width: 90%;
+  height: 90%;
+
+}
+
 .item .item-wrap > .work-info {
   position: absolute;
   top: 50%;

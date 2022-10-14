@@ -50,9 +50,14 @@
 				<div class="container">
 					<div class="row align-items-stretch">
 						<div class="col-md-7" data-aos="fade-up">
-<%--							<img src="/bookImg/${book.bookUuid}" alt="Image" class="img-fluid">--%>
-							<canvas id="canvas" name="canvas" class="img-fluid" width="600" height="700"></canvas><br>
-							* You can highlight on the image and download it!
+							<c:if test="${memberInfo==null}">
+								<img src="/bookImg/${book.bookUuid}" alt="Image" class="img-fluid">
+							</c:if>
+
+							<c:if test="${memberInfo!=null}">
+								<canvas id="canvas" name="canvas" class="img-fluid" width="600" height="700"></canvas><br>
+								* (Member only) You can highlight on the image and download it!
+							</c:if>
 						</div>
 						<div class="col-md-4 ml-auto" data-aos="fade-up" data-aos-delay="100">
 							<div class="sticky-content">
@@ -70,9 +75,9 @@
 										<c:if test="${book.quotes3!=null}">	<li>${book.quotes3}</li></c:if>
 									</ul>
 								<c:if test="${memberInfo!=null}">
-									<p><a href="#" class="readmore" id="down" onclick="DownloadCanvasAsImage();"><span>Highlight Down</span></a></p>
+									<p><a href="#" class="readmore" id="down" onclick="DownloadCanvasAsImage();"><span>Highlight Save</span></a></p>
 									<p><a href="#" class="readmore" onclick="addScrap();"><span id="count">Scrap (${book.count})</span></a></p>
-									<p><a href="#" class="readmore" onclick="kakaoShare();"><span>Share Kakao</span></a></p>
+									<p><a href="#" class="readmore" onclick="kakaoShare();"><span>Share</span></a></p>
 								</c:if>
 
 								<c:if test="${book.memberUuid==memberInfo.memberUuid}">
@@ -196,7 +201,7 @@
 
 	function DownloadCanvasAsImage(){
 		let downloadLink = document.createElement('a');
-		downloadLink.setAttribute('download', 'CanvasAsImage.png');
+		downloadLink.setAttribute('download', 'TheBookQuotes.png');
 		let canvas = document.getElementById('canvas');
 		canvas.toBlob(function(blob) {
 			let url = URL.createObjectURL(blob);
