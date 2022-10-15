@@ -29,147 +29,96 @@ public class BookController {
     private final MemberService memberService;
     private final MaximService maximService;
 
-
     @GetMapping("/")
     public String index(Model model, Criteria cri) {
-
         List<BookQuotes> board = bookQuoteService.bookList(cri);
         model.addAttribute("board", board);
 
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
-
         return "/index";
     }
 
     @GetMapping("/bookList")
     public String searchList(Model model, Criteria cri) {
+        List<BookQuotes> board = bookQuoteService.bookList(cri);
+        model.addAttribute("board", board);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+        PageMaker pageMaker = new PageMaker();
+
         if(cri.getKeyword()==null) {
-            List<BookQuotes> board = bookQuoteService.bookList(cri);
-            model.addAttribute("board", board);
-
-            List<Maxim> maxim = maximService.maximList();
-            model.addAttribute("maxim", maxim);
-
-            PageMaker pageMaker = new PageMaker();
             pageMaker.setCri(cri);
             pageMaker.setTotalCount(bookQuoteService.selectCount());
             pageMaker.setTotalPage(bookQuoteService.selectCount());
 
-            model.addAttribute("pageMaker", pageMaker);
-
         }else if(cri.getKeyword()!=null){
-
-            List<BookQuotes> board = bookQuoteService.bookList(cri);
-            model.addAttribute("board", board);
-
-            List<Maxim> maxim = maximService.maximList();
-            model.addAttribute("maxim", maxim);
-
-            PageMaker pageMaker = new PageMaker();
             pageMaker.setCri(cri);
             pageMaker.setKeyword(cri.getKeyword());
             pageMaker.setTotalCount(bookQuoteService.selectCountSearch(cri.getKeyword()));
             pageMaker.setTotalPage(bookQuoteService.selectCountSearch(cri.getKeyword()));
 
             model.addAttribute("keyword", cri.getKeyword());
-            model.addAttribute("pageMaker", pageMaker);
         }
+
+        model.addAttribute("pageMaker", pageMaker);
 
         return "/book/bookList";
     }
 
-//    @GetMapping("/bookList") 검색기능 없음
-//    public String bookList(Model model, Criteria cri) {
-//
-//        List<BookQuotes> board = bookQuoteService.bookList(cri);
-//        System.out.println(board+"board <<<<<<<<<<<<<<<<<<<<<<<<<");
-//        model.addAttribute("board", board);
-//
-//        List<Maxim> maxim = maximService.maximList();
-//        model.addAttribute("maxim", maxim);
-//
-//        PageMaker pageMaker = new PageMaker();
-//        pageMaker.setCri(cri);
-//        pageMaker.setTotalCount(bookQuoteService.selectCount());
-//        pageMaker.setTotalPage(bookQuoteService.selectCount());
-//
-//        model.addAttribute("pageMaker", pageMaker);
-//
-//
-//        return "/book/bookList";
-//    }
-
     @GetMapping("/book/eng")
     public String langEng(Model model, Criteria cri) {
+        List<BookQuotes> board = bookQuoteService.listEng(cri);
+        model.addAttribute("english", board);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        PageMaker pageMaker = new PageMaker();
 
         if(cri.getKeyword()==null) {
-            List<BookQuotes> board = bookQuoteService.listEng(cri);
-            model.addAttribute("english", board);
-
-            List<Maxim> maxim = maximService.maximList();
-            model.addAttribute("maxim", maxim);
-
-            PageMaker pageMaker = new PageMaker();
             pageMaker.setCri(cri);
             pageMaker.setTotalCount(bookQuoteService.selectCountEng(cri.getKeyword()));
             pageMaker.setTotalPage(bookQuoteService.selectCountEng(cri.getKeyword()));
 
-            model.addAttribute("pageMaker", pageMaker);
-
         }else if(cri.getKeyword()!=null){
-            List<BookQuotes> board = bookQuoteService.listEng(cri);
-            model.addAttribute("english", board);
-
-            List<Maxim> maxim = maximService.maximList();
-            model.addAttribute("maxim", maxim);
-
-            PageMaker pageMaker = new PageMaker();
             pageMaker.setCri(cri);
             pageMaker.setTotalCount(bookQuoteService.selectCountEng(cri.getKeyword()));
             pageMaker.setTotalPage(bookQuoteService.selectCountEng(cri.getKeyword()));
             pageMaker.setKeyword(cri.getKeyword());
 
-            model.addAttribute("pageMaker", pageMaker);
             model.addAttribute("keyword", cri.getKeyword());
-
         }
+        model.addAttribute("pageMaker", pageMaker);
 
         return "/book/bookList";
     }
 
     @GetMapping("/book/kor")
     public String langKor(Model model, Criteria cri) {
+        List<BookQuotes> board = bookQuoteService.listKor(cri);
+        model.addAttribute("korean", board);
+
+        List<Maxim> maxim = maximService.maximList();
+        model.addAttribute("maxim", maxim);
+
+        PageMaker pageMaker = new PageMaker();
+
         if(cri.getKeyword()==null) {
-            List<BookQuotes> board = bookQuoteService.listKor(cri);
-            model.addAttribute("korean", board);
-
-            List<Maxim> maxim = maximService.maximList();
-            model.addAttribute("maxim", maxim);
-
-            PageMaker pageMaker = new PageMaker();
             pageMaker.setCri(cri);
             pageMaker.setTotalCount(bookQuoteService.selectCountKor(cri.getKeyword()));
             pageMaker.setTotalPage(bookQuoteService.selectCountKor(cri.getKeyword()));
 
-            model.addAttribute("pageMaker", pageMaker);
-
         }else if(cri.getKeyword()!=null){
-            List<BookQuotes> board = bookQuoteService.listKor(cri);
-            model.addAttribute("korean", board);
-
-            List<Maxim> maxim = maximService.maximList();
-            model.addAttribute("maxim", maxim);
-
-            PageMaker pageMaker = new PageMaker();
             pageMaker.setCri(cri);
             pageMaker.setKeyword(cri.getKeyword());
             pageMaker.setTotalCount(bookQuoteService.selectCountKor(cri.getKeyword()));
             pageMaker.setTotalPage(bookQuoteService.selectCountKor(cri.getKeyword()));
 
-            model.addAttribute("pageMaker", pageMaker);
             model.addAttribute("keyword", cri.getKeyword());
         }
+        model.addAttribute("pageMaker", pageMaker);
 
         return "/book/bookList";
     }
@@ -226,7 +175,6 @@ public class BookController {
         return "/my/myBook";
     }
 
-
     @GetMapping("/book") //글쓰기
     public String addBook(HttpSession session, Model model) {
         Member member = (Member) session.getAttribute("memberInfo");
@@ -234,7 +182,6 @@ public class BookController {
         if(member==null){
             return "/member/login";
         }
-
         Member info = memberService.selectByUuid(member.getMemberUuid());
         model.addAttribute("memberInfo", info);
 
@@ -243,10 +190,10 @@ public class BookController {
 
     @GetMapping("/view/{bookUuid}") //상세보기
     public String viewBook(@PathVariable("bookUuid") String bookUuid, Model model, Criteria cri) {
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid); //view
+        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         model.addAttribute("book", bookQuotes);
 
-        List<Maxim> maxim = maximService.maximList(); //maxim
+        List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
 
         List<BookQuotes> board = bookQuoteService.bookList(cri); //for more
@@ -260,7 +207,7 @@ public class BookController {
         return "/book/viewBook";
     }
 
-    @GetMapping("/editBook/{bookUuid}") //수정폼연결
+    @GetMapping("/editBook/{bookUuid}")
     public String editBook(@PathVariable("bookUuid") String bookUuid,Model model) {
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         model.addAttribute("book", bookQuotes);
@@ -268,7 +215,7 @@ public class BookController {
         return "/book/editBook";
     }
 
-    @GetMapping(value="/bookImg/{bookUuid}")
+    @GetMapping(value="/bookImg/{bookUuid}") //show local file image
     public @ResponseBody byte[] getBookImg(@PathVariable("bookUuid") String bookUuid) throws IOException {
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
         String url = bookQuotes.getImg();

@@ -56,7 +56,6 @@ public class FileHandler {
 
         if (!StringUtils.isEmpty(filePath)) {
             File file = new File(filePath);
-
             file.delete();
         }
     }

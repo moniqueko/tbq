@@ -13,7 +13,6 @@ public class Sha256 {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "";
     }
 

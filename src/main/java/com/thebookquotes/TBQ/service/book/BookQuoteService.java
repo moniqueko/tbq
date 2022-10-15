@@ -8,16 +8,16 @@ public interface BookQuoteService {
     List<BookQuotes> bookList(Criteria cri);
     List<BookQuotes> listKor(Criteria cri);
     List<BookQuotes> listEng(Criteria cri);
-
     List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest);
     List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest);
+
     int selectCountSearch(String keyword);
     int selectCount();
     int selectCountMyBook(String memberUuid);
     int selectCountMyScrap(String memberUuid);
-
     int selectCountKor(String keyword);
     int selectCountEng(String keyword);
+
     void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void updateBook(BookQuotes.BookQuotesWrite bookQuotesWrite);
     void deleteBook(String bookUuid);

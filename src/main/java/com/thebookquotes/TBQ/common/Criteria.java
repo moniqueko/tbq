@@ -14,15 +14,12 @@ public class Criteria {
     public int getPage() {
         return page;
     }
-
     public String getKeyword() {
         return keyword;
     }
-
     public void setKeyword(String keyword) {
         this.keyword = keyword;
     }
-
     public void setPage(int page) {
         if(page <=0) {
             this.page = 1;
@@ -30,7 +27,6 @@ public class Criteria {
         }
         this.page = page;
     }
-
     public int getPageSize() {
         return pageSize;
     }
@@ -43,11 +39,9 @@ public class Criteria {
         this.pageSize = pageSize;
     }
 
-
     public int getPageStart() {
         return (this.page - 1)*this.pageSize;
     }
-
 
     @Override
     public String toString() {

@@ -43,7 +43,7 @@
         SELECT *
         FROM bookquotes
         WHERE INUSE = 1
-        <include refid="search"></include>
+            <include refid="search"></include>
         ORDER BY REGI_DATE desc
         limit #{pageStart},#{pageSize}
     </select>
@@ -53,7 +53,7 @@
         SELECT *
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'KOR'
-        <include refid="search"></include>
+            <include refid="search"></include>
         ORDER BY REGI_DATE desc
             limit #{pageStart},#{pageSize}
     </select>
@@ -63,7 +63,7 @@
         SELECT *
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'ENG'
-        <include refid="search"></include>
+            <include refid="search"></include>
         ORDER BY REGI_DATE desc
             limit #{pageStart},#{pageSize}
     </select>
@@ -112,7 +112,7 @@
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1
-        <include refid="search"></include>
+            <include refid="search"></include>
     </select>
 
     <select id="selectCountKor" resultType="int">
@@ -120,7 +120,7 @@
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'KOR'
-        <include refid="search"></include>
+            <include refid="search"></include>
     </select>
 
     <select id="selectCountEng" resultType="int">
@@ -128,7 +128,7 @@
         SELECT count(*)
         FROM bookquotes
         WHERE INUSE = 1 AND lang = 'ENG'
-        <include refid="search"></include>
+            <include refid="search"></include>
     </select>
 
     <select id="selectCountMyBook" resultType="int">
@@ -180,10 +180,6 @@
         INSERT INTO cmt
         VALUES
         (0,#{memberUuid},#{bookUuid},#{contents},NOW(),#{inuse},#{cmtUuid})
-
-<!--        <selectKey keyProperty="cmtUuid" keyColumn="cmt_uuid" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" order="AFTER">-->
-<!--            SELECT cmt_uuid as cmtUuid from cmt where book_uuid=#{bookUuid} and member_uuid=#{memberUuid} and cmt_uuid = #{cmtUuid}-->
-<!--        </selectKey>-->
     </insert>
 
     <select id="cmtList" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" parameterType="String">
@@ -227,7 +223,6 @@
     <!-- 스크랩 카운트 갯수 -->
     <update id="updateCountBook" parameterType="com.thebookquotes.TBQ.dto.BookQuotes">
         /* BookQuotes.updateCountBook */
-
         UPDATE bookquotes
         SET count = count + 1
         WHERE book_uuid=#{bookUuid}

@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @Transactional
 public class BookQuoteServiceImpl implements BookQuoteService {
-
     @Resource
     BookMapper mapper;
 
@@ -21,7 +20,6 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     public List<BookQuotes> bookList(Criteria cri) {
         return mapper.bookList(cri);
     }
-
     @Override
     public List<BookQuotes> listKor(Criteria cri) {
         return mapper.listKor(cri);
@@ -30,12 +28,10 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     public List<BookQuotes> listEng(Criteria cri) {
         return mapper.listEng(cri);
     }
-
     @Override
     public List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest) {
         return mapper.myBookList(listRequest);
     }
-
     @Override
     public List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest) {
         return mapper.myScrapList(listRequest);
@@ -45,7 +41,6 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     public int selectCountSearch(String keyword) {
         return mapper.selectCountSearch(keyword);
     }
-
     @Override
     public int selectCount() {
         return mapper.selectCount();
@@ -62,16 +57,9 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     }
 
     @Override
-    public int selectCountKor(String keyword) {
-        return mapper.selectCountKor(keyword);
-
-    }
-
+    public int selectCountKor(String keyword) { return mapper.selectCountKor(keyword); }
     @Override
-    public int selectCountEng(String keyword) {
-        return mapper.selectCountEng(keyword);
-
-    }
+    public int selectCountEng(String keyword) { return mapper.selectCountEng(keyword); }
 
     @Override
     public void insertBook(BookQuotes.BookQuotesWrite bookQuotesWrite) {

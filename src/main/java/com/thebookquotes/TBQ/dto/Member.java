@@ -33,7 +33,6 @@ public class Member {
         this.memberEditDate = memberEditDate;
     }
 
-
     public Member(String memberUuid, String memberId, String memberEmail, String memberPw, Date memberEditDate) {
         super();
         this.memberUuid = memberUuid;
@@ -43,14 +42,12 @@ public class Member {
         this.memberEditDate = memberEditDate;
     }
 
-
     public Member(String memberUuid, int memberInuse, Date memberEditDate) {
         super();
         this.memberUuid = memberUuid;
         this.memberInuse = memberInuse;
         this.memberEditDate = memberEditDate;
     }
-
 
     public Member(String memberId, String memberPw, Date memberEditDate) {
         this.memberId = memberId;

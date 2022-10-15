@@ -6,6 +6,7 @@
 <mapper namespace="com.thebookquotes.TBQ.mapper.MemberMapper">
 
     <insert id="insertMember" parameterType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.insertMember */
 
         <selectKey resultType="String" keyProperty="memberUuid" order="BEFORE">
             select FN_GET_UUID('M') as memberUuid
@@ -15,25 +16,29 @@
         VALUES(#{memberUuid},#{memberId},#{memberPw},#{memberGrant},NOW(),#{memberInuse},NOW(),NOW(),#{memberEmail})
     </insert>
 
-    <select id="idCheck" resultType="Integer" parameterType="String">
+    <select id="idCheck" resultType="int" parameterType="String">
+        /* Member.idCheck */
         SELECT  count(member_id)
         FROM 	member
         WHERE	member_id = #{memberId} and member_inuse=1
     </select>
 
     <select id="selectById" resultType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.selectById */
         SELECT *
         FROM 	member
         WHERE	member_id=#{memberId}
     </select>
 
     <select id="selectByUuid" resultType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.selectByUuid */
         SELECT *
         FROM 	member
         WHERE	member_uuid=#{memberUuid}
     </select>
 
     <select id="selectMemberList" resultType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.selectMemberList */
         SELECT *
         FROM 	member
         WHERE	member_inuse = 1
@@ -42,6 +47,7 @@
     </select>
 
     <update id="lastLoginUpdate" parameterType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.lastLoginUpdate */
         UPDATE member
         SET member_last_login=NOW(), member_edit_date=NOW()
         WHERE member_uuid=#{memberUuid}
@@ -62,30 +68,34 @@
     </update>
 
     <select id="selectCount" resultType="int">
+        /* Member.selectCount */
         SELECT count(*) FROM member
         WHERE member_inuse = 1
     </select>
 
     <select id="selectByEmail" resultType="com.thebookquotes.TBQ.dto.Member">
+        /* Member.selectByEmail */
         SELECT *
         FROM 	member
         WHERE	member_email=#{memberEmail} and member_inuse=1
     </select>
 
     <update id="findPw" parameterType="com.thebookquotes.TBQ.dto.Member"><!-- 아이디로 임시비밀번호 변경 -->
+        /* Member.findPw */
         UPDATE member
         SET member_pw=#{memberPw}, member_edit_date=NOW()
         WHERE member_id=#{memberId}
     </update>
 
     <select id="emailDuplication" resultType="int" parameterType="com.thebookquotes.TBQ.dto.Member"><!-- 이메일 중복 체크 -->
-        /* emailDuplication */
+        /* Member.emailDuplication */
         SELECT  count(member_email)
         FROM 	member
         WHERE	member_email = #{memberEmail} and member_inuse=1
     </select>
 
     <select id="emailCheck" resultType="int" parameterType="com.thebookquotes.TBQ.dto.Member"><!-- 아이디 이메일 일치 체크 -->
+        /* Member.emailCheck */
         SELECT  count(member_id)
         FROM 	member
         WHERE	member_id = #{memberId} and member_email = #{memberEmail} and member_inuse=1

@@ -10,8 +10,7 @@ import java.util.List;
 
 @Service
 public class ResponseService {
-
-    public enum CommonResponse { //Description : enum으로 api 요청 결과에 대한 code, message를 정의
+    public enum CommonResponse {
 
         SUCCESS(200,"200", "SUCCESS");
 
@@ -24,26 +23,22 @@ public class ResponseService {
             this.code = code;
             this.msg = msg;
         }
-
         public int getStatus() {
             return status;
         }
-
         public String getCode() {
             return code;
         }
-
         public String getMsg() {
             return msg;
         }
     }
 
-
     // 단일 건 결과 처리
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> result = new SingleResult<>();
         result.setData(data);
-        setSuccessResult(result); //아래 메서드 호출
+        setSuccessResult(result);
         return result;
     }
 
@@ -51,12 +46,11 @@ public class ResponseService {
     public <T> ListResult<T> getListResult(List<T> list) {
         ListResult<T> result = new ListResult<>();
         result.setData(list);
-        setSuccessResult(result); //아래 메서드 호출
+        setSuccessResult(result);
         return result;
     }
 
     private void setSuccessResult(CommonResult result) {
-
         result.setStatus(CommonResponse.SUCCESS.getStatus());
         result.setCode(CommonResponse.SUCCESS.getCode());
         result.setMessage(CommonResponse.SUCCESS.getMsg());

@@ -18,20 +18,16 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class MemberController {
-
-
     private final MemberService memberService;
     private final MaximService maximService;
 
-    @GetMapping("/findPw") //비밀번호 찾기
+    @GetMapping("/findPw")
     public String findPw(Model model, Member member) {
-
         return "member/find";
     }
 
     @GetMapping("/join")
-    public String signin(Model model) {
-
+    public String join(Model model) {
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
         return "member/join";
@@ -39,19 +35,15 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login(Model model) {
-
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
-
         return "member/login";
     }
 
     @GetMapping("/loginOk")
     public String loginOk(Model model) {
-
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
-
         return "member/loginOk";
     }
 
@@ -63,7 +55,7 @@ public class MemberController {
     }
 
     @GetMapping("/admin") //관리자 페이지
-    public String admin(Model model, Member member, HttpSession session) {
+    public String admin(Model model, HttpSession session) {
         Member memberSession = (Member) session.getAttribute("memberInfo");
 
         if (memberSession.getMemberGrant()==1){
@@ -74,32 +66,24 @@ public class MemberController {
         return "member/login";
     }
 
-    @GetMapping("/accessFail") //접근제한 페이지
-    public String accessFail(Model model, Member member) {
-
-        return "member/accessFail";
-    }
-
-    @GetMapping("/memberList") //회원목록
+    @GetMapping("/memberList")
     public String memberList(Model model, Member member, Criteria cri, HttpSession session) {
-
         Member memberSession = (Member) session.getAttribute("memberInfo");
 
         if (memberSession.getMemberGrant()==1){
 
-        List<Member> mem = memberService.selectMemberList(cri);
-        model.addAttribute("member", mem);
+            List<Member> mem = memberService.selectMemberList(cri);
+            model.addAttribute("member", mem);
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(memberService.selectCount());
-        pageMaker.setTotalPage(memberService.selectCount());
-        model.addAttribute("pageMaker", pageMaker);
+            PageMaker pageMaker = new PageMaker();
+            pageMaker.setCri(cri);
+            pageMaker.setTotalCount(memberService.selectCount());
+            pageMaker.setTotalPage(memberService.selectCount());
+            model.addAttribute("pageMaker", pageMaker);
 
-        List<Maxim> maxim = maximService.maximList();
-        model.addAttribute("maxim", maxim);
-        return "member/memberList";
-
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
+            return "member/memberList";
         }
 
         return "member/login";
@@ -107,7 +91,7 @@ public class MemberController {
 
 
     @GetMapping("/member/{memberUuid}")
-    public String editMember(@PathVariable("memberUuid") String memberUuid, Model model, Member member, HttpSession session) {
+    public String editMember(@PathVariable("memberUuid") String memberUuid, Model model, HttpSession session) {
         Member memberSession = (Member) session.getAttribute("memberInfo");
 
         if (memberSession.getMemberGrant()==1) {
@@ -123,7 +107,5 @@ public class MemberController {
         return "member/login";
 
     }
-
-
 
 }

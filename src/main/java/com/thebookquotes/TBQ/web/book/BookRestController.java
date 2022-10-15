@@ -23,7 +23,6 @@ import java.util.List;
 public class BookRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookRestController.class);
     private final ResponseService responseService;
-
     private final BookQuoteService bookQuoteService;
     private static final String path = System.getProperty("user.home") + "/Downloads/bookImg";
 
@@ -87,8 +86,9 @@ public class BookRestController {
     }
 
     @PostMapping("/cmtWrite")
-    public SingleResult<?> cmtWrite(@RequestBody BookQuotes.Comment cmt, HttpSession session, BookQuotes.CommentList cmtList) throws Exception {
+    public SingleResult<?> cmtWrite(@RequestBody BookQuotes.Comment cmt, HttpSession session) throws Exception {
         Member member = (Member) session.getAttribute("memberInfo");
+
         if(member==null){
             return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
         }
@@ -99,8 +99,8 @@ public class BookRestController {
 
         String uuid = member.getMemberUuid();
         cmt.setMemberUuid(uuid);
-
         bookQuoteService.insertCmt(cmt);
+
         return responseService.getSuccessResult();
     }
 
@@ -108,7 +108,6 @@ public class BookRestController {
     public SingleResult<?> cmtDelete(@RequestBody String cmtUuid, HttpSession session) throws Exception {
         Member member = (Member) session.getAttribute("memberInfo");
         String memberUuid = member.getMemberUuid();
-        System.out.println(cmtUuid+"print");
 
         if(member==null){
             return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);

@@ -6,11 +6,13 @@
 <mapper namespace="com.thebookquotes.TBQ.mapper.MaximMapper">
 
     <insert id="insertMaxim" parameterType="com.thebookquotes.TBQ.dto.Maxim">
+        /* Maxim.insertMaxim */
         INSERT INTO maxim
         VALUES(#{num}, #{name},#{contents})
     </insert>
 
     <select id="maximList" resultType="com.thebookquotes.TBQ.dto.Maxim">
+        /* Maxim.maximList */
         SELECT *
         FROM maxim
     </select>
