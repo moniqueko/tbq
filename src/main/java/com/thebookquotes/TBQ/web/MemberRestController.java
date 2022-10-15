@@ -50,7 +50,7 @@ public class MemberRestController {
         if (mem == null && memByEmail == null) {
             memberService.insertMember(member);
             mailService.sendNotiMail("[TBQ] Congratulations, You are now a member of The Book Quotes", member.getMemberEmail(),
-                    "Welcome "+mem.getMemberId()+", Thank you for joining us.");
+                    "Welcome "+member.getMemberId()+", Thank you for joining us.");
 
             return responseService.getSingleResult(member);
 

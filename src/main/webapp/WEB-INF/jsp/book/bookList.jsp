@@ -144,7 +144,7 @@
 								<c:if test="${english!=null}">
 									<form:form action="/book/eng" method="GET">
 										<input type="text" placeholder="author/title/contents" id="keyword" name="keyword" class="keyword">
-										<input type="submit" value="Search">
+										<input type="submit" value="Search" class="searchBtn">
 									</form:form>
 
 									<c:set var="paginationTargetLink" value="/book/eng"/>
@@ -153,7 +153,7 @@
 								<c:if test="${korean!=null}">
 									<form:form action="/book/kor" method="GET">
 										<input type="text" placeholder="author/title/contents" id="keyword" name="keyword" class="keyword">
-										<input type="submit" value="Search">
+										<input type="submit" value="Search" class="searchBtn">
 									</form:form>
 
 									<c:set var="paginationTargetLink" value="/book/kor"/>
@@ -162,7 +162,7 @@
 								<c:if test="${board!=null}">
 									<form:form action="/bookList" method="GET">
 										<input type="text" placeholder="author/title/contents" id="keyword" name="keyword" class="keyword">
-										<input type="submit" value="Search">
+										<input type="submit" value="Search" class="searchBtn">
 									</form:form>
 
 									<c:set var="paginationTargetLink" value="/bookList"/>
