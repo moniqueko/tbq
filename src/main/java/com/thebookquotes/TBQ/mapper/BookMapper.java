@@ -1,6 +1,7 @@
 package com.thebookquotes.TBQ.mapper;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import com.thebookquotes.TBQ.dto.BookQuotes;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface BookMapper {
     List<BookQuotes> bookList(Criteria cri);
+    List<BookQuotes> bookListAdmin(CriteriaBoard cri);
     List<BookQuotes> listKor(Criteria cri);
     List<BookQuotes> listEng(Criteria cri);
     List<BookQuotes> myBookList(BookQuotes.ListRequestBoard listRequest);

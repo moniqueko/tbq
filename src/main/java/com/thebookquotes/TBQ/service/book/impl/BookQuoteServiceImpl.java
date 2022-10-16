@@ -1,6 +1,7 @@
 package com.thebookquotes.TBQ.service.book.impl;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import com.thebookquotes.TBQ.dto.BookQuotes;
 import com.thebookquotes.TBQ.mapper.BookMapper;
 import com.thebookquotes.TBQ.service.book.BookQuoteService;
@@ -20,6 +21,12 @@ public class BookQuoteServiceImpl implements BookQuoteService {
     public List<BookQuotes> bookList(Criteria cri) {
         return mapper.bookList(cri);
     }
+
+    @Override
+    public List<BookQuotes> bookListAdmin(CriteriaBoard cri) {
+        return mapper.bookListAdmin(cri);
+    }
+
     @Override
     public List<BookQuotes> listKor(Criteria cri) {
         return mapper.listKor(cri);

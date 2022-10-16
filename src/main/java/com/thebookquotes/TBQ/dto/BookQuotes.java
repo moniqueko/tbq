@@ -10,8 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BookQuotes {
     private String bookUuid;
     private String title;
@@ -29,9 +29,10 @@ public class BookQuotes {
     private String quotes2;
     private String quotes3;
     private int count;
+    private String memberId;
 
     public BookQuotes(String bookUuid, String title, String writer, String memberUuid, String contents, int readNum,
-                      String img, Date regiDate, Date editDate, int inuse, String lang, String quotes1, String quotes2, String quotes3) {
+                      String img, Date regiDate, Date editDate, int inuse, String lang, String quotes, String quotes1, String quotes2, String quotes3, int count) {
         this.bookUuid = bookUuid;
         this.title = title;
         this.writer = writer;
@@ -43,9 +44,11 @@ public class BookQuotes {
         this.editDate = editDate;
         this.inuse = inuse;
         this.lang = lang;
+        this.quotes = quotes;
         this.quotes1 = quotes1;
         this.quotes2 = quotes2;
         this.quotes3 = quotes3;
+        this.count = count;
     }
 
     public BookQuotes(String bookUuid, String title, String writer, String memberUuid, String contents, int readNum,

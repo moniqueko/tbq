@@ -48,6 +48,16 @@
         limit #{pageStart},#{pageSize}
     </select>
 
+    <select id="bookListAdmin" resultType="com.thebookquotes.TBQ.dto.BookQuotes">
+        /* BookQuotes.bookListAdmin */
+        SELECT m.member_id, m.member_uuid , b.count, b.lang, b.read_num ,b.regi_date ,b.title,b.book_uuid
+        FROM bookquotes b
+        LEFT JOIN member m ON m.member_uuid = b.member_uuid
+        WHERE INUSE = 1
+        ORDER BY REGI_DATE desc
+        limit #{pageStart},#{pageSize}
+    </select>
+
     <select id="listKor" resultType="com.thebookquotes.TBQ.dto.BookQuotes">
         /* BookQuotes.listKor */
         SELECT *

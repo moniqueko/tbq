@@ -1,11 +1,13 @@
 package com.thebookquotes.TBQ.service.book;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import com.thebookquotes.TBQ.dto.BookQuotes;
 import java.util.List;
 
 public interface BookQuoteService {
     List<BookQuotes> bookList(Criteria cri);
+    List<BookQuotes> bookListAdmin(CriteriaBoard cri);
     List<BookQuotes> listKor(Criteria cri);
     List<BookQuotes> listEng(Criteria cri);
     List<BookQuotes> myBookList(BookQuotes.ListRequestBoard listRequest);

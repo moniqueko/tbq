@@ -224,4 +224,26 @@ public class BookController {
         return IOUtils.toByteArray(in);
     }
 
+    @GetMapping("/boardAdmin")
+    public String boardAdmin(Model model, CriteriaBoard cri, HttpSession session) {
+        Member memberSession = (Member) session.getAttribute("memberInfo");
+
+        if (memberSession.getMemberGrant()==1) {
+            List<BookQuotes> board = bookQuoteService.bookListAdmin(cri);
+            model.addAttribute("board", board);
+
+            List<Maxim> maxim = maximService.maximList();
+            model.addAttribute("maxim", maxim);
+
+            PageMakerBoard pageMakerBoard = new PageMakerBoard();
+            pageMakerBoard.setCri(cri);
+            pageMakerBoard.setTotalCount(bookQuoteService.selectCount());
+            pageMakerBoard.setTotalPage(bookQuoteService.selectCount());
+            model.addAttribute("pageMaker", pageMakerBoard);
+            return "/admin/boardList";
+        }
+
+        return "/member/login";
+    }
+
 }

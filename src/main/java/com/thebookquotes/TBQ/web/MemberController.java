@@ -1,8 +1,6 @@
 package com.thebookquotes.TBQ.web;
 
-import com.thebookquotes.TBQ.common.Criteria;
 import com.thebookquotes.TBQ.common.CriteriaBoard;
-import com.thebookquotes.TBQ.common.PageMaker;
 import com.thebookquotes.TBQ.common.PageMakerBoard;
 import com.thebookquotes.TBQ.dto.Maxim;
 import com.thebookquotes.TBQ.dto.Member;
@@ -56,7 +54,7 @@ public class MemberController {
         if (memberSession.getMemberGrant()==1){
             List<Maxim> maxim = maximService.maximList();
             model.addAttribute("maxim", maxim);
-            return "member/admin";
+            return "admin/admin";
         }
         return "member/login";
     }
@@ -78,7 +76,7 @@ public class MemberController {
 
             List<Maxim> maxim = maximService.maximList();
             model.addAttribute("maxim", maxim);
-            return "member/memberList";
+            return "admin/memberList";
         }
 
         return "member/login";
@@ -92,7 +90,7 @@ public class MemberController {
         if (memberSession.getMemberGrant()==1) {
             Member mem = memberService.selectByUuid(memberUuid);
             model.addAttribute("member", mem);
-            return "member/editMember";
+            return "admin/editMember";
 
         }else if (memberSession.getMemberGrant()==0){
             Member mem = memberService.selectByUuid(memberUuid);
