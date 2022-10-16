@@ -17,8 +17,7 @@
 		<div class="row mb-5 align-items-end">
 			<div class="col-md-6" data-aos="fade-up">
 				<h2>Modify</h2>
-				<p class="mb-0">Modify article
-				</p>
+				<p class="mb-0">Modify article</p>
 			</div>
 
 		</div>
@@ -67,7 +66,8 @@
 
 						<div class="col-md-12 form-group">
 							<label for="contents">Comment</label>
-							<textarea class="form-control" name="contents" id="contents" cols="30" rows="10" >${book.contents}</textarea>
+							<textarea class="form-control" name="contents" id="contents" cols="30" rows="10" >${book.contents}
+								<c:if test="${admin!=null}">* This article was modified by manager</c:if></textarea>
 							<div class="validate"></div>
 						</div>
 
@@ -110,37 +110,35 @@
 
 <hr><br>
 <script>
-	var title = document.getElementById("title").value;
-	var contents = document.getElementById("contents").value;
-	var writer = document.getElementById("writer").value;
-	var quotes = document.getElementById("quotes").value;
+	let title = document.getElementById("title").value;
+	let contents = document.getElementById("contents").value;
+	let writer = document.getElementById("writer").value;
+	let quotes = document.getElementById("quotes").value;
 
 	function validation() {
 
-		if (title == null || title === "") {
+		if (!title) {
 			alert('제목을 입력해주세요');
 			return false;
 
-		}else if (contents == null || contents ==="") {
+		}else if (!contents) {
 			alert('텍스트를 입력해주세요');
 			return false;
 
-		}else if (writer == null || writer ==="") {
+		}else if (!writer) {
 			alert('작가를 입력해주세요');
 			return false;
 
-		}else if (quotes == null || quotes ==="") {
+		}else if (!quotes) {
 			alert('문장을 입력해주세요');
 			return false;
 
 		}else {
 			submitEditBook();
 		}
-
 	}
 
 	function submitEditBook() {
-
 		const bookUuid = '${book.bookUuid}';
 		const form = $('#bookWriteForm')[0];
 		const data = new FormData(form);
@@ -154,7 +152,14 @@
 			contentType: false,
 			processData: false,
 			success: function (result) {
-				document.location = "/bookList";
+				if(result.data=='admin') {
+					document.location = "/boardAdmin";
+
+				}else if(result.status==401){
+					alert('Writer and Id not matching');
+				}else{
+					document.location = "/bookList";
+				}
 			},
 			error: function (error) {
 				alert("Error occurred");

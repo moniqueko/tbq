@@ -171,7 +171,7 @@ public class BookRestController {
 
         BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookQuotesWrite.getBookUuid());
 
-        if (!member.getMemberUuid().equals(bookQuotes.getMemberUuid())){ // 글쓴이와 로그인한 uuid 다를때
+        if (!member.getMemberUuid().equals(bookQuotes.getMemberUuid()) && member.getMemberGrant()==0){ // 글쓴이와 로그인한 uuid 다를때
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
 
@@ -204,6 +204,10 @@ public class BookRestController {
         }
 
         bookQuoteService.updateBook(bookQuotesWrite);
+
+        if(member.getMemberGrant()==1){
+            return responseService.getSingleResult("admin");
+        }
 
         return responseService.getSuccessResult();
     }

@@ -105,7 +105,7 @@
 									<c:forEach var="cmt" items="${cmt}" varStatus="status">
 										<div class="col-md-12 form-group" data-uuid="${cmt.cmtUuid}">
 											<div class="col-md-10 form-group">${cmt.memberId} | <fmt:formatDate value="${cmt.cmtRegiDate}" pattern="yyyy-MM-dd"/></div>
-											<div class="col-md-10 form-group">${cmt.contents} | <a href="#" onclick="cmtDelete(this);">[X]</a></div>
+											<div class="col-md-10 form-group">${cmt.contents}&nbsp;&nbsp;&nbsp;<a href="#" onclick="cmtDelete(this);">[X]</a></div>
 
 										</div>
 									</c:forEach>

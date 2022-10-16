@@ -208,9 +208,16 @@ public class BookController {
     }
 
     @GetMapping("/editBook/{bookUuid}")
-    public String editBook(@PathVariable("bookUuid") String bookUuid,Model model) {
-        BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
-        model.addAttribute("book", bookQuotes);
+    public String editBook(@PathVariable("bookUuid") String bookUuid,Model model, HttpSession session) {
+        Member member = (Member) session.getAttribute("memberInfo");
+        if(member.getMemberGrant()==1){
+            BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
+            model.addAttribute("book", bookQuotes);
+            model.addAttribute("admin", member.getMemberGrant());
+        }else {
+            BookQuotes bookQuotes = bookQuoteService.selectBookByUuid(bookUuid);
+            model.addAttribute("book", bookQuotes);
+        }
 
         return "/book/editBook";
     }
@@ -241,6 +248,9 @@ public class BookController {
             pageMakerBoard.setTotalPage(bookQuoteService.selectCount());
             model.addAttribute("pageMaker", pageMakerBoard);
             return "/admin/boardList";
+
+        }else if(memberSession.getMemberGrant()==0){
+            return "/member/login";
         }
 
         return "/member/login";
