@@ -1,7 +1,9 @@
 package com.thebookquotes.TBQ.web;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import com.thebookquotes.TBQ.common.PageMaker;
+import com.thebookquotes.TBQ.common.PageMakerBoard;
 import com.thebookquotes.TBQ.dto.Maxim;
 import com.thebookquotes.TBQ.dto.Member;
 import com.thebookquotes.TBQ.service.maxim.MaximService;
@@ -60,7 +62,7 @@ public class MemberController {
     }
 
     @GetMapping("/memberList")
-    public String memberList(Model model, Member member, Criteria cri, HttpSession session) {
+    public String memberList(Model model, Member member, CriteriaBoard cri, HttpSession session) {
         Member memberSession = (Member) session.getAttribute("memberInfo");
 
         if (memberSession.getMemberGrant()==1){
@@ -68,11 +70,11 @@ public class MemberController {
             List<Member> mem = memberService.selectMemberList(cri);
             model.addAttribute("member", mem);
 
-            PageMaker pageMaker = new PageMaker();
-            pageMaker.setCri(cri);
-            pageMaker.setTotalCount(memberService.selectCount());
-            pageMaker.setTotalPage(memberService.selectCount());
-            model.addAttribute("pageMaker", pageMaker);
+            PageMakerBoard pageMakerBoard = new PageMakerBoard();
+            pageMakerBoard.setCri(cri);
+            pageMakerBoard.setTotalCount(memberService.selectCount());
+            pageMakerBoard.setTotalPage(memberService.selectCount());
+            model.addAttribute("pageMaker", pageMakerBoard);
 
             List<Maxim> maxim = maximService.maximList();
             model.addAttribute("maxim", maxim);

@@ -29,11 +29,11 @@ public class BookQuoteServiceImpl implements BookQuoteService {
         return mapper.listEng(cri);
     }
     @Override
-    public List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest) {
+    public List<BookQuotes> myBookList(BookQuotes.ListRequestBoard listRequest) {
         return mapper.myBookList(listRequest);
     }
     @Override
-    public List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest) {
+    public List<BookQuotes> myScrapList(BookQuotes.ListRequestBoard listRequest) {
         return mapper.myScrapList(listRequest);
     }
 

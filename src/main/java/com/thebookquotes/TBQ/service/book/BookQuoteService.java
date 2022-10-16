@@ -8,8 +8,8 @@ public interface BookQuoteService {
     List<BookQuotes> bookList(Criteria cri);
     List<BookQuotes> listKor(Criteria cri);
     List<BookQuotes> listEng(Criteria cri);
-    List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest);
-    List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest);
+    List<BookQuotes> myBookList(BookQuotes.ListRequestBoard listRequest);
+    List<BookQuotes> myScrapList(BookQuotes.ListRequestBoard listRequest);
 
     int selectCountSearch(String keyword);
     int selectCount();

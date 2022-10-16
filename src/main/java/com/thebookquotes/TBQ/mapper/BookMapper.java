@@ -11,8 +11,8 @@ public interface BookMapper {
     List<BookQuotes> bookList(Criteria cri);
     List<BookQuotes> listKor(Criteria cri);
     List<BookQuotes> listEng(Criteria cri);
-    List<BookQuotes> myBookList(BookQuotes.ListRequest listRequest);
-    List<BookQuotes> myScrapList(BookQuotes.ListRequest listRequest);
+    List<BookQuotes> myBookList(BookQuotes.ListRequestBoard listRequest);
+    List<BookQuotes> myScrapList(BookQuotes.ListRequestBoard listRequest);
     int selectCount();
     int selectCountSearch(String keyword);
     int selectCountMyBook(String memberUuid);

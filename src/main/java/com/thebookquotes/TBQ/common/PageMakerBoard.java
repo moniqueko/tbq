@@ -8,7 +8,7 @@ public class PageMakerBoard {
     private boolean next;
     private String keyword;
     private int displayPageNum = 10;
-    private Criteria cri;
+    private CriteriaBoard cri;
     private int totalPage;
 
 
@@ -21,7 +21,7 @@ public class PageMakerBoard {
         this.keyword = keyword;
     }
 
-    public PageMakerBoard(int totalCount, int startPage, int endPage, boolean prev, boolean next, Criteria cri,
+    public PageMakerBoard(int totalCount, int startPage, int endPage, boolean prev, boolean next, CriteriaBoard cri,
                           int displayPageNum, int totalPage) {
         super();
         this.totalCount = totalCount;
@@ -34,7 +34,7 @@ public class PageMakerBoard {
         this.displayPageNum = displayPageNum;
     }
 
-    public PageMakerBoard(int totalCount, int startPage, int endPage, boolean prev, boolean next, Criteria cri,
+    public PageMakerBoard(int totalCount, int startPage, int endPage, boolean prev, boolean next, CriteriaBoard cri,
                           int displayPageNum, String keyword) { //검색어 추가
         super();
         this.totalCount = totalCount;
@@ -98,11 +98,11 @@ public class PageMakerBoard {
         this.next = next;
     }
 
-    public Criteria getCri() {
+    public CriteriaBoard getCri() {
         return cri;
     }
 
-    public void setCri(Criteria cri) { //변경
+    public void setCri(CriteriaBoard cri) { //변경
         this.cri = cri;
     }
 

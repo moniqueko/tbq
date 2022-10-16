@@ -1,6 +1,7 @@
 package com.thebookquotes.TBQ.service.member;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import com.thebookquotes.TBQ.dto.Member;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface MemberService {
     Member selectById(String memberId);
     Member selectByUuid(String memberUuid);
     Member selectByEmail(String memberEmail);
-    List<Member> selectMemberList(Criteria cri);
+    List<Member> selectMemberList(CriteriaBoard cri);
     void lastLoginUpdate(String memberUuid);
 
     void insertMember(Member member);

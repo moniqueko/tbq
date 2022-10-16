@@ -1,6 +1,7 @@
 package com.thebookquotes.TBQ.dto;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -85,6 +86,12 @@ public class BookQuotes {
     @Data
     public static class ListRequest {
         private Criteria criteria;
+        private String memberUuid;
+    }
+
+    @Data
+    public static class ListRequestBoard {
+        private CriteriaBoard criteria;
         private String memberUuid;
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.thebookquotes.TBQ.common.Criteria;
+import com.thebookquotes.TBQ.common.CriteriaBoard;
 import com.thebookquotes.TBQ.common.Sha256;
 import com.thebookquotes.TBQ.dto.Member;
 import com.thebookquotes.TBQ.mapper.MemberMapper;
@@ -26,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
         mapper.insertMember(newMember);
     }
     @Override
-    public List<Member> selectMemberList(Criteria cri) {
+    public List<Member> selectMemberList(CriteriaBoard cri) {
         List<Member> member =  mapper.selectMemberList(cri);
         return member;
     }

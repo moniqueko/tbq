@@ -68,7 +68,7 @@
             limit #{pageStart},#{pageSize}
     </select>
 
-    <select id="myBookList" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$ListRequest">
+    <select id="myBookList" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$ListRequestBoard">
         /* BookQuotes.myBookList */
         SELECT *
         FROM bookquotes
@@ -77,7 +77,7 @@
             limit #{criteria.pageStart},#{criteria.pageSize}
     </select>
 
-    <select id="myScrapList" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$ListRequest">
+    <select id="myScrapList" resultType="com.thebookquotes.TBQ.dto.BookQuotes" parameterType="com.thebookquotes.TBQ.dto.BookQuotes$ListRequestBoard">
         /* BookQuotes.myScrapList */
         SELECT s.regi_date as regiDate, title, writer, b.count, s.book_uuid
         FROM scrap s LEFT JOIN bookquotes b ON b.book_uuid  = s.book_uuid

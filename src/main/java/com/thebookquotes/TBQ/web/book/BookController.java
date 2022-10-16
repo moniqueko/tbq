@@ -124,7 +124,7 @@ public class BookController {
     }
 
     @GetMapping("/scrapBook")
-    public String scrapBook(BookQuotes.ListRequest listRequest, Model model, HttpSession session, Criteria cri) {
+    public String scrapBook(BookQuotes.ListRequestBoard listRequest, Model model, HttpSession session, CriteriaBoard cri) {
         Member member = (Member) session.getAttribute("memberInfo");
 
         if(member==null){
@@ -139,18 +139,18 @@ public class BookController {
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCountMyScrap(member.getMemberUuid()));
-        pageMaker.setTotalPage(bookQuoteService.selectCountMyScrap(member.getMemberUuid()));
+        PageMakerBoard pageMakerBoard = new PageMakerBoard();
+        pageMakerBoard.setCri(cri);
+        pageMakerBoard.setTotalCount(bookQuoteService.selectCountMyScrap(member.getMemberUuid()));
+        pageMakerBoard.setTotalPage(bookQuoteService.selectCountMyScrap(member.getMemberUuid()));
 
-        model.addAttribute("pageMaker", pageMaker);
+        model.addAttribute("pageMaker", pageMakerBoard);
 
         return "/my/myBook";
     }
 
     @GetMapping("/myBook")
-    public String myBook(BookQuotes.ListRequest listRequest, HttpSession session, Model model, Criteria cri) {
+    public String myBook(BookQuotes.ListRequestBoard listRequest, HttpSession session, Model model, CriteriaBoard cri) {
         Member member = (Member) session.getAttribute("memberInfo");
 
         if(member==null){
@@ -162,12 +162,12 @@ public class BookController {
         List<Maxim> maxim = maximService.maximList();
         model.addAttribute("maxim", maxim);
 
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(bookQuoteService.selectCountMyBook(member.getMemberUuid()));
-        pageMaker.setTotalPage(bookQuoteService.selectCountMyBook(member.getMemberUuid()));
+        PageMakerBoard pageMakerBoard = new PageMakerBoard();
+        pageMakerBoard.setCri(cri);
+        pageMakerBoard.setTotalCount(bookQuoteService.selectCountMyBook(member.getMemberUuid()));
+        pageMakerBoard.setTotalPage(bookQuoteService.selectCountMyBook(member.getMemberUuid()));
 
-        model.addAttribute("pageMaker", pageMaker);
+        model.addAttribute("pageMaker", pageMakerBoard);
 
         List<BookQuotes> board = bookQuoteService.myBookList(listRequest);
         model.addAttribute("board", board);
