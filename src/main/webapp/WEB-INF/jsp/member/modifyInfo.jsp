@@ -60,6 +60,12 @@
 								</div>
 
 								<div class="col-md-12 form-group">
+									<label for="memberPwCheck" style="text-align: left">PW check</label>
+									<input type="password" id="memberPwCheck"  name="memberPw" class="form-control" onkeyup="pwCheck();"/>
+									<div id="pwCheckDiv"></div>
+								</div>
+
+								<div class="col-md-12 form-group">
 									<span><a href="#" class="readmore" onclick="validation();">Modify</a>
 										<a href="#" class="readmore" onclick="del();">Delete info</a></span>
 								</div>
@@ -84,34 +90,58 @@
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
-	function validation() { //이메일 정규식 추가
+	function pwCheck(){
+		if (document.getElementById('memberPw').value ==
+				document.getElementById('memberPwCheck').value) {
+			document.getElementById("pwCheckDiv").innerHTML = "<span style='color: green;'>PW matching</span>";
+		} else if(document.getElementById('memberPw').value == "" ||
+				document.getElementById('memberPwCheck').value == "") {
+			document.getElementById("pwCheckDiv").innerHTML = "<span style='color: red;'>PW is Empty</span>";
+		}else{
+			document.getElementById("pwCheckDiv").innerHTML = "<span style='color: red;'>PW not matching</span>";
+		}
 
-		var idcheck = document.forms["memberForm"]["memberId"].value;
-		var pwcheck = document.forms["memberForm"]["memberPw"].value;
-		var emailcheck = document.forms["memberForm"]["memberEmail"].value;
+	}
 
-		var pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
-		var emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
+	function validation() {
+		let idcheck = document.getElementById('memberId').value;
+		let pwcheck = document.getElementById('memberPw').value;
+		let emailcheck = document.getElementById('memberEmail').value;
+		let pwDoubleCheck = document.getElementById('memberPwCheck').value;
 
-		var tb = document.getElementById('tb');
-		var msg = document.getElementById('msg');
+		const pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+		const emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-		if (pwcheck == null || pwcheck == "") {
+		const tb = document.getElementById('tb');
+		const msg = document.getElementById('msg');
 
-			msg.innerHTML = "Password is empty";
+		if(!pwcheck){
+			msg.innerHTML = "PW is empty";
 			tb.append(msg);
-
 			return false;
 
-		} else if(!pwExp.test(pwcheck)) {
+		}else if(!pwDoubleCheck){
+			msg.innerHTML = "PW Check is empty";
+			tb.append(msg);
+			return false;
 
-			alert('Follow PW format: mixed with alphabet/number/!@#$%^&* within 8~16 long')
+		}else if(pwDoubleCheck!=pwcheck){
+			msg.innerHTML = "PW not matching";
+			tb.append(msg);
+			return false;
+
+		}else if(!emailcheck){
+			msg.innerHTML = "E-mail is empty";
+			tb.append(msg);
+			return false;
+		}
+
+		if(!pwExp.test(pwcheck)) {
+			alert('Follow PW format: mixed with alphabet/number/!@#$%^&*_- within 8~16 long')
 			return false;
 
 		} else if(!emailregExp.test(emailcheck)) {
-
-			msg.innerHTML = "Please follow E-mail format";
-			tb.append(msg);
+			alert('Please follow E-mail format')
 			return false;
 
 		} else{
@@ -276,11 +306,18 @@
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
-				console.log(result.data);
+				if(result.status==404){
+					alert('Failed to modify. Please follow Id/Pw/E-mail format')
+					return false;
 
-				alert('Modified');
+				}else if(result.status==406){
+					alert('Failed to modify. Duplicated Id/Pw/E-mail.')
+					return false;
 
-				location.href="/member/"+ memberUuid;
+				}else if(result.status==200){
+					alert('Modified');
+					location.href="/member/"+ memberUuid;
+				}
 
 			},
 			error: function(result) {

@@ -72,7 +72,7 @@
 	</div>
 
 	<div class="site-section">
-	<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
+		<%@ include file="/WEB-INF/jsp/component/section.jsp" %>
 	</div>
 </main>
 
@@ -85,7 +85,7 @@
 		}
 	}
 
-	function emailCheck(){ //아이디 입력시
+	function emailCheck(){
 
 		var memberId = document.forms["memberEditForm"]["memberId"].value;
 		var memberEmail = document.forms["memberEditForm"]["memberEmail"].value;
@@ -119,7 +119,7 @@
 			},
 			error: function(result) {
 
-				console.log(result.responseText); //responseText의 에러메세지 확인
+				console.log(result.responseText);
 			}
 		});
 	}

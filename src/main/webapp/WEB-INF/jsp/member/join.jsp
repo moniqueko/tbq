@@ -61,6 +61,12 @@
 								</div>
 
 								<div class="col-md-12 form-group">
+									<label for="memberPwCheck" style="text-align: left">PW check</label>
+									<input type="password" id="memberPwCheck"  name="memberPw" class="form-control" onkeyup="pwCheck();"/>
+									<div id="pwCheckDiv"></div>
+								</div>
+
+								<div class="col-md-12 form-group">
 									<div id="msg"></div>
 										<span><a href="#" class="readmore" onclick="validation();">Submit</a></span>
 								</div>
@@ -85,52 +91,71 @@
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
-	function validation() { //이메일 정규식 추가
+	function pwCheck(){
 
-		var idcheck = document.forms["memberForm"]["memberId"].value;
-		var pwcheck = document.forms["memberForm"]["memberPw"].value;
-		var emailcheck = document.forms["memberForm"]["memberEmail"].value;
+		if (document.getElementById('memberPw').value ==
+				document.getElementById('memberPwCheck').value) {
+			document.getElementById("pwCheckDiv").innerHTML = "<span style='color: green;'>PW matching</span>";
+		} else if(document.getElementById('memberPw').value == "" ||
+				document.getElementById('memberPwCheck').value == "") {
+			document.getElementById("pwCheckDiv").innerHTML = "<span style='color: red;'>PW is Empty</span>";
+		}else{
+			document.getElementById("pwCheckDiv").innerHTML = "<span style='color: red;'>PW not matching</span>";
+		}
+	}
 
-		var regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/; //아이디 정규식
-		var pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/; //비밀번호 정규식
-		var emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
+	function validation() {
+		let idcheck = document.getElementById('memberId').value;
+		let pwcheck = document.getElementById('memberPw').value;
+		let emailcheck = document.getElementById('memberEmail').value;
+		let pwDoubleCheck = document.getElementById('memberPwCheck').value;
 
+		const regExp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,11}$/;
+		const pwExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+		const emailregExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-		var tb = document.getElementById('tb');
-		var msg = document.getElementById('msg');
+		const tb = document.getElementById('tb');
+		const msg = document.getElementById('msg');
 
-
-		if (idcheck == null || idcheck == "") {
-
-			msg.innerHTML = "아이디가 입력되지 않았습니다.";
+		if (!idcheck) {
+			msg.innerHTML = "ID is empty";
 			tb.append(msg);
-
 			return false;
 
-		} else if (pwcheck == null || pwcheck == "") {
-
-			msg.innerHTML = "비밀번호가 입력되지 않았습니다";
+		}else if(!pwcheck){
+			msg.innerHTML = "PW is empty";
 			tb.append(msg);
-
 			return false;
 
-		} else if(!regExp.test(idcheck)) {
+		}else if(!pwDoubleCheck){
+			msg.innerHTML = "PW Check is empty";
+			tb.append(msg);
+			return false;
 
-			alert('아이디 첫글자는 영문이어야하며 4~12자의 영문 대소문자와 숫자,하이픈,언더바 사용가능')
+		}else if(pwDoubleCheck!=pwcheck){
+			msg.innerHTML = "PW not matching";
+			tb.append(msg);
+			return false;
+
+		}else if(!emailcheck){
+		msg.innerHTML = "E-mail is empty";
+		tb.append(msg);
+		return false;
+		}
+
+		if(!regExp.test(idcheck)) {
+			alert('Follow ID format: mixed with alphabet/number/_- within 4~12 long');
 			return false;
 
 		} else if(!pwExp.test(pwcheck)) {
-
-			alert('비밀번호는 영문/숫자/특수문자(!@#$%^&*)를 포함하여 8~16자로 입력해야합니다.')
+			alert('Follow PW format: mixed with alphabet/number/!@#$%^&*_- within 8~16 long')
 			return false;
 
 		} else if(!emailregExp.test(emailcheck)) {
-
-			alert('이메일 형식이 맞지 않습니다.')
+			alert('Please follow E-mail format')
 			return false;
 
 		} else{
-
 			$.ajax({
 				url: "/emailDupl",
 				type: "POST",
@@ -141,9 +166,9 @@
 				success: function(result) {
 
 					if(result.data ==1){
-						alert("이메일 중복입니다. 다른 이메일을 입력해주세요.");
+						alert("E-mail Duplication");
 
-					}else if(result.data ==0){ //이메일 통과
+					}else if(result.data ==0){
 
 						$.ajax({
 							url: "/idCheck",
@@ -155,7 +180,7 @@
 							success: function(result) {
 
 								if(result.data ==1){
-									alert("아이디 중복입니다. 다른 아이디를 입력해주세요.");
+									alert("Id Duplication");
 
 								}else if(result.data ==0){
 									signIn();
@@ -186,7 +211,7 @@
 		}
 	}
 
-	function idCheck(){ //아이디 입력시
+	function idCheck(){
 		let memberId = document.getElementById("memberId").value;
 
 		$.ajax({
@@ -197,13 +222,11 @@
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
-
-				if(result.data ==1){// 아이디 중복
-					document.getElementById("idCheckDiv").innerHTML = "<span style='color: red;'>아이디 중복</span>";
-
+				if(result.data ==1){
+					document.getElementById("idCheckDiv").innerHTML = "<span style='color: red;'>Duplication</span>";
 
 				}else if(result.data ==0){
-					document.getElementById("idCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 아이디</span>";
+					document.getElementById("idCheckDiv").innerHTML = "<span style='color: green;'>Available</span>";
 				}
 
 			},
@@ -226,13 +249,13 @@
 			success: function(result) {
 
 				if(result.data ==1){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: red;'>이메일 중복</span>";
+					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: red;'>Duplication</span>";
 
 				}else if(result.data ==0){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>사용가능한 이메일</span>";
+					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>Available</span>";
 
 				}else if(memberEmail==null|| memberEmail==''){
-					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>이메일을 입력해주세요</span>";
+					document.getElementById("emailCheckDiv").innerHTML = "<span style='color: green;'>E-mail is empty</span>";
 				}
 
 			},
@@ -261,12 +284,22 @@
 			contentType: "application/json",
 			accept: "application/json",
 			success: function(result) {
-				alert('회원가입이 완료되었습니다. 다시 로그인해 주세요');
-				location.href="/login";
+				if(result.status==404){
+					alert('Failed to join. Please follow Id/Pw/E-mail format')
+					return false;
+
+				}else if(result.status==406){
+					alert('Failed to join. Duplicated Id/Pw/E-mail.')
+					return false;
+
+				}else if(result.status==200){
+					alert('Success!');
+					location.href="/login";
+				}
 
 			},
 			error: function(result) {
-				alert('회원가입 실패. 다시 시도해 주세요');
+				alert('Failed. Please try again.');
 				console.log(result.responseText);
 			}
 		});
