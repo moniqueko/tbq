@@ -41,7 +41,7 @@
 				<c:if test="${memberInfo==null}">
 					<div class="row justify-content-center">
 						<div class="col-md-4">
-							<div class="justify-content-center" style="text-align: center">
+							<div class="justify-content-center" style="text-align: center" id="loginOk">
 								<h2>Login</h2><br><br>
 								<div class="container-sm" id="tb">
 									<form:form name="memberForm" id="memberForm">
@@ -79,8 +79,9 @@
 
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 <script>
-	var tb = document.getElementById('tb');
-	var msg = document.getElementById('msg');
+	const tb = document.getElementById('tb');
+	const msg = document.getElementById('msg');
+	const loginOk = document.getElementById('loginOk');
 
 	function enterKey() {
 		if (window.event.keyCode == 13) {
@@ -89,7 +90,6 @@
 	}
 
 	function login() {
-
 		let memberId = document.forms["memberForm"]["memberId"].value;
 		let memberPw = document.forms["memberForm"]["memberPw"].value;
 
@@ -109,7 +109,7 @@
 
 				if (result.code == 200) {
 					if (result.data == '1') {
-						location.href="/loginOk";
+						loginOk.innerHTML = '<h2>Welcome,'+ memberId+'</h2><br><br>Enjoy TBQ and Have a good day!';
 
 					} else if (result.data == '2') {
 						location.href = "/admin";

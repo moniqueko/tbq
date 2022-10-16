@@ -40,13 +40,6 @@ public class MemberController {
         return "member/login";
     }
 
-    @GetMapping("/loginOk")
-    public String loginOk(Model model) {
-        List<Maxim> maxim = maximService.maximList();
-        model.addAttribute("maxim", maxim);
-        return "member/loginOk";
-    }
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

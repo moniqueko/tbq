@@ -38,11 +38,11 @@
 
 			<div class="row justify-content-center">
 				<div class="col-md-4">
-					<div class="justify-content-center" style="text-align: center">
+					<div class="justify-content-center" style="text-align: center" id="tb">
 						<h2>Find Password</h2><br><br>
-						<div class="container-sm" id="tb">
+						<div class="container-sm">
 
-							<form:form action="/findPw" name="memberEditForm" id="memberEditForm" method="POST">
+							<form:form name="memberEditForm" id="memberEditForm">
 								<div class="col-md-12 form-group">
 									<label for="memberId">ID</label>
 									<input type="text" id="memberId"  name="memberId" class="form-control"/>
@@ -50,13 +50,13 @@
 
 								<div class="col-md-12 form-group">
 									<label for="memberEmail">E-mail</label>
-									<input type="text" id="memberEmail"  name="memberEmail" oninput="emailCheck();" class="form-control" onkeyup="enterKey();"/>
+									<input type="text" id="memberEmail"  name="memberEmail" oninput="emailCheck();" class="form-control"/>
 									<div id="emailCheck"></div>
 								</div>
 
 								<div class="col-md-12 form-group">
 									<div id="msg"></div>
-									<div><input type="submit" value="Find" class="readmore"></div>
+									<div><input type="button" value="Find" class="readmore" onclick="findPw();"></div>
 								</div>
 							</form:form>
 
@@ -79,17 +79,10 @@
 <%@ include file="/WEB-INF/jsp/component/footer.jsp" %>
 
 <script>
-	function enterKey() {
-		if (window.event.keyCode == 13) {
-			memberEditForm.submit();
-		}
-	}
-
 	function emailCheck(){
-
-		var memberId = document.forms["memberEditForm"]["memberId"].value;
-		var memberEmail = document.forms["memberEditForm"]["memberEmail"].value;
-		var data = {
+		let memberId = document.getElementById("memberId").value;
+		let memberEmail = document.getElementById("memberEmail").value;
+		let data = {
 			'memberId': memberId,
 			'memberEmail' : memberEmail
 		};
@@ -105,15 +98,19 @@
 
 				if(result.status==401){
 					document.getElementById("emailCheck").innerHTML = "<span style='color: red;'>Id and E-mail not matching</span>";
+					return false;
 
 				}else if(result.status==200){
 					document.getElementById("emailCheck").innerHTML = "<span style='color: green;'>Member Identified</span>";
+					return false;
 
 				}else if(memberId==null|| memberId==''){
 					document.getElementById("msg").innerHTML = "<span style='color: green;'>Id is empty</span>";
+					return false;
 
 				}else if(memberEmail==null || memberEmail==''){
 					document.getElementById("msg").innerHTML = "<span style='color: green;'>E-mail is empty</span>";
+					return false;
 				}
 
 			},
@@ -122,6 +119,41 @@
 				console.log(result.responseText);
 			}
 		});
+	}
+
+	function findPw(){
+		let memberId = document.getElementById("memberId").value;
+		let memberEmail = document.getElementById("memberEmail").value;
+		let data = {
+			'memberId': memberId,
+			'memberEmail' : memberEmail
+		};
+
+		const tb = document.getElementById("tb");
+
+		$.ajax({
+			url: "/findPw",
+			type: "POST",
+			data: JSON.stringify(data),
+			dataType: "JSON",
+			contentType: "application/json",
+			accept: "application/json",
+			success: function(result) {
+
+				if(result.status==401){
+					document.getElementById("emailCheck").innerHTML = "<span style='color: red;'>No matching data</span>";
+					return false;
+
+				}else if(result.status==200) {
+					tb.innerHTML='<h2>E-mail sent</h2><br><br>Check your temporary password via E-mail and Change it ASAP!';
+				}
+
+			},
+			error: function(result) {
+				console.log(result.responseText);
+			}
+		});
+
 	}
 
 </script>
