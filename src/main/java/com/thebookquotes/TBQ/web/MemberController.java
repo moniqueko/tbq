@@ -20,7 +20,10 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final MaximService maximService;
-
+    @GetMapping("/error")
+    public String error(Model model, Member member) {
+        return "error";
+    }
     @GetMapping("/findPw")
     public String findPw(Model model, Member member) {
         return "member/find";
