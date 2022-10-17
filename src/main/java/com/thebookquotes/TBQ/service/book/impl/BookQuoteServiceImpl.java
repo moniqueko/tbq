@@ -103,7 +103,7 @@ public class BookQuoteServiceImpl implements BookQuoteService {
 
     @Override
     public void insertCmt(BookQuotes.Comment cmt) {
-        BookQuotes.Comment insert = new BookQuotes.Comment(null, cmt.getBookUuid(),cmt.getMemberUuid(),cmt.getContents(), null, 1);
+        BookQuotes.Comment insert = new BookQuotes.Comment(0, null, cmt.getBookUuid(),cmt.getMemberUuid(),cmt.getContents(), null, 1);
         mapper.insertCmt(insert);
     }
 

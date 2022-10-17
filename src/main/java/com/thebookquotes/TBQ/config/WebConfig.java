@@ -30,7 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/myBook")
                 .addPathPatterns("/memberList")
                 .addPathPatterns("/boardAdmin")
-                .excludePathPatterns("/join");
+                .excludePathPatterns("/join")
+                .excludePathPatterns("/view");
 
         registry.addInterceptor(new AdminInterceptor())
                 .addPathPatterns("/admin/**")

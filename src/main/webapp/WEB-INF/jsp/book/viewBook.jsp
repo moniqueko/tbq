@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/component/head.jsp" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,7 +67,7 @@
 								<p class="mb-4"><span class="text-muted">Author : ${book.writer}</span></p>
 
 								<div class="mb-5">
-									<p>${book.contents}</p>
+									<p>${fn:replace(book.contents, replaceChar, "<br/>")}</p>
 								</div>
 
 									<h4 class="h4 mb-3"></h4>
@@ -105,7 +107,7 @@
 									<c:forEach var="cmt" items="${cmt}" varStatus="status">
 										<div class="col-md-12 form-group" data-uuid="${cmt.cmtUuid}">
 											<div class="col-md-10 form-group">${cmt.memberId} | <fmt:formatDate value="${cmt.cmtRegiDate}" pattern="yyyy-MM-dd"/></div>
-											<div class="col-md-10 form-group">${cmt.contents}&nbsp;&nbsp;&nbsp;<a href="#" onclick="cmtDelete(this);">[X]</a></div>
+											<div class="col-md-10 form-group">${fn:replace(cmt.contents, replaceChar, "<br/>")}&nbsp;&nbsp;&nbsp;<a href="#" onclick="cmtDelete(this);">[X]</a></div>
 
 										</div>
 									</c:forEach>
@@ -346,7 +348,7 @@
 			objectType: 'feed',
 			content: {
 				title: '${book.title}',
-				description: '${book.contents}',
+				description: '${book.quotes1}',
 				imageUrl: 'https://ifh.cc/g/4hsayZ.jpg',
 				link: {
 					mobileWebUrl: 'http://localhost:8080/view/${book.bookUuid}',

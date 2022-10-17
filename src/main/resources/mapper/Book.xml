@@ -189,7 +189,7 @@
 
         INSERT INTO cmt
         VALUES
-        (0,#{memberUuid},#{bookUuid},#{contents},NOW(),#{inuse},#{cmtUuid})
+        (0,#{cmtUuid},#{memberUuid},#{bookUuid},#{contents},NOW(),#{inuse})
     </insert>
 
     <select id="cmtList" resultType="com.thebookquotes.TBQ.dto.BookQuotes$Comment" parameterType="String">

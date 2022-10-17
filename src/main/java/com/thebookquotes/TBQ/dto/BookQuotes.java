@@ -101,7 +101,7 @@ public class BookQuotes {
     @Data
     @NoArgsConstructor
     public static class Comment {
-        private Integer cmtNum;
+        private int cmtNum;
         private String cmtUuid;
         private String bookUuid;
         private String memberUuid;
@@ -112,7 +112,8 @@ public class BookQuotes {
         private int inuse;
         private String memberId;
 
-        public Comment(String cmtUuid, String bookUuid, String memberUuid, String contents, Date cmtRegiDate, int inuse) {
+        public Comment(int cmtNum, String cmtUuid, String bookUuid, String memberUuid, String contents, Date cmtRegiDate, int inuse) {
+            this.cmtNum = cmtNum;
             this.cmtUuid = cmtUuid;
             this.bookUuid = bookUuid;
             this.memberUuid = memberUuid;

@@ -13,7 +13,7 @@
         </selectKey>
 
         INSERT INTO member
-        VALUES(#{memberUuid},#{memberId},#{memberPw},#{memberGrant},NOW(),#{memberInuse},NOW(),NOW(),#{memberEmail})
+        VALUES(0,#{memberUuid},#{memberId},#{memberPw},#{memberGrant},NOW(),#{memberInuse},NOW(),NOW(),#{memberEmail})
     </insert>
 
     <select id="idCheck" resultType="int" parameterType="String">
