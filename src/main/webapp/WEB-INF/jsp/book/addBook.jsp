@@ -51,7 +51,7 @@
 							<div class="validate"></div>
 						</div>
 						<div class="col-md-12 form-group">
-							<label for="quotes">Quotes</label>
+							<label for="quotes">Quotes (Do not include any ",")</label>
 							<input type="text" class="form-control" name="quotes" id="quotes" data-rule="minlen:4" data-msg="Please insert up to 150 characters" />
 							<div class="validate"></div>
 						</div>
@@ -71,7 +71,7 @@
 						</div>
 
 						<div class="col-md-12 form-group">
-							<label for="contents">Comment</label>
+							<label for="contents">Comment (Up to 500 characters) </label>
 							<textarea class="form-control" name="contents" id="contents" cols="30" rows="10" data-rule="required" data-msg="Write comments here"></textarea>
 							<div class="validate"></div>
 						</div>

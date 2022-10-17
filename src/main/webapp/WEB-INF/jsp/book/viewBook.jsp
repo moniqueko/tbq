@@ -347,8 +347,8 @@
 		Kakao.Link.sendDefault({
 			objectType: 'feed',
 			content: {
-				title: '${book.title}',
-				description: '${book.quotes1}',
+				title: "${book.title}",
+				description: "${book.quotes1}",
 				imageUrl: 'https://ifh.cc/g/4hsayZ.jpg',
 				link: {
 					mobileWebUrl: 'http://localhost:8080/view/${book.bookUuid}',
