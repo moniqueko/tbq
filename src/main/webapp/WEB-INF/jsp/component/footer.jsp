@@ -29,7 +29,6 @@
 <script src="<c:url value='../vendor/isotope/isotope.pkgd.min.js'/>"></script>
 <script src="<c:url value='../vendor/aos/aos.js'/>"></script>
 <script src="<c:url value='../vendor/owlcarousel/owl.carousel.min.js'/>"></script>
-
 <!-- Template Main JS File -->
 <script src="<c:url value='../js/main.js'/>"></script>
 <script src="<c:url value='../js/FileSaver.min.js'/>"></script>

@@ -15,6 +15,12 @@
 			background-size: 100% 100%;
 			object-fit: cover;
 		}
+
+		ul{list-style:none;}
+		a{text-decoration:none; color:inherit;}
+		.box{width:100%; height:300px; margin:0 auto;}
+		#tab ul{white-space:nowrap; overflow-x: hidden; text-align:center;}
+		#tab ul li{display:inline-block; margin:10px 20px;width: 150px; overflow:hidden; text-overflow:ellipsis;}
 	</style>
 </head>
 
@@ -124,6 +130,29 @@
 				</div>
 			</c:if>
 
+			<!-- Kakao Book API-->
+			<div class="site-section pb-0">
+				<div class="container">
+					<div class="row justify-content-center text-left mb-4">
+						<div class="col-md-12 form-group">
+							<h3 class="h3">Related Books</h3><br>
+							<h3 class="h3">-</h3>
+
+<%--							<div class="box" data-aos="fade-up" data-aos-delay="200" id="box">--%>
+<%--							</div>--%>
+
+							<div class="box" data-aos="fade-up" data-aos-delay="200" id="box">
+								<div id="tab">
+									<ul id="nav"></ul>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
 			<div class="site-section pb-0">
 				<div class="container">
 					<div class="row justify-content-center text-center mb-4">
@@ -163,6 +192,7 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <script>
+
 	$(document).ready(function(){
 		var canvas = document.querySelector('canvas'),
 				c = canvas.getContext('2d');
@@ -367,6 +397,47 @@
 			installTalk: true,
 		})
 	}
+
+	var bookTitle = "'${book.title}'";
+	let ul = document.getElementById("nav");
+	var box = document.getElementById("box");
+
+	$(document).ready(function(){
+		$.ajax({
+			type: "GET",
+			url: "https://dapi.kakao.com/v3/search/book",
+			data: {query: bookTitle},
+			dataType: "JSON",
+			contentType : "application/json",
+			headers: {Authorization: "KakaoAK d0b88330106455172d099181a3c537ce"}
+		})
+				.done(function (result){
+					if(result.documents[0]==null){
+						const textNode = document.createElement('li');
+						textNode.innerHTML = "<h4>No Results</h4>";
+						ul.appendChild(textNode);
+					}
+
+					for(var i=0; i<result.documents.length; i++)
+					{
+						const textNode = document.createElement('li');
+						textNode.innerHTML="<a href='" + result.documents[i].url + "'><img src='" + result.documents[i].thumbnail+"' width='150px' height='auto'/></a><br><br>"
+								+ "<a href='"+result.documents[i].url+"'>"+result.documents[i].title+"</a>"+"<br>"+result.documents[i].authors;
+						ul.appendChild(textNode);
+
+					}
+		})
+	});
+
+	const containerScrollWidth = ul.scrollWidth;
+	window.addEventListener('load', () => {
+		self.setInterval(() => {
+			if (ul.scrollLeft !== containerScrollWidth) {
+				ul.scrollTo(ul.scrollLeft + 1, 0);
+			}
+		}, 20);
+
+	});
 
 </script>
 
