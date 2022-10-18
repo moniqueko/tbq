@@ -137,10 +137,6 @@
 						<div class="col-md-12 form-group">
 							<h3 class="h3">Related Books</h3><br>
 							<h3 class="h3">-</h3>
-
-<%--							<div class="box" data-aos="fade-up" data-aos-delay="200" id="box">--%>
-<%--							</div>--%>
-
 							<div class="box" data-aos="fade-up" data-aos-delay="200" id="box">
 								<div id="tab">
 									<ul id="nav"></ul>
@@ -148,7 +144,6 @@
 							</div>
 
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -414,7 +409,7 @@
 				.done(function (result){
 					if(result.documents[0]==null){
 						const textNode = document.createElement('li');
-						textNode.innerHTML = "<h4>No Results</h4>";
+						textNode.innerHTML = "<h6>No Results</h6>";
 						ul.appendChild(textNode);
 					}
 
@@ -426,7 +421,7 @@
 						ul.appendChild(textNode);
 
 					}
-		})
+				})
 	});
 
 	const containerScrollWidth = ul.scrollWidth;
