@@ -82,7 +82,7 @@
 										<tbody>
 											<c:forEach var="book" items="${board}" varStatus="status">
 												<tr>
-													<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
+													<th scope="row" style="text-align: center;">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
 													<td class="title"><a href="/view/${book.bookUuid}">${book.title}</a></td>
 													<td style="text-align: center;">${book.writer}</td>
 													<td class="word">${book.quotes}</td>
@@ -105,7 +105,7 @@
 										<tbody>
 											<c:forEach var="book" items="${scrap}" varStatus="status">
 												<tr>
-													<th scope="row">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
+													<th scope="row" style="text-align: center;">${pageMaker.totalCount - (pageMaker.cri.page - 1)  *  10 - status.index}</th>
 													<td class="title" style="text-align: center;"><a href="/view/${book.bookUuid}">${book.title}</a></td>
 													<td style="text-align: center;">${book.writer}</td>
 													<td style="text-align: center;"><fmt:formatDate value="${book.regiDate}" pattern="YY-MM-dd"/></td>
