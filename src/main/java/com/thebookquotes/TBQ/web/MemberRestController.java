@@ -78,6 +78,11 @@ public class MemberRestController {
 
         Member check = memberService.selectById(member.getMemberId());
 
+        if(check.getMemberInuse()==0){ //탈퇴한 회원
+            memberType = 3;
+            return responseService.getSingleResult(memberType);
+        }
+
         if (check != null) { //아이디는 있을때
 
             if (memberId.equals(check.getMemberId()) && encodingPw.equals(check.getMemberPw())) {

@@ -30,12 +30,12 @@ public class MailSenderController {
             return responseService.getFailResult(ErrorCode.NULL_EXCEPTION);
         }
         Member checkMemberEmail = memberService.selectByEmail(member.getMemberEmail());
-        if (checkMemberEmail == null) {
+        if (checkMemberEmail == null || checkMemberEmail.getMemberInuse()==0) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
 
         Member checkMemberId = memberService.selectById(member.getMemberId());
-        if (checkMemberId == null) {
+        if (checkMemberId == null || checkMemberId.getMemberInuse()==0) {
             return responseService.getFailResult(ErrorCode.NO_MATCHING_DATA);
         }
 

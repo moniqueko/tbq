@@ -35,7 +35,8 @@
 		<div class="container">
 			<div class="row mb-5 align-items-end">
 				<div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-					<h2>My books</h2>
+					<h2><c:if test="${scrap!=null}">Scrap Books</c:if>
+						<c:if test="${board!=null}">My Books</c:if></h2>
 					<p class="mb-0">You can check your books and scraped items.</p>
 				</div>
 				<div class="col-md-12 col-lg-6 text-left text-lg-right" data-aos="fade-up" data-aos-delay="100">

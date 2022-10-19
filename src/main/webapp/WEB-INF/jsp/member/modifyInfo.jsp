@@ -327,4 +327,32 @@
 
 	}
 
+	function del(){
+		let memberUuid = '${member.memberUuid}';
+		let check = confirm("Are you sure to leave TBQ?");
+
+		if(check==false){
+			history.back();
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "/member/del",
+			data: memberUuid,
+			dataType: "text",
+			contentType : "application/json",
+			processData : false,
+			success: function(result) {
+				alert("Deletion success. Good bye!");
+				location.href="/";
+			},
+			error: function(request, status, error) {
+				console.log("ERROR : "+request.status+"\n"+"message"+request.responseText+"\n"+"error:"+error);
+
+				alert("Error occurred");
+			}
+		});
+
+	}
+
 </script>

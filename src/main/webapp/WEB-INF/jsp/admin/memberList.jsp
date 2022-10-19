@@ -86,8 +86,6 @@
 <script>
 	function del(obj){
 		let uuid = obj.parentElement.parentElement.dataset.uuid;
-
-		console.log(uuid);
 		let check = confirm("Delete?");
 
 		if(check==false){

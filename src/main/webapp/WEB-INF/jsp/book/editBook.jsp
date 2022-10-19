@@ -152,13 +152,15 @@
 			contentType: false,
 			processData: false,
 			success: function (result) {
-				if(result.data=='admin') {
-					document.location = "/boardAdmin";
+
+				 if(result.data=='admin') {
+					 location.href = "/boardAdmin";
 
 				}else if(result.status==401){
 					alert('Writer and Id not matching');
+
 				}else{
-					document.location = "/bookList";
+					 location.href = "/bookList";
 				}
 			},
 			error: function (error) {

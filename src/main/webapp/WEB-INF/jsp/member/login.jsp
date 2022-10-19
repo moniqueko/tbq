@@ -113,6 +113,10 @@
 
 					} else if (result.data == '2') {
 						location.href = "/admin";
+
+					} else if(result.data =='3'){ //탈퇴한 회원
+						msg.innerHTML = "Login Failed: No Member";
+						tb.append(msg);
 					}
 				} else if (result.code == 401) {
 					console.log(result.message);
